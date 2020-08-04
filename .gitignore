@@ -1,0 +1,4 @@
+node_modules/
+/front/.env
+/back/.env
+ignore-file.txt
