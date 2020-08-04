@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
-import note from './note';
-import { todoSaga } from './todos';
-import { noteSaga } from './note';
+//import todos from './todos';
+//import hangang from './hangang';
+//import { todoSaga } from './todos';
+import hangang from './hangang';
+import { hangangSaga } from './hangang';
 import { all } from 'redux-saga/effects';
 const rootReducer = combineReducers({
-  todos,
-  note,
+  hangang
+  //note
 });
 
 export default rootReducer;
@@ -19,5 +20,5 @@ export default rootReducer;
 //사용 할 때 필요로 합니다.
 // 루트 사가를 만들어서 내보내주세요.
 export function* rootSaga() {
-  yield all([todoSaga(), noteSaga()]);
+  yield all([hangangSaga()]);
 }

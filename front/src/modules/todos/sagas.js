@@ -1,10 +1,10 @@
-import {
-  getUserTodos,
-  addUserTodo,
-  editUserTodo,
-  deleteUserTodo,
-} from '../../lib/api/todo';
-import { put, call, takeEvery } from 'redux-saga/effects';
+// import {
+//   getUserTodos,
+//   addUserTodo,
+//   editUserTodo,
+//   deleteUserTodo,
+// } from '../../lib/api/todo';
+// import { put, call, takeEvery } from 'redux-saga/effects';
 import {
   GET_TODOS_FAILURE,
   GET_TODOS_REQUEST,
@@ -17,7 +17,7 @@ import {
   ADD_TODO_SUCCESS,
   DELETE_TODO_REQUEST,
   DELETE_TODO_FAILURE,
-  DELETE_TODO_SUCCESS,
+  DELETE_TODO_SUCCESS
 } from './reducer';
 
 function* getUserTodoSaga(action) {
@@ -30,8 +30,8 @@ function* getUserTodoSaga(action) {
       payload: {
         loading: false,
         data: userTodos.data,
-        error: null,
-      },
+        error: null
+      }
     });
   } catch (e) {
     yield put({
@@ -39,8 +39,8 @@ function* getUserTodoSaga(action) {
       payload: {
         loading: false,
         data: [],
-        error: e,
-      },
+        error: e
+      }
     });
   }
 }
@@ -54,8 +54,8 @@ function* addUserTodoSaga(action) {
       payload: {
         loading: false,
         data: userTodos.data,
-        error: null,
-      },
+        error: null
+      }
     });
   } catch (e) {
     yield put({
@@ -63,8 +63,8 @@ function* addUserTodoSaga(action) {
       payload: {
         loading: false,
         data: [],
-        error: e,
-      },
+        error: e
+      }
     });
   }
 }
@@ -78,8 +78,8 @@ function* editUserTodoSaga(action) {
       payload: {
         loading: false,
         data: userTodos.data,
-        error: null,
-      },
+        error: null
+      }
     });
   } catch (e) {
     yield put({
@@ -87,8 +87,8 @@ function* editUserTodoSaga(action) {
       payload: {
         loading: false,
         data: [],
-        error: e,
-      },
+        error: e
+      }
     });
   }
 }
@@ -102,8 +102,8 @@ function* deleteUserTodoSaga(action) {
       payload: {
         loading: false,
         data: userTodos.data,
-        error: null,
-      },
+        error: null
+      }
     });
   } catch (e) {
     yield put({
@@ -111,8 +111,8 @@ function* deleteUserTodoSaga(action) {
       payload: {
         loading: false,
         data: [],
-        error: e,
-      },
+        error: e
+      }
     });
   }
 }
