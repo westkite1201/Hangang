@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET Five Hangang data */
-router.get('/api/getHangangTemp', async (req, res, next) => {
+router.get('/api/hangang_data', async function (req, res, next) {
   try {
     const { data } = await axios.get(
       `http://openapi.seoul.go.kr:8088/${process.env.API_KEY}/json/WPOSInformationTime/1/5/`
