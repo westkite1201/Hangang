@@ -11,7 +11,7 @@ function* getHangangTempSaga(action) {
       type: GET_HANGANG_TEMP_SUCCESS,
       payload: {
         loading: false,
-        data: hangangTemp.data,
+        data: hangangTemp,
         error: null
       }
     });
