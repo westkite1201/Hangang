@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var axios = require('axios');
 
+var wiseSayingData = require('../../public/worddata/wisesaying.json');
+
 router.get('/hangang_data', async function (req, res, next) {
   try {
     const { data } = await axios.get(
@@ -16,4 +18,12 @@ router.get('/hangang_data', async function (req, res, next) {
   }
 });
 
+router.get('/word_data', async (req, res) => {
+  try {
+    return res.send(wiseSayingData);
+  } catch (error) {
+    console.error(error);
+    return res.json('error');
+  }
+})
 module.exports = router;
