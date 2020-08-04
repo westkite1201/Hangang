@@ -25,13 +25,13 @@ router.get('/', function (req, res, next) {
 /* GET Five Hangang data */
 router.get('/api/hangang_data', async function (req, res, next) {
   try {
-    const { data } = await axios.get('http://openapi.seoul.go.kr:8088/7a66754e717478743335686b515547/json/WPOSInformationTime/1/5/');
+    const { data } = await axios.get(
+      `http://openapi.seoul.go.kr:8088/${process.env.API_KEY}/json/WPOSInformationTime/1/5/`
+    );
     res.send(data.WPOSInformationTime.row);
-
   } catch (error) {
     console.error(error);
   }
-
-})
+});
 
 module.exports = router;
