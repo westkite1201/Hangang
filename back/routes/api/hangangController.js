@@ -11,7 +11,10 @@ router.get('/hangang_data', async function (req, res, next) {
       `/${process.env.API_KEY}` +
       '/json/WPOSInformationTime/1/5/'
     );
-    return res.send(data.WPOSInformationTime.row);
+    return res.json({
+      result: '0000',
+      data: data.WPOSInformationTime.row
+    });
   } catch (error) {
     console.error(error);
     return res.json('error');
@@ -20,7 +23,11 @@ router.get('/hangang_data', async function (req, res, next) {
 
 router.get('/word_data', async (req, res) => {
   try {
-    return res.send(wiseSayingData);
+    return res.json({
+      result: '0000',
+      data: wiseSayingData.data
+    });
+
   } catch (error) {
     console.error(error);
     return res.json('error');
