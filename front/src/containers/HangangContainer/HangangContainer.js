@@ -27,10 +27,12 @@ function HangangContainer() {
       <BackGround></BackGround>
       <TitleWrapper>
         <Title>
+          <hr></hr>
           지금 한강은...
           <TitleTemp style={{ textAlign: 'center' }}>
             {riverTempData.data && riverTempData.data.length > 1 ? riverTempData.data[1].W_TEMP : '--'}°C
           </TitleTemp>
+          <hr></hr>
         </Title>
       </TitleWrapper>
     </Fragment>
