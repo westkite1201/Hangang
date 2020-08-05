@@ -11,12 +11,13 @@ const QuotesItem = ({ quotes }) => {
 
 export default QuotesItem;
 const QuotesItemWrapper = styled.div`
+  height: 100px;
   color: white;
 `;
 const QuotesContent = styled.div`
-  font-size: 2rem;
+  font-size: 2.5rem;
 `;
 
 const QuotesAuthor = styled.div`
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 `;

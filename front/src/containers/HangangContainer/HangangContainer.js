@@ -127,7 +127,7 @@ function HangangContainer() {
           <animated.div
             className={'station-info'}
             style={infoStyle}
-            onMouseOver={handleMouseOver}
+            // onMouseOver={handleMouseOver}
             onMouseLeave={handleMouseLeave}
           >
             <StationInfo station={station} riverTempData={riverTempData} />
