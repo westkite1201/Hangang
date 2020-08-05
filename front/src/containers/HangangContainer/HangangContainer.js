@@ -51,8 +51,8 @@ const Wrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  margin-top: 20%;
-  height: 100vh;
+  padding-top: 10%;
+  /*height: 100vh;*/
   text-align: center;
   /* justify-content: center;
   align-items: center; */
@@ -60,6 +60,7 @@ const TitleWrapper = styled.div`
 const Title = styled.div`
   color: white;
   font-size: 2.5rem;
+  padding: 10px 20% 10px 20%;
 `;
 const TitleTemperture = styled.div`
   color: white;
