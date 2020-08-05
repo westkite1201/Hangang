@@ -1,39 +1,122 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
-
+import { getNearbyStaion } from '../../lib/helper';
+import moment from 'moment';
+import { useSpring, animated } from 'react-spring';
+import * as easings from 'd3-ease';
+function StationInfo({ station, riverTempData }) {
+  return (
+    <div>
+      <div>
+        {riverTempData.data && station
+          ? moment(riverTempData.data[station.index].MSR_DATE).format(
+              'YYYY년 MM월 DD일'
+            )
+          : '--'}
+      </div>
+      <div>
+        {riverTempData.data && station
+          ? riverTempData.data[station.index].MSR_TIME
+          : '--'}
+      </div>
+      <div>
+        <div>측정소 {station && station.name}</div>
+        <div>
+          측정소까지 {station && `${parseInt(station.distance / 1000)}km`}
+        </div>
+      </div>
+    </div>
+  );
+}
 function HangangContainer() {
+  const [station, setStation] = useState();
+  const [isInfoGrow, setIsInfoGrow] = useState();
   const { riverTempData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const getPosition = (options) => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, options);
+      });
+    };
+    const nowGeolocation = async () => {
+      if (navigator.geolocation) {
+        // GPS를 지원하면
+        try {
+          let position = await getPosition();
+          let notLng = position.coords.longitude;
+          let notLat = position.coords.latitude;
+          console.log(getNearbyStaion(notLat, notLng));
+          setStation(getNearbyStaion(notLat, notLng));
+        } catch (e) {
+          alert('에러');
+          console.log('error ', e);
+        }
+      } else {
+        alert('GPS를 지원하지 않습니다');
+      }
+    };
     dispatch({
       type: GET_HANGANG_TEMP_REQUEST,
       payload: {}
     });
+    nowGeolocation();
   }, []);
 
-  const getTemp = () => {
-    dispatch({
-      type: GET_HANGANG_TEMP_REQUEST,
-      payload: {}
-    });
-  };
-
+  function handleMouseOver() {
+    setIsInfoGrow(true);
+  }
+  function handleMouseLeave() {
+    setIsInfoGrow(false);
+  }
+  const titleStyle = useSpring({
+    config: { duration: 1000, easing: easings.easeExpOut },
+    transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
+    opacity: isInfoGrow ? '0' : '1'
+    //backGroundColor: isGrow ? 'white' : '',
+    //display: isInfoGrow ? 'none' : ''
+  });
+  const infoStyle = useSpring({
+    config: { duration: 1000, easing: easings.easeExpOut },
+    transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)',
+    opacity: isInfoGrow ? '1' : '0'
+    //display: isInfoGrow ? '' : 'none'
+    //backGroundColor: isGrow ? 'white' : '',
+  });
+  //점검중 일 경우 대비
+  function viewTemperture() {}
   return (
     <Wrapper>
-      <button onClick={getTemp}>테스트 </button>
       <BackGround></BackGround>
-
       <TitleWrapper>
         <Title>
           <hr></hr>
-          <div>지금 한강은...</div>
-          <TitleTemperture style={{ textAlign: 'center' }}>
-            {riverTempData.data && riverTempData.data.length > 1 ? riverTempData.data[1].W_TEMP : '--'}°C
-          </TitleTemperture>
+          <animated.div
+            className={'station-info'}
+            style={infoStyle}
+            onMouseOver={handleMouseOver}
+            onMouseLeave={handleMouseLeave}
+          >
+            <StationInfo station={station} riverTempData={riverTempData} />
+          </animated.div>
+          <animated.div
+            onMouseOver={handleMouseOver}
+            onMouseLeave={handleMouseLeave}
+            style={titleStyle}
+          >
+            <div>지금 한강은...</div>
+            <TitleTemperture style={{ textAlign: 'center' }}>
+              {riverTempData.data && station
+                ? riverTempData.data[station.index].W_TEMP
+                : '--'}
+              °C
+            </TitleTemperture>
+          </animated.div>
+
           <hr></hr>
         </Title>
         <QuetesWrapper>
@@ -58,9 +141,14 @@ const TitleWrapper = styled.div`
   align-items: center; */
 `;
 const Title = styled.div`
+  position: relative;
   color: white;
   font-size: 2.5rem;
   padding: 10px 20% 10px 20%;
+  .station-info {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
 `;
 const TitleTemperture = styled.div`
   color: white;

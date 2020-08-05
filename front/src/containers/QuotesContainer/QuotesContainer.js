@@ -21,6 +21,9 @@ const QuotesContainer = () => {
     vertical: true,
     verticalSwiping: true,
     swipeToSlide: true,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 7000,
     beforeChange: function (currentSlide, nextSlide) {
       console.log('before change', currentSlide, nextSlide);
     },
