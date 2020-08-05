@@ -10,27 +10,60 @@ import * as easings from 'd3-ease';
 function StationInfo({ station, riverTempData }) {
   return (
     <div>
-      <div>
-        {riverTempData.data && station
-          ? moment(riverTempData.data[station.index].MSR_DATE).format(
-              'YYYY년 MM월 DD일'
-            )
-          : '--'}
-      </div>
-      <div>
-        {riverTempData.data && station
-          ? riverTempData.data[station.index].MSR_TIME
-          : '--'}
-      </div>
-      <div>
-        <div>측정소 {station && station.name}</div>
+      <StationInfoTime>
         <div>
-          측정소까지 {station && `${parseInt(station.distance / 1000)}km`}
+          <span className="date">
+            {riverTempData.data && station
+              ? moment(riverTempData.data[station.index].MSR_DATE).format(
+                  'YYYY년 MM월 DD일'
+                )
+              : '--'}
+          </span>
         </div>
-      </div>
+        <div className="measure-time">
+          {riverTempData.data && station
+            ? riverTempData.data[station.index].MSR_TIME
+            : '--'}
+        </div>
+      </StationInfoTime>
+
+      <StationInfoContainer>
+        <div>
+          측정소 <span className="station-name">{station && station.name}</span>
+        </div>
+        <div>
+          측정소까지{' '}
+          <span className="station-distance">
+            {station && `${parseInt(station.distance / 1000)}km`}
+          </span>
+        </div>
+      </StationInfoContainer>
     </div>
   );
 }
+const StationInfoTime = styled.div`
+  text-align: center;
+
+  .date {
+    font-size: 2rem;
+  }
+  .measure-time {
+    font-size: 3rem;
+    color: #d3f9d8;
+  }
+`;
+
+const StationInfoContainer = styled.div`
+  text-align: center;
+  font-size: 2rem;
+  .station-name {
+    font-size: 2rem;
+  }
+  .station-distance {
+    font-size: 2rem;
+  }
+`;
+
 function HangangContainer() {
   const [station, setStation] = useState();
   const [isInfoGrow, setIsInfoGrow] = useState();
@@ -77,15 +110,11 @@ function HangangContainer() {
     config: { duration: 1000, easing: easings.easeExpOut },
     transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
     opacity: isInfoGrow ? '0' : '1'
-    //backGroundColor: isGrow ? 'white' : '',
-    //display: isInfoGrow ? 'none' : ''
   });
   const infoStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
-    transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -100%, 0)',
+    transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
     opacity: isInfoGrow ? '1' : '0'
-    //display: isInfoGrow ? '' : 'none'
-    //backGroundColor: isGrow ? 'white' : '',
   });
   //점검중 일 경우 대비
   function viewTemperture() {}
@@ -103,19 +132,21 @@ function HangangContainer() {
           >
             <StationInfo station={station} riverTempData={riverTempData} />
           </animated.div>
-          <animated.div
-            onMouseOver={handleMouseOver}
-            onMouseLeave={handleMouseLeave}
-            style={titleStyle}
-          >
-            <div>지금 한강은...</div>
-            <TitleTemperture style={{ textAlign: 'center' }}>
-              {riverTempData.data && station
-                ? riverTempData.data[station.index].W_TEMP
-                : '--'}
-              °C
-            </TitleTemperture>
-          </animated.div>
+          <div style={{ padding: '30px 0 30px 0' }}>
+            <animated.div
+              onMouseOver={handleMouseOver}
+              onMouseLeave={handleMouseLeave}
+              style={titleStyle}
+            >
+              <div>지금 한강은...</div>
+              <TitleTemperture style={{ textAlign: 'center' }}>
+                {riverTempData.data && station
+                  ? riverTempData.data[station.index].W_TEMP
+                  : '--'}
+                °C
+              </TitleTemperture>
+            </animated.div>
+          </div>
 
           <hr></hr>
         </Title>
@@ -134,6 +165,7 @@ const Wrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  position: relative;
   padding-top: 10%;
   /*height: 100vh;*/
   text-align: center;
@@ -147,7 +179,8 @@ const Title = styled.div`
   padding: 10px 20% 10px 20%;
   .station-info {
     position: absolute;
-    transform: translate(-50%, -50%);
+    left: 50%;
+    margin-left: -98px;
   }
 `;
 const TitleTemperture = styled.div`
