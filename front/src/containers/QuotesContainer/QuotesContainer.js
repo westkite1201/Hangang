@@ -12,7 +12,7 @@ const QuotesContainer = () => {
       type: GET_QUOTES_REQUEST,
       payload: {}
     });
-  }, []);
+  }, [dispatch]);
   const settings = {
     dots: false,
     infinite: true,
@@ -22,7 +22,7 @@ const QuotesContainer = () => {
     verticalSwiping: true,
     swipeToSlide: true,
     autoplay: true,
-    speed: 2000,
+    speed: 1000,
     autoplaySpeed: 7000,
     beforeChange: function (currentSlide, nextSlide) {
       console.log('before change', currentSlide, nextSlide);
