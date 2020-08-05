@@ -7,3 +7,23 @@ export async function getHangangTemp() {
   const response = await axios.get(`http://localhost:3030/api/hangang/hangang_data`);
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+export async function getQuotes() {
+  //   const data = {
+  //     todoNum: todoNum
+  //   };
+  const response = await axios.get(`http://localhost:3030/api/hangang/word_data`);
+  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
+}
+
+// router.get('/word_data', async (req, res) => {
+//     try {
+//       return res.json({
+//         result: '0000',
+//         data: wiseSayingData.data
+//       });
+
+//     } catch (error) {
+//       console.error(error);
+//       return res.json('error');
+//     }
+//   })
