@@ -1,9 +1,9 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   GET_TODOS_REQUEST,
   TODO_MODAL_OPEN,
-  TODO_MODAL_CLOSE,
+  TODO_MODAL_CLOSE
 } from '../modules/todos/reducer';
 import styled from 'styled-components';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -15,15 +15,15 @@ function TodoList() {
   const { todosArr, todoModalView } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
-  const { data, loading, error } = todosArr;
+  const { data } = todosArr;
 
   const handleAddTodo = () => {
     dispatch({
       type: TODO_MODAL_OPEN,
       payload: {
         todoItemIndex: 0,
-        isEdit: false,
-      },
+        isEdit: false
+      }
     });
   };
 
@@ -32,15 +32,15 @@ function TodoList() {
       type: TODO_MODAL_CLOSE,
       payload: {
         todoItemIndex: 0,
-        isEdit: false,
-      },
+        isEdit: false
+      }
     });
   };
 
   const getTodo = (todoNum) => {
     dispatch({
       type: GET_TODOS_REQUEST,
-      payload: todoNum,
+      payload: todoNum
     });
   };
 

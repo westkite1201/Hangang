@@ -98,7 +98,7 @@ function HangangContainer() {
       payload: {}
     });
     nowGeolocation();
-  }, []);
+  }, [dispatch]);
 
   function handleMouseOver() {
     setIsInfoGrow(true);
