@@ -20,7 +20,7 @@ const TopBar = () => {
     //backGroundColor: isGrow ? 'white' : '',
   });
 
-  let topRowClassName = isGrow ? 'top-row-hide' : 'top-row';
+  let topRowClassName = isGrow ? 'top-row' : 'top-row-hide';
   return (
     <React.Fragment>
       <div

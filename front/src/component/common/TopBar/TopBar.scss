@@ -4,7 +4,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 100px;
+  width: 100%;
 }
 .top-row {
   z-index: 101;
@@ -31,18 +32,19 @@
 }
 
 .tob-row-tab-button {
-  width: 80%;
+  width: 100%;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  div {
-    font-size: 1rem;
-    text-align: center;
-    //background-color: gainsboro;
-    width: 33.3%;
-    height: 100%;
-  }
-  div:hover {
-    background-color: gainsboro;
-  }
+  font-size: 2rem;
+  // div {
+  //   font-size: 2rem;
+  //   text-align: center;
+  //   //background-color: gainsboro;
+  //   width: 33.3%;
+  //   height: 100%;
+  // }
+  // div:hover {
+  //   background-color: gainsboro;
+  // }
 }
