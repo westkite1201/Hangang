@@ -26,6 +26,14 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
+var mongoose = require('mongoose');
+var db = mongoose.connect(`${process.env.MONGODB_URI}`, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    var date = new Date();
+    console.log('mongodb connection success ', date);
+  })
+  .catch(e => console.error(e));
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
