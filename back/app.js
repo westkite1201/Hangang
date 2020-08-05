@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var moment = require('moment');
+require('moment-timezone');
 
 var indexRouter = require('./routes/index');
 let hangangRouter = require('./routes/api/hangangController');
@@ -29,7 +31,7 @@ app.use(function (req, res, next) {
 var mongoose = require('mongoose');
 var db = mongoose.connect(`${process.env.MONGODB_URI}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    var date = new Date();
+    var date = moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
     console.log('mongodb connection success ', date);
   })
   .catch(e => console.error(e));
