@@ -44,15 +44,11 @@ router.get('/word_data', async (req, res) => {
             data: data
           });
         }
-      })
-    // return res.json({
-    //   result: '0000',
-    //   data: wiseSayingData.data
-    // });
-
+      });
   } catch (error) {
     console.error(error);
     return res.json({
+      api: 'word_data',
       message: error
     });
   }
@@ -73,6 +69,28 @@ router.post('/insert_quotes', async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.json({
+      api: 'insert_quotes',
+      message: error
+    });
+  }
+});
+
+router.post('/delete_qoutes', async (req, res) => {
+  try {
+    const { body } = req;
+    Quotes.deleteQoutes(body)
+      .then((response) => {
+        if (response) {
+          return res.json({
+            result: '100',
+            message: STATUS_CODE['100']
+          });
+        }
+      });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      api: 'delete_qoutes',
       message: error
     });
   }
