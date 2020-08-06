@@ -11,6 +11,6 @@ module.exports = {
     api:
       process.env.REACT_APP_MODE === 'develop'
         ? 'http://127.0.0.1:3031/api'
-        : 'https://wwww.hangang.site/api'
+        : 'https://www.hangang.site/api'
   }
 };
