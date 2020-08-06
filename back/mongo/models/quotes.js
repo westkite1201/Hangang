@@ -8,6 +8,7 @@ const quotesSchema = new Schema({
     name: { type: String, required: true },
     word: { type: String, required: true },
     image: { type: String, required: false, default: '' },
+    accepted: { type: String, required: true, default: '1' },   // 0: 승인, 1: 대기, 2: 거절
     insertTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') },
     updateTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') }
 }, {
@@ -22,9 +23,9 @@ quotesSchema.statics.insertQuotes = function (payload) {
     return quote.save();
 }
 
-// Find All
-quotesSchema.statics.findAllQuotes = function () {
-    return this.find({});
+// Find All Allow Quotes
+quotesSchema.statics.findAllQuotes = function (payload) {
+    return this.find({accepted: payload.accepted});
 }
 
 // Delete Quotes using _id
