@@ -64,7 +64,7 @@ const StationInfoContainer = styled.div`
   }
 `;
 
-function HangangContainer() {
+function HangangAdminContainer() {
   const [station, setStation] = useState();
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { riverTempData } = useSelector((state) => state.hangang);
@@ -86,7 +86,6 @@ function HangangContainer() {
           console.log(getNearbyStaion(notLat, notLng));
           setStation(getNearbyStaion(notLat, notLng));
         } catch (e) {
-          alert('에러');
           console.log('error ', e);
         }
       } else {
@@ -127,7 +126,7 @@ function HangangContainer() {
           <animated.div
             className={'station-info'}
             style={infoStyle}
-            // onMouseOver={handleMouseOver}
+            onMouseOver={handleMouseOver}
             onMouseLeave={handleMouseLeave}
           >
             <StationInfo station={station} riverTempData={riverTempData} />
@@ -204,4 +203,4 @@ const BackGround = styled.div`
   filter: blur(4px);
   -webkit-filter: blur(4px);
 `;
-export default HangangContainer;
+export default HangangAdminContainer;

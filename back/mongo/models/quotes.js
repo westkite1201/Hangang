@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const quotesSchema = new Schema({
     name: { type: String, required: true },
     word: { type: String, required: true },
+    image: { type: String, required: false, default: '' },
     insertTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') },
     updateTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') }
 }, {
