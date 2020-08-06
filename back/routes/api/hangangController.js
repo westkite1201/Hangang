@@ -28,9 +28,11 @@ router.get('/hangang_data', async function (req, res, next) {
   }
 });
 
-router.get('/word_data', async (req, res) => {
+// search word_data
+router.post('/word_data', async (req, res) => {
   try {
-    Quotes.findAllQuotes()
+    const { body } = req;
+    Quotes.findAllQuotes(body)
       .then((data) => {
         if (!data.length) {
           return res.json({
