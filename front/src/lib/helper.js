@@ -27,19 +27,17 @@ export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
 export function getNearbyStaionArray(nowLat, nowLng) {
   // sort
   for (let i = 0; i < stationLocationArray.length; i++) {
-    const { index, lat, lng } = stationLocationArray[i];
+    const { lat, lng } = stationLocationArray[i];
     let distance = getDistanceFromLatLonInKm(nowLat, nowLng, lat, lng);
     stationLocationArray[i].distance = distance;
-    console.log('distance', distance);
+    //console.log('distance', distance);
   }
-  console.log('stationLocationArray', stationLocationArray);
+  //console.log('stationLocationArray', stationLocationArray);
   let byDistance = stationLocationArray.slice(0);
   byDistance.sort(function (a, b) {
     return a.distance - b.distance;
   });
-  console.log('byDistance ', byDistance);
-
-  
+  //console.log('byDistance ', byDistance);
   // stationLocationArray[stationNum].distance = distance;
   return byDistance;
 }
