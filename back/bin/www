@@ -6,20 +6,58 @@
 
 var app = require('../app');
 var debug = require('debug')('back:server');
+const fs = require('fs');
 var http = require('http');
+let https = require('https');
+const path = require('path');
 
+process.env.NODE_ENV =
+  process.env.NODE_ENV &&
+  process.env.NODE_ENV.trim().toLowerCase() == 'production'
+    ? 'production'
+    : 'development';
 /**
  * Get port from environment and store in Express.
  */
+let option;
+let server;
+let port;
+if (process.env.NODE_ENV === 'production') {
+  port = normalizePort(process.env.PORT || '3031');
+  option = {
+    ca: fs.readFileSync('/etc/letsencrypt/live/www.hangang.site/fullchain.pem'),
+    key: fs
+      .readFileSync(
+        path.resolve(
+          process.cwd(),
+          '/etc/letsencrypt/live/www.hangang.site/privkey.pem'
+        ),
+        'utf8'
+      )
+      .toString(),
+    cert: fs
+      .readFileSync(
+        path.resolve(
+          process.cwd(),
+          '/etc/letsencrypt/live/www.hangang.site/cert.pem'
+        ),
+        'utf8'
+      )
+      .toString()
+  };
+  server = https.createServer(option, app);
+} else {
+  port = normalizePort(process.env.PORT || '3031');
+  server = http.createServer(app);
+}
 
-var port = normalizePort(process.env.PORT || '3031');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
