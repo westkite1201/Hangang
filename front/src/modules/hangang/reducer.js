@@ -35,6 +35,7 @@ export default (state = initialState, action) => {
 
       case GET_QUOTES_SUBMIT: {
         draft.quotesData = action.payload;
+        break;
       }
       
       default: {
