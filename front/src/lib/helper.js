@@ -15,25 +15,31 @@ export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
   var dLon = deg2rad(lng2 - lng1);
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = r * c; // Distance in km
   return Math.round(d * 1000);
 }
 
-export function getNearbyStaion(nowLat, nowLng) {
-  let minDistance = 99999999;
-  let stationNum = 0;
-  let distance;
+export function getNearbyStaionArray(nowLat, nowLng) {
+  // sort
   for (let i = 0; i < stationLocationArray.length; i++) {
     const { index, lat, lng } = stationLocationArray[i];
-    distance = getDistanceFromLatLonInKm(nowLat, nowLng, lat, lng);
+    let distance = getDistanceFromLatLonInKm(nowLat, nowLng, lat, lng);
+    stationLocationArray[i].distance = distance;
     console.log('distance', distance);
-    if (minDistance > distance) {
-      stationNum = index;
-      minDistance = distance;
-    }
   }
-  stationLocationArray[stationNum].distance = distance;
-  return stationLocationArray[stationNum];
+  console.log('stationLocationArray', stationLocationArray);
+  let byDistance = stationLocationArray.slice(0);
+  byDistance.sort(function (a, b) {
+    return a.distance - b.distance;
+  });
+  console.log('byDistance ', byDistance);
+
+  
+  // stationLocationArray[stationNum].distance = distance;
+  return byDistance;
 }
