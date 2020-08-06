@@ -12,8 +12,8 @@ export default (props) => {
     <Fragment>
       <Route exact path="/" component={HangangContainer} />
       {/*<Route exact path="/todo" component={TodoContainer} />*/}
-      {/* <Route exact path="/admin" component={HangangAdminContainer} />
-      <Route exact path="/submit-qoutes" component={HangangSubmitQoutesContainer} /> */}
+      <Route exact path="/admin" component={HangangAdminContainer} />
+      <Route exact path="/submit-qoutes" component={HangangSubmitQoutesContainer} />
     </Fragment>
   );
 };

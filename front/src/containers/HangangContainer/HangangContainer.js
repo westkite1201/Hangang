@@ -109,7 +109,6 @@ function HangangContainer() {
           //console.log(getNearbyStaionArray(notLat, notLng));
           setStations(getNearbyStaionArray(notLat, notLng));
         } catch (e) {
-          alert('에러');
           console.log('error ', e);
         }
       } else {
@@ -173,7 +172,7 @@ function HangangContainer() {
           <hr></hr>
         </Title>
         <QuetesWrapper>
-          <QuotesContainer />
+          <QuotesContainer actionType={'todos/GET_QUOTES_REQUEST'}/>
         </QuetesWrapper>
       </TitleWrapper>
     </Wrapper>

@@ -3,100 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
-import { getNearbyStaionArray } from '../../lib/helper';
-import moment from 'moment';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
-function StationInfo({ station, riverTempData }) {
-  return (
-    <div>
-      <StationInfoTime>
-        <div>
-          <span className="date">
-            {riverTempData.data && station
-              ? moment(riverTempData.data[station.index].MSR_DATE).format(
-                  'YYYY년 MM월 DD일'
-                )
-              : '--'}
-          </span>
-        </div>
-        <div className="measure-time">
-          {riverTempData.data && station
-            ? riverTempData.data[station.index].MSR_TIME
-            : '--'}
-        </div>
-      </StationInfoTime>
-
-      <StationInfoContainer>
-        <div>
-          측정소 <span className="station-name">{station && station.name}</span>
-        </div>
-        <div>
-          측정소까지{' '}
-          <span className="station-distance">
-            {station && `${parseInt(station.distance / 1000)}km`}
-          </span>
-        </div>
-      </StationInfoContainer>
-    </div>
-  );
-}
-const StationInfoTime = styled.div`
-  text-align: center;
-
-  .date {
-    font-size: 2rem;
-  }
-  .measure-time {
-    font-size: 3rem;
-    color: #d3f9d8;
-  }
-`;
-
-const StationInfoContainer = styled.div`
-  text-align: center;
-  font-size: 2rem;
-  .station-name {
-    font-size: 2rem;
-  }
-  .station-distance {
-    font-size: 2rem;
-  }
-`;
 
 function HangangAdminContainer() {
-  const [station, setStation] = useState();
   const [isInfoGrow, setIsInfoGrow] = useState();
-  const { riverTempData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getPosition = (options) => {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, options);
-      });
-    };
-    const nowGeolocation = async () => {
-      if (navigator.geolocation) {
-        // GPS를 지원하면
-        try {
-          let position = await getPosition();
-          let notLng = position.coords.longitude;
-          let notLat = position.coords.latitude;
-          console.log(getNearbyStaionArray(notLat, notLng));
-          setStation(getNearbyStaionArray(notLat, notLng));
-        } catch (e) {
-          console.log('error ', e);
-        }
-      } else {
-        alert('GPS를 지원하지 않습니다');
-      }
-    };
     dispatch({
       type: GET_HANGANG_TEMP_REQUEST,
       payload: {}
     });
-    nowGeolocation();
   }, [dispatch]);
 
   function handleMouseOver() {
@@ -129,7 +47,6 @@ function HangangAdminContainer() {
             onMouseOver={handleMouseOver}
             onMouseLeave={handleMouseLeave}
           >
-            <StationInfo station={station} riverTempData={riverTempData} />
           </animated.div>
           <div style={{ padding: '30px 0 30px 0' }}>
             <animated.div
@@ -137,13 +54,6 @@ function HangangAdminContainer() {
               onMouseLeave={handleMouseLeave}
               style={titleStyle}
             >
-              <div>지금 한강은...</div>
-              <TitleTemperture style={{ textAlign: 'center' }}>
-                {riverTempData.data && station
-                  ? riverTempData.data[station.index].W_TEMP
-                  : '--'}
-                °C
-              </TitleTemperture>
             </animated.div>
           </div>
 
