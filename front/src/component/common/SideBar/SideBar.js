@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 
 const SideBar = () => {
@@ -18,29 +19,24 @@ const SideBar = () => {
       pushRotate
     >
       <main id="page-wrap">
-        <a id="home" className="menu-item" href="/">
-          Home
-        </a>
-        <br/>
-        <a id="about" className="menu-item" href="/about">
-          About
-        </a>
-        <br/>
-        <a id="contact" className="menu-item" href="/contact">
-          Contact
-        </a>
-        <br/>
-        <a onClick={showSettings} className="menu-item--small" href="">
-          Settings
-        </a>
-        <br/>
-        <a className="menu-item--small" href="/admin">
-          Admin
-        </a>
-        <br/>
-        <a className="menu-item--small" href="/submit-qoutes">
-          Submit
-        </a>
+        <div>
+          <NavLink id="home" className="menu-item" to="/Quotes">
+            Quotes
+          </NavLink>
+        </div>
+        <br />
+        <div>
+          <NavLink id="about" className="menu-item" to="/about">
+            About
+          </NavLink>
+        </div>
+        <br />
+        <div>
+          <NavLink k id="contact" className="menu-item" to="/contact">
+            Contact
+          </NavLink>
+        </div>
+        <br />
       </main>
     </Menu>
   );
