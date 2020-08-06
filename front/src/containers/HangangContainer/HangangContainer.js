@@ -3,27 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
-import { getNearbyStaion } from '../../lib/helper';
+import { getNearbyStaionArray } from '../../lib/helper';
 import moment from 'moment';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
-function StationInfo({ station, riverTempData }) {
+function StationInfo({ tempertureData, station }) {
   return (
     <div>
       <StationInfoTime>
         <div>
           <span className="date">
-            {riverTempData.data && station
-              ? moment(riverTempData.data[station.index].MSR_DATE).format(
-                  'YYYY년 MM월 DD일'
-                )
+            {tempertureData
+              ? moment(tempertureData.MSR_DATE).format('YYYY년 MM월 DD일')
               : '--'}
           </span>
         </div>
         <div className="measure-time">
-          {riverTempData.data && station
-            ? riverTempData.data[station.index].MSR_TIME
-            : '--'}
+          {tempertureData ? tempertureData.MSR_TIME : '--'}
         </div>
       </StationInfoTime>
 
@@ -65,10 +61,37 @@ const StationInfoContainer = styled.div`
 `;
 
 function HangangContainer() {
+  const [tempertureData, setTempertureData] = useState();
   const [station, setStation] = useState();
+  const [stations, setStations] = useState();
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { riverTempData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
+
+  //function
+  function getTempData(stationArray, riverTempData) {
+    let stationNum = 0;
+    stationArray.some((item, key) => {
+      //console.log('item', item);
+      stationNum = key;
+      return riverTempData[key].W_TEMP !== '점검중';
+    });
+
+    return {
+      tempertureData: riverTempData[stationNum],
+      station: stationArray[stationNum]
+    };
+  }
+  useEffect(() => {
+    if (stations && riverTempData && riverTempData.data) {
+      const { tempertureData, station } = getTempData(
+        stations,
+        riverTempData.data
+      );
+      setTempertureData(tempertureData);
+      setStation(station);
+    }
+  }, [stations, riverTempData]);
 
   useEffect(() => {
     const getPosition = (options) => {
@@ -83,8 +106,8 @@ function HangangContainer() {
           let position = await getPosition();
           let notLng = position.coords.longitude;
           let notLat = position.coords.latitude;
-          console.log(getNearbyStaion(notLat, notLng));
-          setStation(getNearbyStaion(notLat, notLng));
+          //console.log(getNearbyStaionArray(notLat, notLng));
+          setStations(getNearbyStaionArray(notLat, notLng));
         } catch (e) {
           alert('에러');
           console.log('error ', e);
@@ -116,8 +139,9 @@ function HangangContainer() {
     transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
     opacity: isInfoGrow ? '1' : '0'
   });
-  //점검중 일 경우 대비
-  function viewTemperture() {}
+
+  console.log('[seo] riverTempData', riverTempData.data);
+
   return (
     <Wrapper>
       <BackGround></BackGround>
@@ -130,7 +154,7 @@ function HangangContainer() {
             // onMouseOver={handleMouseOver}
             onMouseLeave={handleMouseLeave}
           >
-            <StationInfo station={station} riverTempData={riverTempData} />
+            <StationInfo tempertureData={tempertureData} station={station} />
           </animated.div>
           <div style={{ padding: '30px 0 30px 0' }}>
             <animated.div
@@ -140,9 +164,7 @@ function HangangContainer() {
             >
               <div>지금 한강은...</div>
               <TitleTemperture style={{ textAlign: 'center' }}>
-                {riverTempData.data && station
-                  ? riverTempData.data[station.index].W_TEMP
-                  : '--'}
+                {tempertureData ? tempertureData.W_TEMP : '--'}
                 °C
               </TitleTemperture>
             </animated.div>
