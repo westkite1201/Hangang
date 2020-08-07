@@ -5,14 +5,12 @@ import QuotesItem from '../../component/QuotesItem';
 import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 
 const QuotesContainer = (props) => {
-  const { actionType } = props;
-  console.log('[masonms] actionType: ', actionType);
   const { quotesData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
-      type: actionType,
-      payload: {}
+      type: GET_QUOTES_REQUEST,
+      payload: { accepted: '0' }
     });
   }, [dispatch]);
   const settings = {

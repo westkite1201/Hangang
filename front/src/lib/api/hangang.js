@@ -19,17 +19,19 @@ export async function getQuotes() {
     accepted: '0'
   };
   const response = await axios.post(
-    `${cilentConfig.endpoint.api}/hangang/word_data`, body
+    `${cilentConfig.endpoint.api}/hangang/word_data`,
+    body
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 
 export async function getSubmitQuotes() {
   const body = {
-    accepted: '1'
+    accepted: '0'
   };
   const response = await axios.post(
-    `${cilentConfig.endpoint.api}/hangang/word_data`, body
+    `${cilentConfig.endpoint.api}/hangang/word_data`,
+    body
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }

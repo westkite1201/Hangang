@@ -41,3 +41,9 @@ export function getNearbyStaionArray(nowLat, nowLng) {
   // stationLocationArray[stationNum].distance = distance;
   return byDistance;
 }
+
+//아침, 점심 , 해질녁, 밤 ,새벽,
+export function getTimeSliceIndexs() {}
+
+//수온 별로  온도 분기
+export function getWaterTempertureColor() {}

@@ -16,6 +16,10 @@
   font-family: 'NanumBrushScript-Regular';
   src: url('/fonts/NanumBrushScript-Regular.ttf'); // pattern: /directoryName/file.extension
 }
+@font-face {
+  font-family: 'NanumSquareR';
+  src: url('/fonts/NanumSquareR.woff'); // pattern: /directoryName/file.extension
+}
 body {
   margin: 0;
   font-family: 'NanumBrushScript-Regular', -apple-system, BlinkMacSystemFont,
