@@ -8,7 +8,7 @@ const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, key) => {
     return (
       <Grid item xs={12} md={6} lg={4} key={key}>
-        <QuotesCard quotes={quotes} />;
+        <QuotesCard quotes={quotes} />
       </Grid>
     );
   });
