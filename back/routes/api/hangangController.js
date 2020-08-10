@@ -57,6 +57,35 @@ router.post('/word_data', async (req, res) => {
 });
 
 /**
+ * 명언 조회(admin계정, return data로는 wait상태의 명언과 accepted 상태의 명언이 array로 같이 들어옴)
+ */
+router.post('/word_data_admin', async(req, res) => {
+  try {
+    const returnArray = {};
+    Quotes.find({ accepted: '1', status: '0'}, (error, submit_quotes) => {
+      if (error) {
+        return res.json(makeReturnData('999', error));
+      } else {
+        returnArray.submit_quotes = submit_quotes;
+        Quotes.find({ accepted: '0', status: '0'}, (error, accepted_quotes) => {
+          if (error) {
+            return res.json(makeReturnData('999', error));
+          } else {
+            returnArray.accepted_quotes = accepted_quotes;
+            return res.json(makeReturnData('100', returnArray));
+          }
+        });
+      }
+    })
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      api: 'word_data_admin',
+      message: error
+    })
+  }
+});
+/**
  * 명언 추가(소재상태는 기본적으로 대기)
  */
 router.post('/insert_quotes', async (req, res) => {
