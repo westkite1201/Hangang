@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
+import {
+  Grid,
+  TableCell,
+  TableRow,
+  Switch,
+  FormControlLabel,
+  RadioGroup,
+  Radio
+} from '@material-ui/core';
 import { GET_QUOTES_REQUEST_ADMIN } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
+import QuotesCard from '../../component/QuotesCard';
 
-const Quotes = ({ quotesList }) => {
-  return quotesList.map((quote, index) => {
-    return (
-      <Grid item xs={12} md={6} lg={4} key={index}>
-        <div key={index}>
-          <ul>
-            <li>작가: {quote.name}</li>
-            <li>명언: {quote.word}</li>
-            <br/>
-          </ul>
-        </div>
-      </Grid>
-    );
+const QuotesCardList = ({ quotesList }) => {
+  return quotesList.map((quotes, index) => {
+    return <QuotesCard quotes={quotes} key={index} />;
   });
 };
 
@@ -27,6 +26,13 @@ const HangangAdminContainer = () => {
   const { quotesData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
+  const [isAcceptedManage, setIsAcceptedManage] = useState(false); // 초기값은 submit 받은 데이터를 보여줌
+  const codeMapping = {
+    '10': '썸네일',
+    '20': '세로카드',
+    '30': '배너'
+  };
+  const [showCode, setShowCode] = useState('10');
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
@@ -38,7 +44,10 @@ const HangangAdminContainer = () => {
   useEffect(() => {
     const { data } = quotesData;
     if (data) {
-      const { accepted_quotes: acceptedQuotes, submit_quotes: submitQuotes } = data;
+      const {
+        accepted_quotes: acceptedQuotes,
+        submit_quotes: submitQuotes
+      } = data;
       setAcceptedQuotes(acceptedQuotes);
       setSubmitQuotes(submitQuotes);
     }
@@ -57,39 +66,63 @@ const HangangAdminContainer = () => {
   //   transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
   //   opacity: isInfoGrow ? '1' : '0'
   // });
-  
+
   // const { accepted_quotes, submit_quotes} = data;
+  const handleChangeType = (event) => {
+    setIsAcceptedManage(event.target.checked);
+  };
+
+  const handleChangeCode = (event) => {
+    setShowCode(event.target.value);
+  };
 
   return (
     <Wrapper>
       <Title>
         <hr></hr>
         <div style={{ padding: '30px 0 30px 0' }}>
-          <animated.div
-            style={titleStyle}
-          >
+          <animated.div style={titleStyle}>
             <div>확인좀 해주세요...</div>
           </animated.div>
+          <FormControlLabel
+            control={
+              <Switch checked={isAcceptedManage} onChange={handleChangeType} />
+            }
+            label="Switch Manage"
+          />
+          <RadioGroup
+            name="showCode"
+            aria-label="showCode"
+            value={codeMapping[showCode]}
+            onChange={handleChangeCode}
+            row
+          >
+            {[10, 20, 30].map((value, index) => (
+              <FormControlLabel
+                key={index}
+                value={value.toString()}
+                control={<Radio />}
+                label={value.toString()}
+              />
+            ))}
+          </RadioGroup>
         </div>
         <hr></hr>
       </Title>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <div>여기는 허가받은 곳</div>
+        <Grid item xs={1} md={1} lg={1}></Grid>
+        <Grid item xs={10} md={10} lg={10}>
           <Grid container spacing={3}>
-            {acceptedQuotes && <Quotes quotesList={acceptedQuotes} />}
+            {isAcceptedManage
+              ? acceptedQuotes && <QuotesCardList quotesList={acceptedQuotes} />
+              : submitQuotes && <QuotesCardList quotesList={submitQuotes} />}
           </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <div>여기는 아직안된 곳</div>
-          <Grid container spacing={3}>
-            {submitQuotes && <Quotes quotesList={submitQuotes} />}
-          </Grid>
-        </Grid>
+        <Grid item xs={1} md={1} lg={1}></Grid>
       </Grid>
     </Wrapper>
   );
-}
+};
 const QuetesWrapper = styled.div`
   text-align: center;
 `;
