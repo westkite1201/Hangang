@@ -128,9 +128,10 @@ function HangangContainer() {
     });
     nowGeolocation();
     //backGroundTimer 세팅
+    setBackGroundImagePath(getBackgroundImage());
     backGroundtimer = setInterval(() => {
       setBackGroundImagePath(getBackgroundImage());
-    }, 1000 * 5);
+    }, 1000 * 3600);
     return () => {
       clearInterval(backGroundtimer);
     };
