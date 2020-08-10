@@ -26,12 +26,10 @@ const HangangAdminContainer = () => {
   const { quotesData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
+  const [showQuotes, setShowQuotes] = useState();
+  const [tempList, setTempList] = useState();
+
   const [isAcceptedManage, setIsAcceptedManage] = useState(false); // 초기값은 submit 받은 데이터를 보여줌
-  const codeMapping = {
-    '10': '썸네일',
-    '20': '세로카드',
-    '30': '배너'
-  };
   const [showCode, setShowCode] = useState('10');
   const dispatch = useDispatch();
   useEffect(() => {
@@ -50,10 +48,15 @@ const HangangAdminContainer = () => {
       } = data;
       setAcceptedQuotes(acceptedQuotes);
       setSubmitQuotes(submitQuotes);
+      setShowQuotes(submitQuotes);
+      setTempList(submitQuotes);
     }
   }, [quotesData]);
 
-  // const { data } = quotesData;
+  useEffect(() => {
+    setShowQuotes(isAcceptedManage ? acceptedQuotes : submitQuotes);
+    setTempList(isAcceptedManage ? acceptedQuotes : submitQuotes);
+  }, [isAcceptedManage]);
 
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
@@ -61,19 +64,17 @@ const HangangAdminContainer = () => {
     opacity: isInfoGrow ? '0' : '1',
     backgroundColor: 'black'
   });
-  // const infoStyle = useSpring({
-  //   config: { duration: 1000, easing: easings.easeExpOut },
-  //   transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
-  //   opacity: isInfoGrow ? '1' : '0'
-  // });
 
-  // const { accepted_quotes, submit_quotes} = data;
   const handleChangeType = (event) => {
     setIsAcceptedManage(event.target.checked);
   };
 
   const handleChangeCode = (event) => {
     setShowCode(event.target.value);
+    const temp = tempList.filter(
+      (quote) => quote.card_exps_typ_cd === event.target.value
+    );
+    setShowQuotes(temp);
   };
 
   return (
@@ -93,7 +94,7 @@ const HangangAdminContainer = () => {
           <RadioGroup
             name="showCode"
             aria-label="showCode"
-            value={codeMapping[showCode]}
+            value={showCode.toString()}
             onChange={handleChangeCode}
             row
           >
@@ -109,16 +110,14 @@ const HangangAdminContainer = () => {
         </div>
         <hr></hr>
       </Title>
-      <Grid container spacing={3}>
-        <Grid item xs={1} md={1} lg={1}></Grid>
-        <Grid item xs={10} md={10} lg={10}>
-          <Grid container spacing={3}>
-            {isAcceptedManage
-              ? acceptedQuotes && <QuotesCardList quotesList={acceptedQuotes} />
-              : submitQuotes && <QuotesCardList quotesList={submitQuotes} />}
+      <Grid container spacing={1}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={10}>
+          <Grid container spacing={1}>
+            {showQuotes && <QuotesCardList quotesList={showQuotes} />}
           </Grid>
         </Grid>
-        <Grid item xs={1} md={1} lg={1}></Grid>
+        <Grid item xs={1}></Grid>
       </Grid>
     </Wrapper>
   );
