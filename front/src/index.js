@@ -9,7 +9,9 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'antd/dist/antd.css';
 import dotenv from 'dotenv';
+
 dotenv.config();
 const sagaMiddleware = createSagaMiddleware();
 

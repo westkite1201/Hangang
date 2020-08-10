@@ -3,10 +3,12 @@ import { combineReducers } from 'redux';
 //import hangang from './hangang';
 //import { todoSaga } from './todos';
 import hangang from './hangang';
+import editer from './editer';
 import { hangangSaga } from './hangang';
 import { all } from 'redux-saga/effects';
 const rootReducer = combineReducers({
-  hangang
+  hangang,
+  editer
   //note
 });
 
