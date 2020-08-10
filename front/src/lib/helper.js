@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { stationLocationArray } from './CommonData';
 
 /* 좌표 거리 계산 */
@@ -42,8 +43,28 @@ export function getNearbyStaionArray(nowLat, nowLng) {
   return byDistance;
 }
 
-//아침, 점심 , 해질녁, 밤 ,새벽,
-export function getTimeSliceIndexs() {}
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+}
+//일출05:44일몰19:30
+//아침, 저녁 , 밤 ,새벽,
+export function getBackgroundImage() {
+  let time = moment().format('HHmm');
+  console.log('time', time);
+  if (600 < time && time <= 1730) {
+    console.log('아침');
+    return `/images/hangang/morning_${getRandomInt(0, 2)}.jpg`;
+  } else if (1730 < time && time <= 2000) {
+    console.log('저녁', getRandomInt(0, 0));
+    //일단 새벽이미지 사용
+    return `/images/hangang/dawn_${getRandomInt(0, 0)}.jpg`;
+  } else if (2000 < time && time <= 600) {
+    console.log('밤');
+    return `/images/hangang/night_${getRandomInt(0, 2)}.jpg`;
+  }
+}
 
 //수온 별로  온도 분기
 export function getWaterTempertureColor() {}
