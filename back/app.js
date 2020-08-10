@@ -8,6 +8,7 @@ require('moment-timezone');
 
 var indexRouter = require('./routes/index');
 let hangangRouter = require('./routes/api/hangangController');
+let fileRouter = require('./routes/api/fileController');
 var cors = require('cors')();
 var app = express();
 require('dotenv').config();
@@ -23,18 +24,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/hangang', hangangRouter);
+app.use('/api/file', fileRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
 var mongoose = require('mongoose');
-var db = mongoose.connect(`${process.env.MONGODB_URI}`, { useNewUrlParser: true, useUnifiedTopology: true })
+var db = mongoose
+  .connect(`${process.env.MONGODB_URI}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => {
     var date = moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
     console.log('mongodb connection success ', date);
   })
-  .catch(e => console.error(e));
+  .catch((e) => console.error(e));
 
 // error handler
 app.use(function (err, req, res, next) {
