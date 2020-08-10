@@ -61,9 +61,9 @@ router.post('/word_data', async (req, res) => {
  */
 router.post('/insert_quotes', async (req, res) => {
   try {
-    const { name, word, image, accepted } = req.body;
+    const { name, word, thumbnail_user_image, thumbnail_background_image, accepted } = req.body;
     const data = {
-      name, word, image, accepted
+      name, word, thumbnail_user_image, thumbnail_background_image, accepted
     }
     const quotes = new Quotes(data);
     quotes.save((error) => {
