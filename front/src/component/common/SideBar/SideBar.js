@@ -25,6 +25,11 @@ const SideBar = (props) => {
   // NOTE: You also need to provide styles, see https://github.com/negomi/react-burger-menu#styling
   return (
     <Menu {...props}>
+      <StyledLink id="home" className="menu-item" to="/">
+        HANGANG
+      </StyledLink>
+      <br />
+
       <StyledLink id="home" className="menu-item" to="/Quotes">
         Quotes
       </StyledLink>
