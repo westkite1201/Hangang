@@ -1,21 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import QuotesContainer from '../QuotesContainer';
 import { GET_QUOTES_SUBMIT } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 
 function HangangAdminContainer() {
   const [isInfoGrow, setIsInfoGrow] = useState();
+  const { quotesData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    // dispatch({
-    //   type: GET_HANGANG_TEMP_REQUEST,
-    //   payload: {}
-    // });
+    dispatch({
+      type: GET_QUOTES_SUBMIT,
+      payload: { accepted: '1' }
+    });
   }, [dispatch]);
+  // const settings = {
+  //   dots: false,
+  //   infinite: true,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  //   vertical: true,
+  //   verticalSwiping: true,
+  //   swipeToSlide: true,
+  //   autoplay: true,
+  //   speed: 1000,
+  //   autoplaySpeed: 7000,
+  //   beforeChange: function (currentSlide, nextSlide) {
+  //     console.log('before change', currentSlide, nextSlide);
+  //   },
+  //   afterChange: function (currentSlide) {
+  //     console.log('after change', currentSlide);
+  //   }
+  // };
+  
+  function getData() {
+    const { data } = quotesData;
+    console.log(data);
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   function handleMouseOver() {
     setIsInfoGrow(true);
@@ -40,7 +65,7 @@ function HangangAdminContainer() {
       admin 페이지 입니다.
       <br/>
       데이터 조회한애들 올거임
-      <QuotesContainer actionType={GET_QUOTES_SUBMIT}/>
+      {/* <QuotesContainer actionType={GET_QUOTES_SUBMIT}/> */}
       {/*
       <BackGround></BackGround>
       <TitleWrapper>
