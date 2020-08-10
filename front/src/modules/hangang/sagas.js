@@ -1,10 +1,11 @@
-import { getHangangTemp, getQuotes, getSubmitQuotes } from '../../lib/api/hangang';
+import { getHangangTemp, getQuotes, getSubmitQuotes, getQuotesAdmin } from '../../lib/api/hangang';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import {
   GET_HANGANG_TEMP_SUCCESS,
   GET_HANGANG_TEMP_REQUEST,
   GET_HANGANG_TEMP_FAILURE,
   GET_QUOTES_REQUEST,
+  GET_QUOTES_REQUEST_ADMIN,
   GET_QUOTES_SUCCESS,
   GET_QUOTES_FAILURE,
   GET_QUOTES_SUBMIT
@@ -60,6 +61,29 @@ function* getQuotesSaga(action) {
   }
 }
 
+function* getQuotesSagaAdmin(action) {
+  try {
+    const quotesSubmitData = yield call(getQuotesAdmin, action.payload);
+    yield put({
+      type: GET_QUOTES_SUCCESS,
+      payload: {
+        loading: false,
+        data: quotesSubmitData.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: GET_QUOTES_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
+
 function* getSubmitQuotesSaga(action) {
   try {
     const quotesSubmitData = yield call(getSubmitQuotes, action.payload);
@@ -87,4 +111,5 @@ export function* hangangSaga() {
   yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
   yield takeEvery(GET_QUOTES_REQUEST, getQuotesSaga);
   yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
+  yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
 }
