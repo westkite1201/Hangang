@@ -36,7 +36,7 @@ const SideBar = (props) => {
 
       <br />
 
-      <StyledLink k id="contact" className="menu-item" to="/admin">
+      <StyledLink id="contact" className="menu-item" to="/admin">
         admin
       </StyledLink>
       <br />
@@ -47,7 +47,7 @@ const SideBar = (props) => {
 
       <br />
 
-      <StyledLink k id="contact" className="menu-item" to="/contact">
+      <StyledLink id="contact" className="menu-item" to="/contact">
         Contact
       </StyledLink>
 
