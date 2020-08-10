@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 import { GET_QUOTES_SUBMIT } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 
-function HangangAdminContainer() {
+const SubmitQuotes = ({ quotesList }) => {
+  return quotesList.map((quote, index) => {
+    return (
+      <Grid item xs={12} md={6} lg={4} key={index}>
+        <div key={index}>
+          <ul>
+            <li>{quote.name}</li>
+            <li>{quote.word}</li>
+            <br/>
+          </ul>
+        </div>
+      </Grid>
+    );
+  });
+};
+
+const HangangAdminContainer = () => {
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { quotesData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
@@ -15,39 +32,7 @@ function HangangAdminContainer() {
       payload: { accepted: '1' }
     });
   }, [dispatch]);
-  // const settings = {
-  //   dots: false,
-  //   infinite: true,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 1,
-  //   vertical: true,
-  //   verticalSwiping: true,
-  //   swipeToSlide: true,
-  //   autoplay: true,
-  //   speed: 1000,
-  //   autoplaySpeed: 7000,
-  //   beforeChange: function (currentSlide, nextSlide) {
-  //     console.log('before change', currentSlide, nextSlide);
-  //   },
-  //   afterChange: function (currentSlide) {
-  //     console.log('after change', currentSlide);
-  //   }
-  // };
-  
-  function getData() {
-    const { data } = quotesData;
-    console.log(data);
-  }
-  useEffect(() => {
-    getData();
-  }, []);
 
-  function handleMouseOver() {
-    setIsInfoGrow(true);
-  }
-  function handleMouseLeave() {
-    setIsInfoGrow(false);
-  }
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
     transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
@@ -58,42 +43,18 @@ function HangangAdminContainer() {
     transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
     opacity: isInfoGrow ? '1' : '0'
   });
-  //점검중 일 경우 대비
-  function viewTemperture() {}
+  const { data } = quotesData;
   return (
     <Wrapper>
-      admin 페이지 입니다.
-      <br/>
-      데이터 조회한애들 올거임
-      {/* <QuotesContainer actionType={GET_QUOTES_SUBMIT}/> */}
-      {/*
-      <BackGround></BackGround>
-      <TitleWrapper>
-        <Title>
-          <hr></hr>
-          <animated.div
-            className={'station-info'}
-            style={infoStyle}
-            onMouseOver={handleMouseOver}
-            onMouseLeave={handleMouseLeave}
-          >
-          </animated.div>
-          <div style={{ padding: '30px 0 30px 0' }}>
-            <animated.div
-              onMouseOver={handleMouseOver}
-              onMouseLeave={handleMouseLeave}
-              style={titleStyle}
-            >
-            </animated.div>
-          </div>
-
-          <hr></hr>
-        </Title>
-        <QuetesWrapper>
-          <QuotesContainer actionType={'todos/GET_QUOTES_SUBMIT'}/>
-        </QuetesWrapper>
-      </TitleWrapper>
-      */}
+      <Grid container spacing={3}>
+      <Grid item xs={1} md={1} lg={1}></Grid>
+      <Grid item xs={10} md={10} lg={10}>
+        <Grid container spacing={3}>
+          {data && <SubmitQuotes quotesList={data} />}
+        </Grid>
+      </Grid>
+      <Grid item xs={1} md={1} lg={1}></Grid>
+    </Grid>
     </Wrapper>
   );
 }
