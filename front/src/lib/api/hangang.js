@@ -25,10 +25,8 @@ export async function getQuotes() {
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 
-export async function getSubmitQuotes() {
-  const body = {
-    accepted: '0'
-  };
+export async function getSubmitQuotes(param) {
+  const body = param;
   const response = await axios.post(
     `${cilentConfig.endpoint.api}/hangang/word_data`,
     body
