@@ -32,7 +32,7 @@ const SideBar = () => {
         </div>
         <br />
         <div>
-          <NavLink k id="contact" className="menu-item" to="/contact">
+          <NavLink id="contact" className="menu-item" to="/contact">
             Contact
           </NavLink>
         </div>

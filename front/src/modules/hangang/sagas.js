@@ -62,11 +62,9 @@ function* getQuotesSaga(action) {
 
 function* getSubmitQuotesSaga(action) {
   try {
-    console.log('getSubmitQuotes', action.payload);
     const quotesSubmitData = yield call(getSubmitQuotes, action.payload);
-
     yield put({
-      type: GET_QUOTES_SUBMIT,
+      type: GET_QUOTES_SUCCESS,
       payload: {
         loading: false,
         data: quotesSubmitData.data,
