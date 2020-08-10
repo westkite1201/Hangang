@@ -17,8 +17,8 @@ router.get('/hangang_data', async function (req, res, next) {
   try {
     const { data } = await axios.get(
       `${process.env.SEOUL_OPENAPI_URL}` +
-      `/${process.env.API_KEY}` +
-      '/json/WPOSInformationTime/1/5/'
+        `/${process.env.API_KEY}` +
+        '/json/WPOSInformationTime/1/5/'
     );
     return res.json({
       result: '0000',
@@ -61,13 +61,23 @@ router.post('/word_data', async (req, res) => {
  */
 router.post('/insert_quotes', async (req, res) => {
   try {
-    const { name, word, thumbnail_user_image, thumbnail_background_image, accepted } = req.body;
+    const {
+      name,
+      word,
+      thumbnail_user_image,
+      thumbnail_background_image,
+      accepted
+    } = req.body;
     const data = {
-      name, word, thumbnail_user_image, thumbnail_background_image, accepted
-    }
+      name,
+      word,
+      thumbnail_user_image,
+      thumbnail_background_image,
+      accepted
+    };
     const quotes = new Quotes(data);
     quotes.save((error) => {
-      if(error) {
+      if (error) {
         return res.json(makeReturnData('999', error));
       } else {
         return res.json(makeReturnData('100'));
@@ -89,13 +99,22 @@ router.post('/insert_quotes', async (req, res) => {
 router.post('/delete_quotes', async (req, res) => {
   try {
     const { id } = req.body;
-    Quotes.update( { _id: id }, { $set: { status: '1', updateTime: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')} }, (error, output) => {
-      if (error) {
-        return res.json(makeReturnData('999', error));
-      } else {
-        return res.json(makeReturnData('100'));
+    Quotes.update(
+      { _id: id },
+      {
+        $set: {
+          status: '1',
+          updateTime: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
+        }
+      },
+      (error, output) => {
+        if (error) {
+          return res.json(makeReturnData('999', error));
+        } else {
+          return res.json(makeReturnData('100'));
+        }
       }
-    });
+    );
   } catch (error) {
     console.error(error);
     return res.json({
@@ -112,7 +131,7 @@ router.post('/delete_quotes', async (req, res) => {
 router.post('/update_qoutes_accepted', async (req, res) => {
   try {
     const { id } = req.body;
-    Quotes.update( { _id: id }, { $set: { accepted: '0' } }, (error, output) => {
+    Quotes.update({ _id: id }, { $set: { accepted: '0' } }, (error, output) => {
       if (error) {
         return res.json(makeReturnData('999', error));
       } else {
@@ -128,12 +147,12 @@ router.post('/update_qoutes_accepted', async (req, res) => {
   }
 });
 
-function makeReturnData (code, data) {
-  return ({
+function makeReturnData(code, data) {
+  return {
     result: code,
     message: STATUS_CODE[code],
     data: data
-  });
+  };
 }
 
 module.exports = router;

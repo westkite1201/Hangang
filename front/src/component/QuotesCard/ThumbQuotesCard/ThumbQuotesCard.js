@@ -24,7 +24,13 @@ const ThumbQuotesCard = ({ quotes }) => {
     >
       <BackGround />
       <QuotesAuthorThumbnailContainer>
-        <QuotesAuthorThumbnail thumbnail="http://localhost:3031/api/file/image/kim.jpg" />
+        <QuotesAuthorThumbnail
+          thumbnail={
+            quotes.thumbnail_user_image && quotes.thumbnail_user_image !== ''
+              ? quotes.thumbnail_user_image
+              : '/images/default_user.png'
+          }
+        />
       </QuotesAuthorThumbnailContainer>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
       <QuotesContent>{quotes.word}</QuotesContent>
