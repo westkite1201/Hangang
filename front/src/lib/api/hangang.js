@@ -33,6 +33,13 @@ export async function getSubmitQuotes(param) {
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+
+export async function getQuotesAdmin() {
+  const response = await axios.post(
+    `${cilentConfig.endpoint.api}/hangang/word_data_admin`,
+  );
+  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
+}
 // router.get('/word_data', async (req, res) => {
 //     try {
 //       return res.json({
