@@ -1,6 +1,7 @@
 import React from 'react';
 import BannerQuotesCard from './BannerQuotesCard';
 import PosterQuotesCard from './PosterQuotesCard';
+import ThumbQuotesCard from './ThumbQuotesCard';
 import { getContentCardType } from '../../lib/helper';
 import { Grid } from '@material-ui/core';
 import { BANNER, POSTER } from '../../lib/CommonString';
@@ -15,7 +16,7 @@ function CardComponent({ quotes }) {
     case 'banner':
       return <BannerQuotesCard quotes={quotes} />;
     default:
-      return <PosterQuotesCard quotes={quotes} />;
+      return <ThumbQuotesCard quotes={quotes} />;
   }
 }
 const QuotesCard = ({ quotes, key }) => {
