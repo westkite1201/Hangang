@@ -4,11 +4,13 @@ import SubRoutes from './SubRoutes';
 import SideBar from './component/common/SideBar';
 const Routes = ({ history }) => {
   return (
-    <div className="contbody_scroll" id="outer-container">
-      <SideBar />
-      <Switch>
-        <SubRoutes history={history} />
-      </Switch>
+    <div>
+      <SideBar pageWrapId={'page-wrap'} outerContainerId={'App'} />
+      <div id="page-wrap" style={{ overflow: 'hidden' }}>
+        <Switch>
+          <SubRoutes history={history} />
+        </Switch>
+      </div>
     </div>
   );
 };
