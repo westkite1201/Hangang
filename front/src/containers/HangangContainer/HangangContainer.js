@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
+import { GET_HANGANG_TEMP_REQUEST, GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
 import { getNearbyStaionArray } from '../../lib/helper';
 import moment from 'moment';
@@ -172,7 +172,7 @@ function HangangContainer() {
           <hr></hr>
         </Title>
         <QuetesWrapper>
-          <QuotesContainer actionType={'todos/GET_QUOTES_REQUEST'}/>
+          <QuotesContainer actionType={GET_QUOTES_REQUEST}/>
         </QuetesWrapper>
       </TitleWrapper>
     </Wrapper>

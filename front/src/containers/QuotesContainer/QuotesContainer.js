@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import { useDispatch, useSelector } from 'react-redux';
 import QuotesItem from '../../component/QuotesItem';
-import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
+// import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 
 const QuotesContainer = (props) => {
   const { quotesData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
-      type: GET_QUOTES_REQUEST,
+      type: props.actionType,
       payload: { accepted: '0' }
     });
   }, [dispatch]);

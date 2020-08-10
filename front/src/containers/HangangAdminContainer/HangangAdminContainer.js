@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
+import { GET_QUOTES_SUBMIT } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 
@@ -11,10 +11,10 @@ function HangangAdminContainer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({
-      type: GET_HANGANG_TEMP_REQUEST,
-      payload: {}
-    });
+    // dispatch({
+    //   type: GET_HANGANG_TEMP_REQUEST,
+    //   payload: {}
+    // });
   }, [dispatch]);
 
   function handleMouseOver() {
@@ -37,6 +37,11 @@ function HangangAdminContainer() {
   function viewTemperture() {}
   return (
     <Wrapper>
+      admin 페이지 입니다.
+      <br/>
+      데이터 조회한애들 올거임
+      <QuotesContainer actionType={GET_QUOTES_SUBMIT}/>
+      {/*
       <BackGround></BackGround>
       <TitleWrapper>
         <Title>
@@ -63,6 +68,7 @@ function HangangAdminContainer() {
           <QuotesContainer actionType={'todos/GET_QUOTES_SUBMIT'}/>
         </QuetesWrapper>
       </TitleWrapper>
+      */}
     </Wrapper>
   );
 }
