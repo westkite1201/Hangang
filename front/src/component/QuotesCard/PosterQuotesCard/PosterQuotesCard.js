@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-//pst_exps_typ_cd =  10 // 일반콘텐츠
-//=20
-//=30
 const PosterQuotesCard = ({ quotes }) => {
   const [mouseOver, setMouseOver] = useState(false);
 
@@ -78,9 +75,6 @@ const QuotesContent = styled.div`
     //  background: black;
   }
 `;
-const QuotesContainer = styled.div``;
-
-const QuotesAuthorThumbnail = styled.div``; //저자사진있으면
 const QuotesAuthor = styled.h4`
   //font-weight: bold;
   font-size: 1rem;
