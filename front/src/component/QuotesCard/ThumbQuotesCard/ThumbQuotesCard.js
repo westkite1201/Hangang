@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-//pst_exps_typ_cd =  10 // 일반콘텐츠
-//=20
-//=30
 const ThumbQuotesCard = ({ quotes }) => {
   const [mouseOver, setMouseOver] = useState(false);
 
@@ -26,8 +23,11 @@ const ThumbQuotesCard = ({ quotes }) => {
       style={mouseOver ? cardHoverStyle : {}}
     >
       <BackGround />
-      <QuotesContent>{quotes.word}</QuotesContent>
+      <QuotesAuthorThumbnailContainer>
+        <QuotesAuthorThumbnail thumbnail="http://localhost:3031/api/file/image/kim.jpg" />
+      </QuotesAuthorThumbnailContainer>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
+      <QuotesContent>{quotes.word}</QuotesContent>
     </QuotesWrapper>
   );
 };
@@ -78,9 +78,22 @@ const QuotesContent = styled.div`
     //  background: black;
   }
 `;
-const QuotesContainer = styled.div``;
 
-const QuotesAuthorThumbnail = styled.div``; //저자사진있으면
+const QuotesAuthorThumbnailContainer = styled.div`
+  position: relative;
+  padding: 20% 20% 0 20%;
+`;
+const QuotesAuthorThumbnail = styled.div`
+  margin: auto;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  background-image: url(${(props) => props.thumbnail || props.thumbnail});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent;
+`; //저자사진있으면
+
 const QuotesAuthor = styled.h4`
   //font-weight: bold;
   font-size: 1rem;
