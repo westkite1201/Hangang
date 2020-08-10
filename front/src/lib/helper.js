@@ -47,3 +47,17 @@ export function getTimeSliceIndexs() {}
 
 //수온 별로  온도 분기
 export function getWaterTempertureColor() {}
+
+export function getContentCardType(pst_exps_typ_cd) {
+  switch (pst_exps_typ_cd) {
+    case '10':
+      return 'poster';
+    case '20':
+      return 'banner';
+    case '30':
+      return 'thumb';
+
+    default:
+      return 'default';
+  }
+}
