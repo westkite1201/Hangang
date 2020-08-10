@@ -9,7 +9,7 @@ export default (props) => {
   useEffect(() => {}, []);
 
   return (
-    <Fragment>
+    <div>
       <Route exact path="/" component={HangangContainer} />
       {/*<Route exact path="/todo" component={TodoContainer} />*/}
       <Route exact path="/admin" component={HangangAdminContainer} />
@@ -19,6 +19,6 @@ export default (props) => {
         component={HangangSubmitQoutesContainer}
       />
       <Route exact path="/quotes" component={QuotesGridViewComponent}></Route>
-    </Fragment>
+    </div>
   );
 };

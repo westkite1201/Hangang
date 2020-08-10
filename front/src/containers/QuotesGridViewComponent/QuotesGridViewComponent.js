@@ -6,11 +6,7 @@ import QuotesCard from '../../component/QuotesCard';
 
 const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, key) => {
-    return (
-      <Grid item xs={12} md={6} lg={4} key={key}>
-        <QuotesCard quotes={quotes} />
-      </Grid>
-    );
+    return <QuotesCard quotes={quotes} key={key} />;
   });
 };
 
