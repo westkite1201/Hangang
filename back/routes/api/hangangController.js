@@ -83,7 +83,8 @@ router.post('/insert_quotes', async (req, res) => {
 });
 
 /**
- * 명언 삭제
+ * 명언 삭제(소재 상태 변경으로 처리해서, 기존 데이터 확인가능하도록)
+ * 소재상태: '0'(사용중), '1'(삭제)
  */
 router.post('/delete_quotes', async (req, res) => {
   try {
@@ -104,6 +105,10 @@ router.post('/delete_quotes', async (req, res) => {
   }
 });
 
+/**
+ * 승인상태 변경
+ * accepted: '0'(승인), '1'(대기), '2'(거절)
+ */
 router.post('/update_qoutes_accepted', async (req, res) => {
   try {
     const { id } = req.body;
