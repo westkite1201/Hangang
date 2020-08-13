@@ -197,6 +197,7 @@ const QuetesWrapper = styled.div`
   text-align: center;
 `;
 const Wrapper = styled.div`
+  font-family: NanumBrushScript-Regular;
   overflow: hidden;
 `;
 

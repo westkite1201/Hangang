@@ -9,6 +9,10 @@ const images = [{ url: '/images/temp.jpeg' }];
 export default function QuotesMakerContainer() {
   const [fontSize, setFontSize] = useState();
   const [fontFamily, setFontFamily] = useState();
+  const [canvasInfo, setCanvasInfo] = useState({
+    width: 300,
+    height: 500
+  });
   const fabricRef = useRef();
 
   function addText() {
@@ -74,11 +78,54 @@ export default function QuotesMakerContainer() {
     this.download = 'canvas.png';
   }
 
-  function switchType(e) {
-    switch (e.target.name) {
+  function switchType(type) {
+    switch (type) {
       case 'type1':
+        setCanvasInfo({
+          width: 300,
+          height: 500
+        });
+        // do some stuff as new props or state have been received aka component did update
+        new fabric.Image.fromURL(images[0].url, function (myImg) {
+          let backgroundImage = myImg.set({
+            left: 0,
+            top: 0
+          });
+          fabricRef.current.setBackgroundImage(
+            images[0].url,
+            fabricRef.current.renderAll.bind(fabricRef.current),
+            {
+              scaleX: 300 / backgroundImage.width,
+              scaleY: 500 / backgroundImage.height,
+              backgroundImageOpacity: 1,
+              backgroundImageStretch: true
+            }
+          );
+        });
         break;
       case 'type2':
+        setCanvasInfo({
+          width: 600,
+          height: 250
+        });
+        // do some stuff as new props or state have been received aka component did update
+        new fabric.Image.fromURL(images[0].url, function (myImg) {
+          let backgroundImage = myImg.set({
+            left: 0,
+            top: 0
+          });
+          fabricRef.current.setBackgroundImage(
+            images[0].url,
+            fabricRef.current.renderAll.bind(fabricRef.current),
+            {
+              scaleX: 600 / backgroundImage.width,
+              scaleY: 250 / backgroundImage.height,
+              backgroundImageOpacity: 1,
+              backgroundImageStretch: true
+            }
+          );
+        });
+        //fabricRef.current.renderAll();
         break;
       case 'type3':
         break;
@@ -105,18 +152,18 @@ export default function QuotesMakerContainer() {
         handleFontFamily={handleFontFamily}
       />
       <Button onClick={addText}>텍스트 추가입력</Button>
-      <Button onClick={switchType} name="type1">
-        type1
-      </Button>
-      <Button onClick={switchType} name="type2">
-        type2
-      </Button>
+      <Button onClick={() => switchType('type1')}>type1</Button>
+      <Button onClick={() => switchType('type2')}>type2</Button>
       <Button onClick={switchType} name="type3">
         type3
       </Button>
       <Switch defaultChecked onChange={onChange}></Switch>
       <input type="file" id="imageLoader" name="imageLoader" />
-      <canvas id="my-fabric-canvas" width={300} height={500} />
+      <canvas
+        id="my-fabric-canvas"
+        width={canvasInfo.width}
+        height={canvasInfo.height}
+      />
       <a id="lnkDownload" href="#">
         Save image
       </a>
