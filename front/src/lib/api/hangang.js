@@ -36,7 +36,19 @@ export async function getSubmitQuotes(param) {
 
 export async function getQuotesAdmin() {
   const response = await axios.post(
-    `${cilentConfig.endpoint.api}/hangang/word_data_admin`,
+    `${cilentConfig.endpoint.api}/hangang/word_data_admin`
+  );
+  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
+}
+
+export async function saveCanvasImage(param) {
+  console.log('hello');
+  const data = {
+    imgB64Data: param.imgB64Data
+  };
+  const response = await axios.post(
+    `${cilentConfig.endpoint.api}/file/saveCanvasImage`,
+    data
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }

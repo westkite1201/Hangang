@@ -1,11 +1,15 @@
 import React, { useState, useRef } from 'react';
 //import './styles.css';
-import { Switch, Button } from 'antd';
+import { Switch, Button, Upload, message } from 'antd';
 import { fabric } from 'fabric';
 import FontEditer from './FontEditor';
 import MyColorPicker from '../../component/MyColorPicker';
 import { getRandomHexColor } from '../../lib/helper';
-
+import UnsplashContainer from '../UnsplashContainer';
+import { UploadOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
 // Or you can use:
 // const fabric = require("fabric").fabric;
 //http://jsfiddle.net/fabricjs/hXzvk/ 참고해보기
@@ -30,7 +34,7 @@ export default function QuotesMakerContainer() {
     height: 240
   });
   const fabricRef = useRef();
-
+  const dispatch = useDispatch();
   function addText() {
     const textbox = new fabric.Textbox('입력하세요 명언을', {
       fontSize: 40,
@@ -45,7 +49,7 @@ export default function QuotesMakerContainer() {
   }
 
   React.useEffect(() => {
-    var imageSaver = document.getElementById('lnkDownload');
+    let imageSaver = document.getElementById('lnkDownload');
     imageSaver.addEventListener('click', saveImage, false);
 
     const canvas = new fabric.Canvas('my-fabric-canvas', {
@@ -64,6 +68,17 @@ export default function QuotesMakerContainer() {
       fill: '#fff'
     });
     canvas.add(textbox);
+    const textAuthor = new fabric.Textbox('작가', {
+      fontSize: 30,
+      fontFamily: 'NanumBrushScript-Regular',
+      textAlign: 'center',
+      left: 50,
+      top: 100,
+      width: 200,
+      fill: '#fff'
+    });
+    canvas.add(textAuthor);
+
     // canvas.add(rect);
 
     // do some stuff as new props or state have been received aka component did update
@@ -98,41 +113,39 @@ export default function QuotesMakerContainer() {
 
   //이미지 다운로드
   function saveImage(e) {
-    this.href = fabricRef.current.toDataURL({
-      format: 'png',
-      quality: 1
-    });
-    this.download = 'canvas.png';
-  }
-  function backGroundChange(e) {
-    let canvas = fabricRef.current;
-    let file = e.target.files[0];
-    let reader = new FileReader();
-    reader.onload = function (f) {
-      let data = f.target.result;
-      fabric.Image.fromURL(data, function (img) {
-        let oImg = img.set({
-          left: 0,
-          top: 0
-          // angle: 0,
-          // width: canvas.width,
-          // height: canvas.height
-        });
-        canvas.setBackgroundImage(oImg, canvas.renderAll.bind(canvas), {
-          scaleX: canvas.width / oImg.width,
-          scaleY: canvas.height / oImg.height,
-          backgroundImageOpacity: 1,
-          backgroundImageStretch: true
-        });
-        canvas.renderAll();
-        let dataURL = canvas.toDataURL({
-          format: 'png',
-          quality: 1
-        });
+    try {
+      this.href = fabricRef.current.toDataURL({
+        format: 'png',
+        quality: 1
       });
-    };
-    reader.readAsDataURL(file);
+      console.log('href', this.href);
+      let data = decodeBase64Image(this.href);
+      console.log('data ', data);
+      dispatch({
+        type: SAVE_CANVAS_IMAGE_REQUEST,
+        payload: { imgB64Data: data }
+      });
+    } catch (e) {
+      console.log('error', e);
+    }
+
+    //this.download = 'canvas.png';
   }
+
+  function decodeBase64Image(dataString) {
+    let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+      response = {};
+
+    if (matches.length !== 3) {
+      return new Error('Invalid input string');
+    }
+
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+
+    return response;
+  }
+
   function switchType(type) {
     switch (type) {
       case 'type1':
@@ -209,9 +222,11 @@ export default function QuotesMakerContainer() {
   //   canvas.requestRenderAll();
   // }
 
+  //사진인지, color 인지 결정
   function onChange(checked) {
     let canvas = fabricRef.current;
     console.log(`switch to ${checked}`);
+    setIsUsingBackGroundPicture(checked);
     if (checked) {
       fabricRef.current.backgroundImage = 0;
       fabricRef.current.renderAll();
@@ -238,7 +253,13 @@ export default function QuotesMakerContainer() {
     setFontSize(fontSize);
   }
   function handleFontFamily(fontFamily) {
-    console.log(fabricRef.current);
+    let activeTextObj = fabricRef.current.getActiveObject();
+    if (activeTextObj && activeTextObj.isType('text')) {
+      activeTextObj.set({
+        fontFamily: fontFamily
+      });
+      fabricRef.current.renderAll();
+    }
   }
 
   const deleteObject = function () {
@@ -267,8 +288,69 @@ export default function QuotesMakerContainer() {
     canvas.setBackgroundColor(color.hex, canvas.renderAll.bind(canvas));
     canvas.renderAll();
   };
+
+  function backGroundChange(e) {
+    let canvas = fabricRef.current;
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function (f) {
+      let data = f.target.result;
+      fabric.Image.fromURL(data, function (img) {
+        let oImg = img.set({
+          left: 0,
+          top: 0
+          // angle: 0,
+          // width: canvas.width,
+          // height: canvas.height
+        });
+        canvas.setBackgroundImage(oImg, canvas.renderAll.bind(canvas), {
+          scaleX: canvas.width / oImg.width,
+          scaleY: canvas.height / oImg.height,
+          backgroundImageOpacity: 1,
+          backgroundImageStretch: true
+        });
+        canvas.renderAll();
+        let dataURL = canvas.toDataURL({
+          format: 'png',
+          quality: 1
+        });
+      });
+    };
+    reader.readAsDataURL(file);
+  }
   return (
-    <div style={{ margin: 'auto' }}>
+    <QuotesMakerWrapper>
+      {/*<UnsplashContainer />*/}
+      <EditerWrapper>
+        <FontEditer
+          fontSize={fontSize}
+          fontFamily={fontFamily}
+          handleFontSize={handleFontSize}
+          handleFontFamily={handleFontFamily}
+        />
+        <InputBox>
+          <label for="fileAdd">백그라운드</label>
+          <input
+            id="fileAdd"
+            name="files"
+            type="file"
+            onChange={backGroundChange}
+            multiple
+          />
+        </InputBox>
+        <Button onClick={deleteObject}>오브젝트 삭제</Button>
+        <Button onClick={addText}>텍스트 추가</Button>
+        <Button onClick={() => switchType('type1')}>카드 타입 1</Button>
+        <Button onClick={() => switchType('type2')}>카드 타입 2</Button>
+        <Switch defaultChecked onChange={onChange}></Switch>
+      </EditerWrapper>
+      <CanvasWrapper>
+        <canvas
+          id="my-fabric-canvas"
+          width={canvasInfo.width}
+          height={canvasInfo.height}
+        />
+      </CanvasWrapper>
       <MyColorPicker
         handleClick={handleClick}
         handleClose={handleClose}
@@ -276,39 +358,39 @@ export default function QuotesMakerContainer() {
         displayColorPicker={displayColorPicker}
         backgroundColor={backgroundColor}
       />
-      <FontEditer
-        fontSize={fontSize}
-        fontFamily={fontFamily}
-        handleFontSize={handleFontSize}
-        handleFontFamily={handleFontFamily}
-      />
-
-      <input
-        id="fileAdd"
-        name="files"
-        type="file"
-        onChange={backGroundChange}
-        multiple
-      />
-      <Button onClick={deleteObject}>삭제</Button>
-      <Button onClick={addText}>텍스트 추가입력</Button>
-      <Button onClick={() => switchType('type1')}>type1</Button>
-      <Button onClick={() => switchType('type2')}>type2</Button>
-      {/*
-      <Button onClick={switchType} name="type3">
-        type3
-      </Button>
-      */}
-      <Switch defaultChecked onChange={onChange}></Switch>
-      <input type="file" id="imageLoader" name="imageLoader" />
-      <canvas
-        id="my-fabric-canvas"
-        width={canvasInfo.width}
-        height={canvasInfo.height}
-      />
       <a id="lnkDownload" href="#">
         Save image
       </a>
-    </div>
+    </QuotesMakerWrapper>
   );
 }
+const QuotesMakerWrapper = styled.div``;
+const EditerWrapper = styled.div``;
+const CanvasWrapper = styled.div``;
+
+const InputBox = styled.div`
+  label {
+    display: inline-block;
+    padding: 0.5em 0.75em;
+    color: #999;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: 0.25em;
+  }
+  input[type='file'] {
+    /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+`;

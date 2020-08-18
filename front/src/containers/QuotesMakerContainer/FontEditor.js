@@ -25,7 +25,7 @@ const FontEditor = ({
   ];
   const fontFamilyList = [
     'Monaco',
-    'Nanum Myeongjo',
+    'NanumMyeongjo',
     'Noto Sans KR',
     'Yeon Sung',
     'Do Hyeon',
@@ -55,6 +55,7 @@ const FontEditor = ({
       </div>
 
       <div className="editoritem">
+        {/*
         <Select
           style={{ width: 150 }}
           placeholder="font size"
@@ -68,6 +69,7 @@ const FontEditor = ({
             </Option>
           ))}
         </Select>
+          */}
       </div>
     </div>
   );

@@ -5,16 +5,15 @@ export const initialState = {
   quotesData: []
 };
 
-export const GET_HANGANG_TEMP_REQUEST = 'todos/GET_HANGANG_TEMP_REQUEST';
-export const GET_HANGANG_TEMP_SUCCESS = 'todos/GET_HANGANG_TEMP_SUCCESS';
-export const GET_HANGANG_TEMP_FAILURE = 'todos/GET_HANGANG_TEMP_FAILURE';
+export const GET_HANGANG_TEMP_REQUEST = 'hangang/GET_HANGANG_TEMP_REQUEST';
+export const GET_HANGANG_TEMP_SUCCESS = 'hangang/GET_HANGANG_TEMP_SUCCESS';
+export const GET_HANGANG_TEMP_FAILURE = 'hangang/GET_HANGANG_TEMP_FAILURE';
 
-export const GET_QUOTES_REQUEST = 'todos/GET_QUOTES_REQUEST';
-export const GET_QUOTES_REQUEST_ADMIN = 'todos/GET_QUOTES_REQUEST_ADMIN';
-export const GET_QUOTES_SUCCESS = 'todos/GET_QUOTES_SUCCESS';
-export const GET_QUOTES_FAILURE = 'todos/GET_QUOTES_FAILURE';
-export const GET_QUOTES_SUBMIT = 'todos/GET_QUOTES_SUBMIT';
-
+export const GET_QUOTES_REQUEST = 'hangang/GET_QUOTES_REQUEST';
+export const GET_QUOTES_REQUEST_ADMIN = 'hangang/GET_QUOTES_REQUEST_ADMIN';
+export const GET_QUOTES_SUCCESS = 'hangang/GET_QUOTES_SUCCESS';
+export const GET_QUOTES_FAILURE = 'hangang/GET_QUOTES_FAILURE';
+export const GET_QUOTES_SUBMIT = 'hangang/GET_QUOTES_SUBMIT';
 
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
@@ -38,7 +37,7 @@ export default (state = initialState, action) => {
       case GET_QUOTES_SUBMIT: {
         break;
       }
-      
+
       default: {
         break;
       }
