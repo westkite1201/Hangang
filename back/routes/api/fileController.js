@@ -152,6 +152,90 @@ router.get('/image/:filename', function (req, res) {
   });
 });
 
+//해당 디렉터리르 읽고 해당 디렉터리에 ㅣㅇㅆ는
+// 파일들을 반호나
+
+router.post('/getImageFilePath', function (req, res) {
+  const store_dir = FILE_ROOT_DIR + FILE_FORDER_PATH + req.body.user_id;
+  try {
+    let files = fs.readdirSync(store_dir); // 디렉토리를 읽어온다
+    //console.log(' files', files);
+    return res.json({
+      code: 200,
+      message: 'success',
+      data: {
+        files: files
+      }
+    });
+  } catch (e) {
+    console.log('error ', e);
+  }
+});
+//unsplash container 이용할때 사용
+router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
+  req,
+  res
+) {
+  let fs = require('fs'),
+    request = require('request');
+
+  let url = req.params.url;
+  let path =
+    FILE_ROOT_DIR +
+    FILE_FORDER_PATH +
+    req.params.userId +
+    '/' +
+    req.params.id +
+    '.jpg';
+  // console.log('url', url);
+  // console.log('path ', path);
+  try {
+    let download = function (url, path, callback) {
+      request.head(url, function (err, res, body) {
+        // console.log('content-type:', res.headers['content-type']);
+        // console.log('content-length:', res.headers['content-length']);
+        request(url).pipe(fs.createWriteStream(path)).on('close', callback);
+      });
+    };
+
+    download(url, path, function () {
+      console.log('done');
+      res.json({
+        message: 'success',
+        status: '200'
+      });
+    });
+  } catch (e) {
+    res.json({
+      message: 'error' + e,
+      status: '400'
+    });
+  }
+});
+router.post('/saveCanvasImageFile', function (req, res) {
+  let imgB64Data = req.body.imgB64Data;
+  let fs = require('fs');
+  let decodedImg = decodeBase64Image(imgB64Data);
+  let imageBuffer = decodedImg.data;
+  let type = decodedImg.type;
+  let extension = mime.extension(type);
+  let fileName = 'image.' + extension;
+  let path = FILE_ROOT_DIR + FILE_FORDER_PATH;
+  try {
+    fs.writeFileSync(path + fileName, imageBuffer, 'utf8');
+    res.json({
+      message: 'success',
+      status: '200'
+    });
+  } catch (err) {
+    console.error(err);
+    res.json({
+      message: 'error' + e,
+      status: '400'
+    });
+  }
+});
+
 //els 연동시
 //elasticsearchFileDataUpdate
 // // 일지 등록시 파일 저장 이후 elasticsearch 저장

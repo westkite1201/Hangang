@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var moment = require('moment');
 require('moment-timezone');
-
+let bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 let hangangRouter = require('./routes/api/hangangController');
 let fileRouter = require('./routes/api/fileController');
@@ -18,7 +18,13 @@ app.set('view engine', 'jade');
 app.use(cors);
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.urlencoded({ extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '50mb'
+  })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

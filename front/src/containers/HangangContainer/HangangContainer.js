@@ -154,8 +154,6 @@ function HangangContainer() {
     opacity: isInfoGrow ? '1' : '0'
   });
 
-  console.log('[seo] riverTempData', riverTempData.data);
-  console.log('[seo] backgroundImagePath ', backgroundImagePath);
   return (
     <Wrapper>
       <BackGround backgroundImagePath={backgroundImagePath} />
