@@ -7,10 +7,12 @@ import ScrollContainer from '../../component/base/ScrollContainer';
 //import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Loading from '../../component/base/Loading';
 //import FileUploadForm from './FileUploadForm';
-
+import { useDispatch } from 'react-redux';
+import { SUCCESS_TOAST, FAILURE_TOAST } from '../../modules/toast/reducer';
 const PER_PAGE = 30;
 
 const UnsplashContainer = () => {
+  const dispatch = useDispatch();
   const currentQuery = useRef('');
   const currentPage = useRef(1);
   const totalPage = useRef(0);
@@ -170,9 +172,19 @@ const UnsplashContainer = () => {
         };
         let res = await UnsplashAPI.getImageDownloadToUrl(params);
         console.log(res);
+        if (res.message === 'success') {
+          dispatch({
+            type: SUCCESS_TOAST,
+            payload: {}
+          });
+        }
       }
     } catch (e) {
       console.error(e);
+      dispatch({
+        type: FAILURE_TOAST,
+        payload: {}
+      });
     }
   };
   return (

@@ -4,6 +4,7 @@ import { Switch, Button, Upload, message } from 'antd';
 import { fabric } from 'fabric';
 import FontEditer from './FontEditor';
 import MyColorPicker from '../../component/MyColorPicker';
+import FileUploadForm from '../UnsplashContainer/FileUploadForm';
 import { getRandomHexColor } from '../../lib/helper';
 import UnsplashContainer from '../UnsplashContainer';
 import { UploadOutlined } from '@ant-design/icons';
@@ -11,6 +12,10 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'antd';
 import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
+import { Tabs } from 'antd';
+
+const { TabPane } = Tabs;
+
 // Or you can use:
 // const fabric = require("fabric").fabric;
 //http://jsfiddle.net/fabricjs/hXzvk/ 참고해보기
@@ -323,9 +328,20 @@ export default function QuotesMakerContainer() {
     setAuthor(e.target.value);
   };
 
+  const callback = () => {};
   return (
     <QuotesMakerWrapper>
-      {/*<UnsplashContainer />*/}
+      <div style={{ width: '60%', margin: '0 auto' }}>
+        <Tabs defaultActiveKey="1" onChange={callback}>
+          <TabPane tab="my server" key="1">
+            <FileUploadForm />
+          </TabPane>
+          <TabPane tab="Find Unsplash" key="2">
+            {<UnsplashContainer />}
+          </TabPane>
+        </Tabs>
+      </div>
+
       <EditerWrapper>
         <FontEditer
           fontSize={fontSize}
