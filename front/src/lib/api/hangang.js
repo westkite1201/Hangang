@@ -40,6 +40,15 @@ export async function getQuotesAdmin() {
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+
+export async function updateQuotesAccepted(param) {
+  const body = param;
+  const response = await axios.post(
+    `${cilentConfig.endpoint.api}/hangang/update_quotes_accepted_bulk`,
+    body
+  );
+  return response.data;
+}
 // router.get('/word_data', async (req, res) => {
 //     try {
 //       return res.json({

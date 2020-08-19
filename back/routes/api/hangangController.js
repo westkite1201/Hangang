@@ -5,6 +5,7 @@ var axios = require("axios");
 var Quotes = require("../../mongo/models/quotes");
 
 const moment = require("moment");
+const { json } = require("express");
 require("moment-timezone");
 
 const STATUS_CODE = {
@@ -160,59 +161,20 @@ router.post("/delete_quotes", async (req, res) => {
  * 승인상태 변경
  * accepted: '0'(승인), '1'(대기), '2'(거절)
  */
+
 router.post("/update_qoutes_accepted", async (req, res) => {
   try {
-    const { id } = req.body;
-    Quotes.update({ _id: id }, { $set: { accepted: "0" } }, (error, output) => {
+    Quotes.update({ _id: ids }, { $set: { accepted: accepted } }, {multi: true}, (error, output) => { 
       if (error) {
         return res.json(makeReturnData("999", error));
       } else {
         return res.json(makeReturnData("100", output));
       }
-    });
+    })
   } catch (error) {
     console.log(error);
     return res.json({
       api: "update_qoutes_accepted",
-      message: error,
-    });
-  }
-});
-
-router.post("/update_quotes_accepted_bulk", async (req, res) => {
-  try {
-    const { ids } = req.body;
-    Quotes.findOneAndUpdate(
-      { _id: { $in: ids } },
-      { $set: { accepted: "0" } },
-      (error, quotes) => {
-        if (error) {
-          return res.json(makeReturnData("999", error));
-        } else {
-          if (quotes.length === 0) {
-            return res.json(makeReturnData("404"));
-          } else {
-            return res.json(makeReturnData("100", quotes));
-          }
-        }
-      }
-    );
-
-    // if (ids.length !== 0) {
-    //   ids.map((id) => {
-    //     Quotes.update({_id: id}, { $set: { accepted: "0" } }, (error, output) => {
-    //       if (error) {
-    //         return res.json(makeReturnData("999", error));
-    //       } else {
-    //         return res.json(makeReturnData("100", output));
-    //       }
-    //     });
-    //   })
-    // }
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      api: "update_qoutes_accepted_bulk",
       message: error,
     });
   }

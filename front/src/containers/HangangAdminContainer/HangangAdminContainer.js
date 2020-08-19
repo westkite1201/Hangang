@@ -8,7 +8,7 @@ import {
   RadioGroup,
   Radio
 } from '@material-ui/core';
-import { GET_QUOTES_REQUEST_ADMIN } from '../../modules/hangang/reducer';
+import { GET_QUOTES_REQUEST_ADMIN, PUT_QUOTES_ACCEPTED } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
@@ -17,8 +17,8 @@ const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, index) => {
     return (
       <div className="quote-container">
-        <QuotesCard quotes={quotes} key={index} />
-        <input type="checkbox" key={index} id={'quote_checkbox-' + index} />
+        <QuotesCard quotes={quotes} key={'quote-card-' + index} />
+        <input type="checkbox" key={'quote-card-checkbox-' + index} id={'quote-card-checkbox-' + index} />
       </div>
     );
   });
@@ -27,6 +27,7 @@ const QuotesCardList = ({ quotesList }) => {
 const HangangAdminContainer = () => {
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { quotesData } = useSelector((state) => state.hangang);
+  const { quotesAcceptedData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
   const [showQuotes, setShowQuotes] = useState();
@@ -84,6 +85,16 @@ const HangangAdminContainer = () => {
     setShowQuotes(temp);
   };
 
+  const handleClickButton = (accepted) => {
+    dispatch({
+      type: PUT_QUOTES_ACCEPTED,
+      // payload: { ids: ['5f3a43c5df2cca444a95c794', '5f3a43c3df2cca444a95c793'], accepted: accepted }
+      payload: { ids: [], accepted: accepted }
+    });
+    // const { data } = quotesAcceptedData;
+    console.log('[masonms] data: ', quotesAcceptedData);
+  }
+
   return (
     <Wrapper>
       <BackGround backgroundImagePath={backgroundImagePath} />
@@ -115,6 +126,8 @@ const HangangAdminContainer = () => {
               />
             ))}
           </RadioGroup>
+          <button onClick={() => handleClickButton(true)}>Accept</button>
+          <button onClick={() => handleClickButton(false)}>Decline</button>
         </div>
         <hr></hr>
       </Title>
