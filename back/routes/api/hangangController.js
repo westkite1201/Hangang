@@ -164,6 +164,7 @@ router.post("/delete_quotes", async (req, res) => {
 
 router.post("/update_qoutes_accepted", async (req, res) => {
   try {
+    const { ids, accepted } = req.body;
     Quotes.update({ _id: ids }, { $set: { accepted: accepted } }, {multi: true}, (error, output) => { 
       if (error) {
         return res.json(makeReturnData("999", error));
