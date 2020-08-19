@@ -3,10 +3,13 @@ import { combineReducers } from 'redux';
 //import hangang from './hangang';
 //import { todoSaga } from './todos';
 import hangang from './hangang';
+import quotes from './quotes';
 import { hangangSaga } from './hangang';
+import { quotesSaga } from './quotes';
 import { all } from 'redux-saga/effects';
 const rootReducer = combineReducers({
-  hangang
+  hangang,
+  quotes
   //note
 });
 
@@ -20,5 +23,5 @@ export default rootReducer;
 //사용 할 때 필요로 합니다.
 // 루트 사가를 만들어서 내보내주세요.
 export function* rootSaga() {
-  yield all([hangangSaga()]);
+  yield all([hangangSaga(), quotesSaga()]);
 }

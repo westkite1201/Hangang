@@ -1,54 +1,39 @@
 import React from 'react';
-import styled from 'styled-components';
-import NavLink from 'react-router-dom';
-
-const QuotesCard = () => {
-  return (
-    <QuotesWrapper>
-      <BackGround />
-      <QuotesContent>도망친 곳엔 낙원이 없다 </QuotesContent>
-      <QuotesAuthor>베르세르크</QuotesAuthor>
-    </QuotesWrapper>
-  );
-};
-const BackGround = styled.div`
-  overflow-y: hidden;
-  z-index: -1;
-  height: 100%;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: transparent;
-  background-image: url('/images/temp.jpeg');
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* filter: blur(2px);
-  -webkit-filter: blur(2px); */
-`;
-const QuotesWrapper = styled.div`
-  font-family: 'NanumSquareR';
-  position: relative;
-  height: 450px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const QuotesContent = styled.div`
-  font-weight: bold;
-  font-size: 2rem;
-  text-align: center;
-  padding: 20%;
-  @media only screen and (min-width: 768px) {
-    font-size: 1.3rem;
+import BannerQuotesCard from './BannerQuotesCard';
+import PosterQuotesCard from './PosterQuotesCard';
+import ThumbQuotesCard from './ThumbQuotesCard';
+import { getContentCardType } from '../../lib/helper';
+import { Grid } from '@material-ui/core';
+import { BANNER, POSTER } from '../../lib/CommonString';
+//pst_exps_typ_cd =  10 // 일반콘텐츠
+//=20 //
+function CardComponent({ quotes }) {
+  const { card_exps_typ_cd } = quotes;
+  let cardType = getContentCardType(card_exps_typ_cd);
+  switch (cardType) {
+    case 'poster':
+      return <PosterQuotesCard quotes={quotes} />;
+    case 'banner':
+      return <BannerQuotesCard quotes={quotes} />;
+    default:
+      return <ThumbQuotesCard quotes={quotes} />;
   }
-`;
-const QuotesContainer = styled.div``;
-
-const QuotesAuthorThumbnail = styled.div``; //저자사진있으면
-const QuotesAuthor = styled.h4``;
+}
+const QuotesCard = ({ quotes, index }) => {
+  const { card_exps_typ_cd } = quotes;
+  if (card_exps_typ_cd === BANNER) {
+    return (
+      <Grid item xs={12} md={12} lg={12} key={index}>
+        <CardComponent quotes={quotes} />
+      </Grid>
+    );
+  } else {
+    return (
+      <Grid item xs={12} md={6} lg={4} key={index}>
+        <CardComponent quotes={quotes} />
+      </Grid>
+    );
+  }
+};
 
 export default QuotesCard;

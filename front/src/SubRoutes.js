@@ -5,11 +5,12 @@ import HangangContainer from './containers/HangangContainer';
 import HangangAdminContainer from './containers/HangangAdminContainer';
 import HangangSubmitQoutesContainer from './containers/HangangSubmitQoutesContainer';
 import QuotesGridViewComponent from './containers/QuotesGridViewComponent';
+import QuotesMakerContainer from './containers/QuotesMakerContainer';
 export default (props) => {
   useEffect(() => {}, []);
 
   return (
-    <Fragment>
+    <div>
       <Route exact path="/" component={HangangContainer} />
       {/*<Route exact path="/todo" component={TodoContainer} />*/}
       <Route exact path="/admin" component={HangangAdminContainer} />
@@ -19,6 +20,7 @@ export default (props) => {
         component={HangangSubmitQoutesContainer}
       />
       <Route exact path="/quotes" component={QuotesGridViewComponent}></Route>
-    </Fragment>
+      <Route exact path="/quotesmaker" component={QuotesMakerContainer}></Route>
+    </div>
   );
 };

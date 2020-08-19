@@ -7,33 +7,16 @@ const Schema = mongoose.Schema;
 const quotesSchema = new Schema({
     name: { type: String, required: true },
     word: { type: String, required: true },
-    image: { type: String, required: false, default: '' },
-    accepted: { type: String, required: true, default: '1' },   // 0: 승인, 1: 대기, 2: 거절
-    insertTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') },
-    updateTime: { type: Date, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') }
+    thumbnail_user_image: { type: String, required: false, default: '' },
+    thumbnail_background_image: { type: String, required: false, default: '' },
+    accepted: { type: String, required: false, default: '1' },   // 0: 승인, 1: 대기, 2: 거절
+    insert_time: { type: String, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') },
+    updat_time: { type: String, default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss') },
+    status: { type: String, default: '0'},   // 소재상태 0: 사용중, 1: 삭제됨
+    card_exps_typ_cd: { type: String, require: false, default: '10'}    // 카드 노출 타입 10: 기본, 20: 세로카드블럭, 30: 썸네일카드블럭
 }, {
     collection: 'QUOTES'
 });
 
-// Insert Quotes
-quotesSchema.statics.insertQuotes = function (payload) {
-    // this ==> model
-    const quote = new this(payload);
-    // return Promise
-    return quote.save();
-}
-
-// Find All Allow Quotes
-quotesSchema.statics.findAllQuotes = function (payload) {
-    return this.find({accepted: payload.accepted});
-}
-
-// Delete Quotes using _id
-quotesSchema.statics.deleteQoutes = function (payload) {
-    const id = payload.id;
-    return this.deleteOne({
-        _id: id
-    });
-}
 const model = mongoose.model;
 module.exports = model('Quotes', quotesSchema);
