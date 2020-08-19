@@ -334,7 +334,7 @@ export default function QuotesMakerContainer() {
           handleFontFamily={handleFontFamily}
         />
         <InputBox>
-          <label for="fileAdd">백그라운드</label>
+          <label for="fileAdd">내 pc에서 백그라운드 가져오기</label>
           <input
             id="fileAdd"
             name="files"
@@ -343,6 +343,7 @@ export default function QuotesMakerContainer() {
             multiple
           />
         </InputBox>
+        <Button>백그라운드 찾아보기 </Button>
         <Button onClick={deleteObject}>오브젝트 삭제</Button>
         <Button onClick={addText}>텍스트 추가</Button>
         <Button onClick={() => switchType('type1')}>카드 타입 1</Button>
