@@ -4,12 +4,14 @@ import { combineReducers } from 'redux';
 //import { todoSaga } from './todos';
 import hangang from './hangang';
 import quotes from './quotes';
+import toast from './toast';
 import { hangangSaga } from './hangang';
 import { quotesSaga } from './quotes';
 import { all } from 'redux-saga/effects';
 const rootReducer = combineReducers({
   hangang,
-  quotes
+  quotes,
+  toast
   //note
 });
 
