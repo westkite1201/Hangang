@@ -1,5 +1,5 @@
 import produce from 'immer';
-
+import { toast } from 'react-toastify';
 export const initialState = {
   riverTempData: [],
   quotesData: []
@@ -24,6 +24,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
       case GET_HANGANG_TEMP_SUCCESS: {
         draft.riverTempData = action.payload;
+
         break;
       }
       case GET_HANGANG_TEMP_FAILURE: {
@@ -42,9 +43,27 @@ export default (state = initialState, action) => {
         break;
       }
       case SAVE_CANVAS_IMAGE_SUCCESS: {
+        toast('저장에 성공하였습니다!ㅎㅎ', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
         break;
       }
       case SAVE_CANVAS_IMAGE_FAILURE: {
+        toast.warn('저장에 실패하였습니다!ㅜㅜ', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
         break;
       }
       default: {
