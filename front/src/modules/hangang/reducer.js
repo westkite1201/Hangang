@@ -14,6 +14,7 @@ export const GET_QUOTES_REQUEST_ADMIN = 'hangang/GET_QUOTES_REQUEST_ADMIN';
 export const GET_QUOTES_SUCCESS = 'hangang/GET_QUOTES_SUCCESS';
 export const GET_QUOTES_FAILURE = 'hangang/GET_QUOTES_FAILURE';
 export const GET_QUOTES_SUBMIT = 'hangang/GET_QUOTES_SUBMIT';
+export const PUT_QUOTES_ACCEPTED = 'todos/PUT_QUOTES_ACCEPTED';
 
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
