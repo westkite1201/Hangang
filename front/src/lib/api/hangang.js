@@ -58,7 +58,7 @@ export async function saveCanvasImage(param) {
 export async function updateQuotesAccepted(param) {
   const body = param;
   const response = await axios.post(
-    `${cilentConfig.endpoint.api}/hangang/update_quotes_accepted_bulk`,
+    `${cilentConfig.endpoint.api}/hangang/update_quotes_accepted`,
     body
   );
   return response.data;

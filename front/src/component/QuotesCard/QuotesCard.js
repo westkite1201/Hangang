@@ -19,17 +19,17 @@ function CardComponent({ quotes }) {
       return <ThumbQuotesCard quotes={quotes} />;
   }
 }
-const QuotesCard = ({ quotes, key }) => {
+const QuotesCard = ({ quotes, index }) => {
   const { card_exps_typ_cd } = quotes;
   if (card_exps_typ_cd === BANNER) {
     return (
-      <Grid item xs={12} md={12} lg={12} key={key}>
+      <Grid item xs={12} md={12} lg={12} key={index}>
         <CardComponent quotes={quotes} />
       </Grid>
     );
   } else {
     return (
-      <Grid item xs={12} md={6} lg={4} key={key}>
+      <Grid item xs={12} md={6} lg={4} key={index}>
         <CardComponent quotes={quotes} />
       </Grid>
     );
