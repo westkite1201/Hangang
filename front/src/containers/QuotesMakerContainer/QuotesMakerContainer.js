@@ -9,12 +9,15 @@ import UnsplashContainer from '../UnsplashContainer';
 import { UploadOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { Input } from 'antd';
 import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
 // Or you can use:
 // const fabric = require("fabric").fabric;
 //http://jsfiddle.net/fabricjs/hXzvk/ 참고해보기
 const images = [{ url: '/images/temp.jpeg' }];
 export default function QuotesMakerContainer() {
+  const [author, setAuthor] = useState('');
+  const [content, setContent] = useState('');
   const [fontSize, setFontSize] = useState();
   const [fontFamily, setFontFamily] = useState();
   const [isUsingBackGroundPicture, setIsUsingBackGroundPicture] = useState(
@@ -49,8 +52,8 @@ export default function QuotesMakerContainer() {
   }
 
   React.useEffect(() => {
-    let imageSaver = document.getElementById('lnkDownload');
-    imageSaver.addEventListener('click', saveImage, false);
+    // let imageSaver = document.getElementById('lnkDownload');
+    // imageSaver.addEventListener('click', saveImage, false);
 
     const canvas = new fabric.Canvas('my-fabric-canvas', {
       preserveObjectStacking: true,
@@ -94,17 +97,6 @@ export default function QuotesMakerContainer() {
         backgroundImageStretch: true
       });
     });
-    // canvas.on('mouse:wheel', function (opt) {
-    //   let delta = opt.e.deltaY;
-    //   let pointer = canvas.getPointer(opt.e);
-    //   let zoom = canvas.getZoom();
-    //   zoom = zoom + delta / 200;
-    //   if (zoom > 10) zoom = 10;
-    //   if (zoom < 1) zoom = 1;
-    //   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    //   opt.e.preventDefault();
-    //   opt.e.stopPropagation();
-    // });
     canvas.renderAll();
     return () => {
       canvas.dispose();
@@ -112,25 +104,28 @@ export default function QuotesMakerContainer() {
   }, []);
 
   //이미지 다운로드
-  function saveImage(e) {
+  const saveImage = (e) => {
     try {
-      this.href = fabricRef.current.toDataURL({
+      let href = fabricRef.current.toDataURL({
         format: 'png',
         quality: 1
       });
-      console.log('href', this.href);
-      let data = decodeBase64Image(this.href);
-      console.log('data ', data);
+      // let data = decodeBase64Image(this.href);
+      // console.log('data ', data);
       dispatch({
         type: SAVE_CANVAS_IMAGE_REQUEST,
-        payload: { imgB64Data: data }
+        payload: {
+          imgB64Data: href,
+          author: author,
+          content: content
+        }
       });
     } catch (e) {
       console.log('error', e);
     }
 
     //this.download = 'canvas.png';
-  }
+  };
 
   function decodeBase64Image(dataString) {
     let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
@@ -318,6 +313,16 @@ export default function QuotesMakerContainer() {
     };
     reader.readAsDataURL(file);
   }
+
+  const handleContentChange = (e) => {
+    console.log(e.target.value);
+    setContent(e.target.value);
+  };
+  const handleAuthorChange = (e) => {
+    console.log(e.target.value);
+    setAuthor(e.target.value);
+  };
+
   return (
     <QuotesMakerWrapper>
       {/*<UnsplashContainer />*/}
@@ -358,13 +363,21 @@ export default function QuotesMakerContainer() {
         displayColorPicker={displayColorPicker}
         backgroundColor={backgroundColor}
       />
-      <a id="lnkDownload" href="#">
+      <Input placeholder="내용" onChange={handleContentChange} />
+      <Input placeholder="저자" onChange={handleAuthorChange} />
+      {/*    <a id="lnkDownload" href="#">
         Save image
-      </a>
+      </a> */}
+
+      <Button id="lnkDownload" onClick={saveImage}>
+        Save image
+      </Button>
     </QuotesMakerWrapper>
   );
 }
-const QuotesMakerWrapper = styled.div``;
+const QuotesMakerWrapper = styled.div`
+  background-color: 'black';
+`;
 const EditerWrapper = styled.div``;
 const CanvasWrapper = styled.div``;
 
