@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
+import {
+  GET_HANGANG_TEMP_REQUEST,
+  GET_QUOTES_REQUEST
+} from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
-import { getNearbyStaionArray } from '../../lib/helper';
+import { getNearbyStaionArray, getBackgroundImage } from '../../lib/helper';
 import moment from 'moment';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
@@ -60,7 +63,11 @@ const StationInfoContainer = styled.div`
   }
 `;
 
+let backGroundtimer = null;
 function HangangContainer() {
+  const [backgroundImagePath, setBackGroundImagePath] = useState(
+    '/images/river.jpeg'
+  );
   const [tempertureData, setTempertureData] = useState();
   const [station, setStation] = useState();
   const [stations, setStations] = useState();
@@ -120,6 +127,14 @@ function HangangContainer() {
       payload: {}
     });
     nowGeolocation();
+    //backGroundTimer 세팅
+    setBackGroundImagePath(getBackgroundImage());
+    backGroundtimer = setInterval(() => {
+      setBackGroundImagePath(getBackgroundImage());
+    }, 1000 * 3600);
+    return () => {
+      clearInterval(backGroundtimer);
+    };
   }, [dispatch]);
 
   function handleMouseOver() {
@@ -139,11 +154,9 @@ function HangangContainer() {
     opacity: isInfoGrow ? '1' : '0'
   });
 
-  console.log('[seo] riverTempData', riverTempData.data);
-
   return (
     <Wrapper>
-      <BackGround></BackGround>
+      <BackGround backgroundImagePath={backgroundImagePath} />
       <TitleWrapper>
         <Title>
           <hr></hr>
@@ -172,7 +185,7 @@ function HangangContainer() {
           <hr></hr>
         </Title>
         <QuetesWrapper>
-          <QuotesContainer actionType={'todos/GET_QUOTES_REQUEST'}/>
+          <QuotesContainer actionType={GET_QUOTES_REQUEST} />
         </QuetesWrapper>
       </TitleWrapper>
     </Wrapper>
@@ -182,6 +195,7 @@ const QuetesWrapper = styled.div`
   text-align: center;
 `;
 const Wrapper = styled.div`
+  font-family: NanumBrushScript-Regular;
   overflow: hidden;
 `;
 
@@ -216,7 +230,8 @@ const BackGround = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
-  background-image: url('/images/river.jpeg');
+
+  background-image: url(${(props) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;
