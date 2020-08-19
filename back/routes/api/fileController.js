@@ -4,6 +4,7 @@ let fs = require('fs');
 let express = require('express');
 let router = express.Router();
 const _ = require('lodash');
+const mime = require('mime');
 
 /* multiple file Upload example  */
 let FILE_ROOT_DIR = process.cwd();
@@ -212,17 +213,34 @@ router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
     });
   }
 });
-router.post('/saveCanvasImageFile', function (req, res) {
+function decodeBase64Image(dataString) {
+  let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
+router.post('/save_canvas_image', function (req, res) {
   let imgB64Data = req.body.imgB64Data;
-  let fs = require('fs');
+  let author = req.body.author;
+  let content = req.body.content;
   let decodedImg = decodeBase64Image(imgB64Data);
-  let imageBuffer = decodedImg.data;
   let type = decodedImg.type;
-  let extension = mime.extension(type);
-  let fileName = 'image.' + extension;
-  let path = FILE_ROOT_DIR + FILE_FORDER_PATH;
+  let extension = mime.getExtension(type);
+  var base64Data = imgB64Data.replace(/^data:image\/png;base64,/, '');
+  let fileName = content + '_' + author + '.' + extension;
+  let path = FILE_ROOT_DIR + FILE_FORDER_PATH + fileName;
   try {
-    fs.writeFileSync(path + fileName, imageBuffer, 'utf8');
+    require('fs').writeFile(path, base64Data, 'base64', function (err) {
+      console.log(err);
+    });
     res.json({
       message: 'success',
       status: '200'

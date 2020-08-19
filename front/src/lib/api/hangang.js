@@ -42,12 +42,14 @@ export async function getQuotesAdmin() {
 }
 
 export async function saveCanvasImage(param) {
-  console.log('hello');
   const data = {
-    imgB64Data: param.imgB64Data
+    imgB64Data: param.imgB64Data,
+    author: param.author,
+    content: param.content
   };
+  console.log('data ', data);
   const response = await axios.post(
-    `${cilentConfig.endpoint.api}/file/saveCanvasImage`,
+    `${cilentConfig.endpoint.api}/file/save_canvas_image`,
     data
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
