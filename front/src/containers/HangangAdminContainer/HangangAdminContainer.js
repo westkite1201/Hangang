@@ -1,74 +1,166 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
-import QuotesContainer from '../QuotesContainer';
+import {
+  Grid,
+  Switch,
+  FormControlLabel,
+  RadioGroup,
+  Radio
+} from '@material-ui/core';
+import CheckBox from '@material-ui/core/CheckBox';
+import { GET_QUOTES_REQUEST_ADMIN, PUT_QUOTES_ACCEPTED } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
+import QuotesCard from '../../component/QuotesCard';
 
-function HangangAdminContainer() {
-  const [isInfoGrow, setIsInfoGrow] = useState();
+let returnIdList = [];
+
+const QuotesCardList = ({ quotesList }) => {
+  const onChecked = (event) => {
+
+    if (event.target.checked) {
+      returnIdList.push(event.target.id);
+    } else {
+      returnIdList = returnIdList.filter((id) => {return id !== event.target.id});
+    }
+  }
+  
+  return (
+      quotesList && quotesList.map((quotes, index) => {
+        return (
+          <div className="quote-container">
+            <QuotesCard quotes={quotes} key={'quote-card-' + index} index={'quote-card-' + index}/>
+            <CheckBox key={'quote-card-checkbox-' + index} id={quotes._id} onChange={onChecked}/>
+          </div>
+        );
+      })
+  )
+};
+
+const HangangAdminContainer = () => {
+  const { quotesData } = useSelector((state) => state.hangang);
+  const [acceptedQuotes, setAcceptedQuotes] = useState();
+  const [submitQuotes, setSubmitQuotes] = useState();
+  const [showQuotes, setShowQuotes] = useState();
+  const [tempList, setTempList] = useState();
+
+  const [isAcceptedManage, setIsAcceptedManage] = useState(false); // 초기값은 submit 받은 데이터를 보여줌
+  const [showCode, setShowCode] = useState('10');
   const dispatch = useDispatch();
 
+  const [backgroundImagePath, setBackgroundImagePath] = useState(
+    '/images/river.jpeg'
+  );
   useEffect(() => {
     dispatch({
-      type: GET_HANGANG_TEMP_REQUEST,
-      payload: {}
+      type: GET_QUOTES_REQUEST_ADMIN,
+      payload: { accepted: '1' }
     });
   }, [dispatch]);
 
-  function handleMouseOver() {
-    setIsInfoGrow(true);
-  }
-  function handleMouseLeave() {
-    setIsInfoGrow(false);
-  }
+  useEffect(() => {
+    const { data } = quotesData;
+    if (data) {
+      const {
+        accepted_quotes: acceptedQuotes,
+        submit_quotes: submitQuotes
+      } = data;
+      setAcceptedQuotes(acceptedQuotes);
+      setSubmitQuotes(submitQuotes);
+      setShowQuotes(submitQuotes);
+      setTempList(submitQuotes);
+    }
+  }, [quotesData]);
+
+  useEffect(() => {
+    setShowQuotes(isAcceptedManage ? acceptedQuotes : submitQuotes);
+    setTempList(isAcceptedManage ? acceptedQuotes : submitQuotes);
+    handleChangeCode({
+      target: {
+        value: '10'
+      }
+    }, isAcceptedManage ? acceptedQuotes : submitQuotes);
+  }, [isAcceptedManage]);
+
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
-    transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
-    opacity: isInfoGrow ? '0' : '1'
+    transform: 'translate3d(0, 0, 0) ',
+    opacity:  '1',
+    backgroundColor: 'black'
   });
-  const infoStyle = useSpring({
-    config: { duration: 1000, easing: easings.easeExpOut },
-    transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
-    opacity: isInfoGrow ? '1' : '0'
-  });
-  //점검중 일 경우 대비
-  function viewTemperture() {}
+
+  const handleChangeType = (event) => {
+    setIsAcceptedManage(event.target.checked);
+  };
+
+  const handleChangeCode = (event, filterList = tempList) => {
+    setShowCode(event.target.value);
+    if (filterList) {
+      const temp = filterList.filter(
+        (quote) => quote.card_exps_typ_cd === event.target.value
+      );
+      setShowQuotes(temp);
+    }
+  };
+
+  const handleClickButton = (accepted) => {
+    dispatch({
+      type: PUT_QUOTES_ACCEPTED,
+      payload: { ids: returnIdList, accepted: accepted ? '0' : '1' }
+    });
+    returnIdList = [];    
+  }
+
   return (
     <Wrapper>
-      <BackGround></BackGround>
-      <TitleWrapper>
-        <Title>
+      <BackGround backgroundImagePath={backgroundImagePath} />
+      <Title>
+        <div style={{ padding: '30px 0 30px 0' }}>
           <hr></hr>
-          <animated.div
-            className={'station-info'}
-            style={infoStyle}
-            onMouseOver={handleMouseOver}
-            onMouseLeave={handleMouseLeave}
-          >
+          <animated.div style={titleStyle}>
+            <div>확인좀 해주세요...</div>
           </animated.div>
-          <div style={{ padding: '30px 0 30px 0' }}>
-            <animated.div
-              onMouseOver={handleMouseOver}
-              onMouseLeave={handleMouseLeave}
-              style={titleStyle}
-            >
-            </animated.div>
-          </div>
-
-          <hr></hr>
-        </Title>
-        <QuetesWrapper>
-          <QuotesContainer actionType={'todos/GET_QUOTES_SUBMIT'}/>
-        </QuetesWrapper>
-      </TitleWrapper>
+          <FormControlLabel
+            control={
+              <Switch checked={isAcceptedManage} onChange={handleChangeType} />
+            }
+            label="Switch Manage"
+          />
+          <RadioGroup
+            name="showCode"
+            aria-label="showCode"
+            value={showCode.toString()}
+            onChange={(event) => handleChangeCode(event)}
+            row
+          >
+            {[10, 20, 30].map((value, index) => (
+              <FormControlLabel
+                key={index}
+                value={value.toString()}
+                control={<Radio />}
+                label={value.toString()}
+              />
+            ))}
+          </RadioGroup>
+          <button onClick={() => handleClickButton(true)}>Accept</button>
+          <button onClick={() => handleClickButton(false)}>Decline</button>
+        </div>
+        <hr></hr>
+      </Title>
+      <Grid container spacing={1}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={10}>
+          <Grid container spacing={1}>
+            {showQuotes && <QuotesCardList quotesList={showQuotes} />}
+          </Grid>
+        </Grid>
+        <Grid item xs={1}></Grid>
+      </Grid>
     </Wrapper>
   );
-}
-const QuetesWrapper = styled.div`
-  text-align: center;
-`;
+};
+
 const Wrapper = styled.div`
   overflow: hidden;
 `;
@@ -104,7 +196,7 @@ const BackGround = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
-  background-image: url('/images/river.jpeg');
+  background-image: url(${(props) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;

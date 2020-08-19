@@ -6,11 +6,7 @@ import QuotesCard from '../../component/QuotesCard';
 
 const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, key) => {
-    return (
-      <Grid item xs={12} md={6} lg={4} key={key}>
-        <QuotesCard quotes={quotes} />;
-      </Grid>
-    );
+    return <QuotesCard quotes={quotes} key={key} />;
   });
 };
 
@@ -31,7 +27,9 @@ const QuotesGridViewComponent = () => {
       <Grid item xs={1} md={1} lg={1}></Grid>
       <Grid item xs={10} md={10} lg={10}>
         <Grid container spacing={3}>
-          {quotesList && <QuotesCardList quotesList={quotesList} />}
+          {quotesList && quotesList.length !== 0 && (
+            <QuotesCardList quotesList={quotesList} />
+          )}
         </Grid>
       </Grid>
       <Grid item xs={1} md={1} lg={1}></Grid>
