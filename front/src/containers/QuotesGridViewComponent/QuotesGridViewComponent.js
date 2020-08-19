@@ -27,7 +27,9 @@ const QuotesGridViewComponent = () => {
       <Grid item xs={1} md={1} lg={1}></Grid>
       <Grid item xs={10} md={10} lg={10}>
         <Grid container spacing={3}>
-          {quotesList && <QuotesCardList quotesList={quotesList} />}
+          {quotesList && quotesList.length !== 0 && (
+            <QuotesCardList quotesList={quotesList} />
+          )}
         </Grid>
       </Grid>
       <Grid item xs={1} md={1} lg={1}></Grid>
