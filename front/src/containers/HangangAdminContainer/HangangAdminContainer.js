@@ -39,9 +39,7 @@ const QuotesCardList = ({ quotesList }) => {
 };
 
 const HangangAdminContainer = () => {
-  const [isInfoGrow, setIsInfoGrow] = useState();
   const { quotesData } = useSelector((state) => state.hangang);
-  // const { quotesAcceptedData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
   const [showQuotes, setShowQuotes] = useState();
@@ -78,12 +76,17 @@ const HangangAdminContainer = () => {
   useEffect(() => {
     setShowQuotes(isAcceptedManage ? acceptedQuotes : submitQuotes);
     setTempList(isAcceptedManage ? acceptedQuotes : submitQuotes);
+    handleChangeCode({
+      target: {
+        value: '10'
+      }
+    }, isAcceptedManage ? acceptedQuotes : submitQuotes);
   }, [isAcceptedManage]);
 
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
-    transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
-    opacity: isInfoGrow ? '0' : '1',
+    transform: 'translate3d(0, 0, 0) ',
+    opacity:  '1',
     backgroundColor: 'black'
   });
 
@@ -91,23 +94,22 @@ const HangangAdminContainer = () => {
     setIsAcceptedManage(event.target.checked);
   };
 
-  const handleChangeCode = (event) => {
+  const handleChangeCode = (event, filterList = tempList) => {
     setShowCode(event.target.value);
-    const temp = tempList.filter(
-      (quote) => quote.card_exps_typ_cd === event.target.value
-    );
-    setShowQuotes(temp);
+    if (filterList) {
+      const temp = filterList.filter(
+        (quote) => quote.card_exps_typ_cd === event.target.value
+      );
+      setShowQuotes(temp);
+    }
   };
 
   const handleClickButton = (accepted) => {
     dispatch({
       type: PUT_QUOTES_ACCEPTED,
-      // payload: { ids: ['5f3a43c5df2cca444a95c794', '5f3a43c3df2cca444a95c793'], accepted: accepted }
       payload: { ids: returnIdList, accepted: accepted ? '0' : '1' }
     });
-    returnIdList = [];
-    // const { data } = quotesAcceptedData;
-    
+    returnIdList = [];    
   }
 
   return (
@@ -129,7 +131,7 @@ const HangangAdminContainer = () => {
             name="showCode"
             aria-label="showCode"
             value={showCode.toString()}
-            onChange={handleChangeCode}
+            onChange={(event) => handleChangeCode(event)}
             row
           >
             {[10, 20, 30].map((value, index) => (
@@ -158,9 +160,7 @@ const HangangAdminContainer = () => {
     </Wrapper>
   );
 };
-const QuetesWrapper = styled.div`
-  text-align: center;
-`;
+
 const Wrapper = styled.div`
   overflow: hidden;
 `;
