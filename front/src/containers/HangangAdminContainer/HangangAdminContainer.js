@@ -8,26 +8,40 @@ import {
   RadioGroup,
   Radio
 } from '@material-ui/core';
+import CheckBox from '@material-ui/core/CheckBox';
 import { GET_QUOTES_REQUEST_ADMIN, PUT_QUOTES_ACCEPTED } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
 
+let returnIdList = [];
+
 const QuotesCardList = ({ quotesList }) => {
-  return quotesList.map((quotes, index) => {
-    return (
-      <div className="quote-container">
-        <QuotesCard quotes={quotes} key={'quote-card-' + index} />
-        <input type="checkbox" key={'quote-card-checkbox-' + index} id={'quote-card-checkbox-' + index} />
-      </div>
-    );
-  });
+  const onChecked = (event) => {
+
+    if (event.target.checked) {
+      returnIdList.push(event.target.id);
+    } else {
+      returnIdList = returnIdList.filter((id) => {return id !== event.target.id});
+    }
+  }
+  
+  return (
+      quotesList && quotesList.map((quotes, index) => {
+        return (
+          <div className="quote-container">
+            <QuotesCard quotes={quotes} key={'quote-card-' + index} index={'quote-card-' + index}/>
+            <CheckBox key={'quote-card-checkbox-' + index} id={quotes._id} onChange={onChecked}/>
+          </div>
+        );
+      })
+  )
 };
 
 const HangangAdminContainer = () => {
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { quotesData } = useSelector((state) => state.hangang);
-  const { quotesAcceptedData } = useSelector((state) => state.hangang);
+  // const { quotesAcceptedData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
   const [showQuotes, setShowQuotes] = useState();
@@ -89,10 +103,11 @@ const HangangAdminContainer = () => {
     dispatch({
       type: PUT_QUOTES_ACCEPTED,
       // payload: { ids: ['5f3a43c5df2cca444a95c794', '5f3a43c3df2cca444a95c793'], accepted: accepted }
-      payload: { ids: [], accepted: accepted }
+      payload: { ids: returnIdList, accepted: accepted ? '0' : '1' }
     });
+    returnIdList = [];
     // const { data } = quotesAcceptedData;
-    console.log('[masonms] data: ', quotesAcceptedData);
+    
   }
 
   return (

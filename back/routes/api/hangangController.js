@@ -162,14 +162,33 @@ router.post("/delete_quotes", async (req, res) => {
  * accepted: '0'(승인), '1'(대기), '2'(거절)
  */
 
-router.post("/update_qoutes_accepted", async (req, res) => {
+router.post("/update_quotes_accepted", async (req, res) => {
   try {
     const { ids, accepted } = req.body;
+    const returnArray = {};
     Quotes.update({ _id: ids }, { $set: { accepted: accepted } }, {multi: true}, (error, output) => { 
       if (error) {
         return res.json(makeReturnData("999", error));
       } else {
-        return res.json(makeReturnData("100", output));
+        Quotes.find({ accepted: "1", status: "0" }, (error, submit_quotes) => {
+        if (error) {
+          return res.json(makeReturnData("999", error));
+        } else {
+          returnArray.submit_quotes = submit_quotes;
+          Quotes.find(
+            { accepted: "0", status: "0" },
+            (error, accepted_quotes) => {
+              if (error) {
+                return res.json(makeReturnData("999", error));
+              } else {
+                returnArray.accepted_quotes = accepted_quotes;
+                return res.json(makeReturnData("100", returnArray));
+              }
+            }
+          );
+        }
+      });
+        // return res.json(makeReturnData("100", output));
       }
     })
   } catch (error) {
