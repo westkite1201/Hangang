@@ -3,27 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   Grid,
-  TableCell,
-  TableRow,
   Switch,
   FormControlLabel,
   RadioGroup,
   Radio
 } from '@material-ui/core';
-import { GET_QUOTES_REQUEST_ADMIN } from '../../modules/hangang/reducer';
+import { GET_QUOTES_REQUEST_ADMIN, PUT_QUOTES_ACCEPTED } from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
 
 const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, index) => {
-    return <QuotesCard quotes={quotes} key={index} />;
+    return (
+      <div className="quote-container">
+        <QuotesCard quotes={quotes} key={'quote-card-' + index} />
+        <input type="checkbox" key={'quote-card-checkbox-' + index} id={'quote-card-checkbox-' + index} />
+      </div>
+    );
   });
 };
 
 const HangangAdminContainer = () => {
   const [isInfoGrow, setIsInfoGrow] = useState();
   const { quotesData } = useSelector((state) => state.hangang);
+  const { quotesAcceptedData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
   const [showQuotes, setShowQuotes] = useState();
@@ -32,6 +36,10 @@ const HangangAdminContainer = () => {
   const [isAcceptedManage, setIsAcceptedManage] = useState(false); // 초기값은 submit 받은 데이터를 보여줌
   const [showCode, setShowCode] = useState('10');
   const dispatch = useDispatch();
+
+  const [backgroundImagePath, setBackgroundImagePath] = useState(
+    '/images/river.jpeg'
+  );
   useEffect(() => {
     dispatch({
       type: GET_QUOTES_REQUEST_ADMIN,
@@ -77,11 +85,22 @@ const HangangAdminContainer = () => {
     setShowQuotes(temp);
   };
 
+  const handleClickButton = (accepted) => {
+    dispatch({
+      type: PUT_QUOTES_ACCEPTED,
+      // payload: { ids: ['5f3a43c5df2cca444a95c794', '5f3a43c3df2cca444a95c793'], accepted: accepted }
+      payload: { ids: [], accepted: accepted }
+    });
+    // const { data } = quotesAcceptedData;
+    console.log('[masonms] data: ', quotesAcceptedData);
+  }
+
   return (
     <Wrapper>
+      <BackGround backgroundImagePath={backgroundImagePath} />
       <Title>
-        <hr></hr>
         <div style={{ padding: '30px 0 30px 0' }}>
+          <hr></hr>
           <animated.div style={titleStyle}>
             <div>확인좀 해주세요...</div>
           </animated.div>
@@ -107,6 +126,8 @@ const HangangAdminContainer = () => {
               />
             ))}
           </RadioGroup>
+          <button onClick={() => handleClickButton(true)}>Accept</button>
+          <button onClick={() => handleClickButton(false)}>Decline</button>
         </div>
         <hr></hr>
       </Title>
@@ -160,7 +181,7 @@ const BackGround = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
-  background-image: url('/images/river.jpeg');
+  background-image: url(${(props) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;
