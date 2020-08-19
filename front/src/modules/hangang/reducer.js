@@ -15,6 +15,7 @@ export const GET_QUOTES_SUCCESS = 'todos/GET_QUOTES_SUCCESS';
 export const GET_QUOTES_FAILURE = 'todos/GET_QUOTES_FAILURE';
 export const GET_QUOTES_SUBMIT = 'todos/GET_QUOTES_SUBMIT';
 
+export const PUT_QUOTES_ACCEPTED = 'todos/PUT_QUOTES_ACCEPTED';
 
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
