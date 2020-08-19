@@ -15,11 +15,11 @@ export const initialState = {
     {
       loading: false,
       data: [],
-      error: null,
-    },
+      error: null
+    }
   ],
   isEdit: false,
-  editTodoItemIndex: 0,
+  editTodoItemIndex: 0
 };
 
 export const GET_TODOS_REQUEST = 'todos/GET_TODOS_REQUEST';

@@ -157,7 +157,7 @@ router.get('/image/:filename', function (req, res) {
 // 파일들을 반호나
 
 router.post('/getImageFilePath', function (req, res) {
-  const store_dir = FILE_ROOT_DIR + FILE_FORDER_PATH + req.body.user_id;
+  const store_dir = FILE_ROOT_DIR + FILE_FORDER_PATH;
   try {
     let files = fs.readdirSync(store_dir); // 디렉토리를 읽어온다
     //console.log(' files', files);
@@ -173,6 +173,7 @@ router.post('/getImageFilePath', function (req, res) {
   }
 });
 //unsplash container 이용할때 사용
+//upload photho
 router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
   req,
   res
@@ -181,13 +182,7 @@ router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
     request = require('request');
 
   let url = req.params.url;
-  let path =
-    FILE_ROOT_DIR +
-    FILE_FORDER_PATH +
-    req.params.userId +
-    '/' +
-    req.params.id +
-    '.jpg';
+  let path = FILE_ROOT_DIR + FILE_FORDER_PATH + '/' + req.params.id + '.jpg';
   // console.log('url', url);
   // console.log('path ', path);
   try {
