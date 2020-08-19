@@ -1,3 +1,18 @@
+$primaryColor: salmon;
+
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Noto + Sans + KR');
+@import url('https://fonts.googleapis.com/css?family=Do + Hyeon');
+@import url('https://fonts.googleapis.com/css?family=Yeon + Sung&subset=korean');
+
+// @function shade($color) {
+//   @return mix(black, $color, 30%);
+// }
+
+@font-face {
+  font-family: 'NanumMyeongjo';
+  src: url('/fonts/NanumMyeongjo.ttf');
+}
 @font-face {
   font-family: 'JejuMyeongjo';
   src: url('/fonts/JejuMyeongjo-Regular.ttf') format('ttf');
@@ -33,8 +48,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+a {
+  text-decoration: none;
+}
 
-/*burger menu css*/
+#page-wrap {
+  text-align: center;
+
+  /* Prevent sidebar from showing a scrollbar on page */
+  overflow: auto;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+
+  /* Our sidebar item styling */
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: #d1d1d1;
+  transition: color 0.2s;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+  color: white;
+}
+
+/* The rest copied directly from react-burger-menu docs */
+
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
@@ -49,11 +91,6 @@ code {
   background: #373a47;
 }
 
-/* Color/shape of burger icon bars on hover*/
-.bm-burger-bars-hover {
-  background: #a90000;
-}
-
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
   height: 24px;
@@ -65,22 +102,11 @@ code {
   background: #bdc3c7;
 }
 
-/*
-Sidebar wrapper styles
-Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
-*/
-.bm-menu-wrap {
-  overflow: hidden;
-  position: fixed;
-  height: 100%;
-}
-
 /* General sidebar styles */
 .bm-menu {
-  background: #000;
+  background: #373a47;
   padding: 2.5em 1.5em 0;
-  font-size: 1.15em;
-  overflow: hidden !important;
+  font-size: 1.3em;
 }
 
 /* Morph shape necessary with bubble or elastic */
@@ -91,20 +117,94 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Wrapper for item list */
 .bm-item-list {
   color: #b8b7ad;
-  padding: 0.8em;
-}
-
-/* Individual item */
-.bm-item {
-  display: inline-block;
 }
 
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
-.menu-item {
-  color: grey;
-  font-size: 2rem;
+
+input::-webkit-input-placeholder {
+  font-family: SF Pro;
+  font-weight: 100;
+}
+
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.textInput {
+  margin: 20px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.hexLabel {
+  margin: 12px;
+  font-size: 1em;
+  color: #fff;
+}
+
+.downbutton {
+  width: 200px;
+  height: 50px;
+  color: #fff;
+  background-color: $primaryColor;
+  margin: 5px;
+  font-size: 1.3em;
+  font-weight: 200;
   text-decoration: none;
+  line-height: 50px;
+  border-radius: 10px;
+  transition: 0.3s;
+  &:hover,
+  &:visited,
+  &:active {
+    background-color: shade($primaryColor);
+    color: #ccc;
+    text-decoration: none;
+  }
+}
+
+.paletteWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.huePicker {
+  padding: 20px;
+}
+.editorWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  margin: 8px;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.editoritem {
+  margin: 0px 5px 0px 5px;
+}
+
+.fontSelect {
+  font-weight: 200;
+}
+.canvas-container {
+  display: block;
+  margin: 0 auto;
+}
+#my-fabric-canvas {
+  display: block;
+  margin: 0 auto;
 }
