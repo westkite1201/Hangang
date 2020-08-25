@@ -8,8 +8,11 @@ import {
   RadioGroup,
   Radio
 } from '@material-ui/core';
-import CheckBox from '@material-ui/core/CheckBox';
-import { GET_QUOTES_REQUEST_ADMIN, PUT_QUOTES_ACCEPTED } from '../../modules/hangang/reducer';
+import { Checkbox } from '@material-ui/core';
+import {
+  GET_QUOTES_REQUEST_ADMIN,
+  PUT_QUOTES_ACCEPTED
+} from '../../modules/hangang/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
@@ -18,24 +21,34 @@ let returnIdList = [];
 
 const QuotesCardList = ({ quotesList }) => {
   const onChecked = (event) => {
-
     if (event.target.checked) {
       returnIdList.push(event.target.id);
     } else {
-      returnIdList = returnIdList.filter((id) => {return id !== event.target.id});
+      returnIdList = returnIdList.filter((id) => {
+        return id !== event.target.id;
+      });
     }
-  }
-  
+  };
+
   return (
-      quotesList && quotesList.map((quotes, index) => {
-        return (
-          <div className="quote-container">
-            <QuotesCard quotes={quotes} key={'quote-card-' + index} index={'quote-card-' + index}/>
-            <CheckBox key={'quote-card-checkbox-' + index} id={quotes._id} onChange={onChecked}/>
-          </div>
-        );
-      })
-  )
+    quotesList &&
+    quotesList.map((quotes, index) => {
+      return (
+        <div className="quote-container">
+          <QuotesCard
+            quotes={quotes}
+            key={'quote-card-' + index}
+            index={'quote-card-' + index}
+          />
+          <Checkbox
+            key={'quote-card-checkbox-' + index}
+            id={quotes._id}
+            onChange={onChecked}
+          />
+        </div>
+      );
+    })
+  );
 };
 
 const HangangAdminContainer = () => {
@@ -76,17 +89,20 @@ const HangangAdminContainer = () => {
   useEffect(() => {
     setShowQuotes(isAcceptedManage ? acceptedQuotes : submitQuotes);
     setTempList(isAcceptedManage ? acceptedQuotes : submitQuotes);
-    handleChangeCode({
-      target: {
-        value: '10'
-      }
-    }, isAcceptedManage ? acceptedQuotes : submitQuotes);
+    handleChangeCode(
+      {
+        target: {
+          value: '10'
+        }
+      },
+      isAcceptedManage ? acceptedQuotes : submitQuotes
+    );
   }, [isAcceptedManage]);
 
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
     transform: 'translate3d(0, 0, 0) ',
-    opacity:  '1',
+    opacity: '1',
     backgroundColor: 'black'
   });
 
@@ -109,8 +125,8 @@ const HangangAdminContainer = () => {
       type: PUT_QUOTES_ACCEPTED,
       payload: { ids: returnIdList, accepted: accepted ? '0' : '1' }
     });
-    returnIdList = [];    
-  }
+    returnIdList = [];
+  };
 
   return (
     <Wrapper>
