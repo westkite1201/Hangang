@@ -6,12 +6,17 @@ import styled from 'styled-components';
 import './FileUploadForm.scss';
 const USER_ID = 'testUser';
 const PATH = 'http://localhost:3031/api/file/';
-function ImageList({ filesPathList, setBackgroundUrl, selectedBackgroundUrl }) {
+function ImageList({
+  filesPathList,
+  setSelectedBackgroundUrl,
+  selectedBackgroundUrl
+}) {
   console.log(filesPathList);
   if (_.isEmpty(filesPathList)) {
     console.log('isEmpty ');
     return <div></div>;
   } else {
+    console.log('filesPathList ', filesPathList);
     let imageList = filesPathList.map((item, index) => {
       let url = PATH + 'image/' + item;
       let className = url === selectedBackgroundUrl ? 'selected' : '';
@@ -25,7 +30,7 @@ function ImageList({ filesPathList, setBackgroundUrl, selectedBackgroundUrl }) {
             <img
               alt="background"
               src={url}
-              //onClick={() => setBackgroundUrl(url)}
+              onClick={() => setSelectedBackgroundUrl(url)}
             ></img>
           </ImgDiv>
         </Grid>
@@ -41,7 +46,11 @@ const ImgDiv = styled.div`
     height: 100%;
   }
 `;
-const FileUploadForm = (props) => {
+const FileUploadForm = ({
+  setSelectedBackgroundUrl,
+  selectedBackgroundUrl,
+  backGroundChangeToUrl
+}) => {
   const [files, setFiles] = useState([]);
   const [filesPathList, setFilesPathList] = useState([]);
 
@@ -91,6 +100,7 @@ const FileUploadForm = (props) => {
       console.log(res);
       if (res.data.code !== 200) {
         alert('저장되었습니다!');
+        getFileList();
       } else {
         alert('저장에 실패하였습니다.');
       }
@@ -114,10 +124,10 @@ const FileUploadForm = (props) => {
 
     setFiles(event.target.files);
   };
+  const fileDelete = () => {};
 
   return (
     <div>
-      <button onClick={getFileList}> getFileList </button>
       {/*
       <button onClick={setting.settingBackgroundURLRedis}>
         해당 백그라운드 저장
@@ -129,6 +139,7 @@ const FileUploadForm = (props) => {
             save
           </label>
           <input id="submit" type="submit" />
+
           <label id="labelFileAdd" for="fileAdd">
             File Add
           </label>
@@ -139,17 +150,19 @@ const FileUploadForm = (props) => {
             onChange={fileUpload}
             multiple
           />
+          <button>해당 이미지 파일삭제 </button>
         </div>
       </form>
       <div>
         <Grid container spacing={3}>
           <ImageList
             filesPathList={filesPathList}
-            // setBackgroundUrl={setting.setBackgroundUrl}
-            // selectedBackgroundUrl={setting.selectedBackgroundUrl}
+            setSelectedBackgroundUrl={setSelectedBackgroundUrl}
+            selectedBackgroundUrl={selectedBackgroundUrl}
           />
         </Grid>
       </div>
+      <button onClick ={backGroundChangeToUrl}>확인</button>
     </div>
   );
 };
