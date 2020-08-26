@@ -111,7 +111,6 @@ export default function QuotesMakerContainer() {
     };
   }, []);
 
-  //이미지 다운로드
   const saveImage = (e) => {
     try {
       let href = fabricRef.current.toDataURL({
