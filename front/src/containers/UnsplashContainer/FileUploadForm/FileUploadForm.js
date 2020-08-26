@@ -3,9 +3,13 @@ import axios from 'axios';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
+import clientConfig from '../../../configuration/clientConfig';
 import './FileUploadForm.scss';
+
+import { useDispatch } from 'react-redux';
+import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
-const PATH = 'http://localhost:3031/api/file/';
+const PATH = clientConfig.endpoint.api + '/file/';
 function ImageList({
   filesPathList,
   setSelectedBackgroundUrl,
@@ -51,6 +55,7 @@ const FileUploadForm = ({
   selectedBackgroundUrl,
   backGroundChangeToUrl
 }) => {
+  const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
   const [filesPathList, setFilesPathList] = useState([]);
 
@@ -124,7 +129,33 @@ const FileUploadForm = ({
 
     setFiles(event.target.files);
   };
-  const fileDelete = () => {};
+  const fileDelete = async (e) => {
+    e.preventDefault();
+    try {
+      let data = {
+        imageUrlPath: selectedBackgroundUrl
+      };
+      const res = await axios.post(
+        'http://localhost:3031/api/file/delete_file_image',
+        data
+      );
+      if (res.status === 200) {
+        dispatch({
+          type: SUCCESS_TOAST,
+          payload: {}
+        });
+        getFileList();
+      } else {
+        alert('삭제에 실패하였습니다.');
+        dispatch({
+          type: FAILURE_TOAST,
+          payload: {}
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div>
@@ -150,7 +181,7 @@ const FileUploadForm = ({
             onChange={fileUpload}
             multiple
           />
-          <button>해당 이미지 파일삭제 </button>
+          <button onClick={fileDelete}>해당 이미지 파일삭제 </button>
         </div>
       </form>
       <div>
@@ -162,7 +193,7 @@ const FileUploadForm = ({
           />
         </Grid>
       </div>
-      <button onClick ={backGroundChangeToUrl}>확인</button>
+      <button onClick={backGroundChangeToUrl}>확인</button>
     </div>
   );
 };
