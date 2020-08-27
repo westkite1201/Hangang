@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var axios = require('axios');
+let express = require('express');
+let router = express.Router();
+let axios = require('axios');
 
-var Quotes = require('../../mongo/models/quotes');
-
+let Quotes = require('../../mongo/models/quotes');
+let HangangTemp = require('../../mongo/models/hangangTemp');
 const moment = require('moment');
 const { json } = require('express');
 require('moment-timezone');
@@ -13,6 +13,58 @@ const STATUS_CODE = {
   '404': 'data not found',
   '999': 'etc'
 };
+
+/* 한강 물 데이터 저장 */
+router.get('/insert_hangang_data', async function (req, res, next) {
+  try {
+    const { data } = await axios.get(
+      `${process.env.SEOUL_OPENAPI_URL}` +
+        `/${process.env.API_KEY}` +
+        '/json/WPOSInformationTime/1/5/'
+    );
+    let hangangTempData = data.WPOSInformationTime.row;
+
+    const hangangTemp = new HangangTemp();
+
+    hangangTemp.collection.createIndex(
+      { MSR_DATE: 1, MSR_TIME: 1, SITE_ID: 1 },
+      { unique: true }
+    );
+
+    // const result = await hangangTemp.save();
+    //const result = await hangangTemp.collection.insertMany(hangangTempData);
+    hangangTempData.forEach((value, index) => {
+      hangangTemp.collection.updateMany(
+        {
+          MSR_DATE: value.MSR_DATE,
+          MSR_TIME: value.MSR_TIME,
+          SITE_ID: value.SITE_ID
+        },
+        {
+          $set: {
+            MSR_DATE: value.MSR_DATE,
+            W_TEMP: value.W_TEMP,
+            W_PH: value.W_PH,
+            W_DO: value.W_DO,
+            W_TP: value.W_TP,
+            W_TOC: value.W_TOC,
+            W_PHEN: value.W_PHEN,
+            W_CN: value.W_CN,
+            UPDATE_TIME: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
+          }
+        },
+        { upsert: true }
+      );
+    });
+    return res.json({
+      result: '0000',
+      data: hangangTempData
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json('error');
+  }
+});
 
 router.get('/hangang_data', async function (req, res, next) {
   try {
