@@ -8,6 +8,8 @@ const moment = require("moment");
 const { json } = require("express");
 require("moment-timezone");
 
+const helpers = require('../../common/helpers');
+
 const STATUS_CODE = {
   "100": "success",
   "404": "data not found",
@@ -37,14 +39,19 @@ router.get("/hangang_data", async function (req, res, next) {
 router.post("/word_data", async (req, res) => {
   try {
     const { accepted } = req.body;
-    Quotes.find({ accepted, status: "0" }, (error, quotes) => {
+    const filter = {
+      ACCEPTED: accepted,
+      STATUS: "0"
+    }
+    Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData("999", error));
       } else {
         if (quotes.length === 0) {
           return res.json(makeReturnData("404"));
         } else {
-          return res.json(makeReturnData("100", quotes));
+          const jsonObj = helpers.makeJsonKeyLower(quotes);
+          return res.json(makeReturnData("100", jsonObj));
         }
       }
     });
@@ -63,18 +70,26 @@ router.post("/word_data", async (req, res) => {
 router.post("/word_data_admin", async (req, res) => {
   try {
     const returnArray = {};
-    Quotes.find({ accepted: "1", status: "0" }, (error, submit_quotes) => {
+    let filter = {
+      ACCEPTED: "1",
+      STATUS: "0"
+    }
+    Quotes.find(filter, 
+      (error, submit_quotes) => {
       if (error) {
         return res.json(makeReturnData("999", error));
       } else {
-        returnArray.submit_quotes = submit_quotes;
-        Quotes.find(
-          { accepted: "0", status: "0" },
+        returnArray.submit_quotes = helpers.makeJsonKeyLower(submit_quotes)
+        filter = {
+          ACCEPTED: "0",
+          STATUS: "0"
+        }
+        Quotes.find(filter,
           (error, accepted_quotes) => {
             if (error) {
               return res.json(makeReturnData("999", error));
             } else {
-              returnArray.accepted_quotes = accepted_quotes;
+              returnArray.accepted_quotes = helpers.makeJsonKeyLower(accepted_quotes)
               return res.json(makeReturnData("100", returnArray));
             }
           }
@@ -101,13 +116,13 @@ router.post("/insert_quotes", async (req, res) => {
       thumbnail_background_image,
       accepted,
     } = req.body;
-    const data = {
+    const data = helpers.makeJsonKeyUpper({
       name,
       word,
       thumbnail_user_image,
       thumbnail_background_image,
       accepted,
-    };
+    });
     const quotes = new Quotes(data);
     quotes.save((error) => {
       if (error) {
@@ -132,14 +147,13 @@ router.post("/insert_quotes", async (req, res) => {
 router.post("/delete_quotes", async (req, res) => {
   try {
     const { id } = req.body;
+    const set = {
+      STATUS: "1",
+      UPDATE_TIME: moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss")
+    }
     Quotes.update(
       { _id: id },
-      {
-        $set: {
-          status: "1",
-          updateTime: moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss"),
-        },
-      },
+      { $set: set },
       (error, output) => {
         if (error) {
           return res.json(makeReturnData("999", error));
@@ -166,22 +180,38 @@ router.post("/update_quotes_accepted", async (req, res) => {
   try {
     const { ids, accepted } = req.body;
     const returnArray = {};
-    Quotes.update({ _id: ids }, { $set: { accepted: accepted } }, {multi: true}, (error, output) => { 
+    const set = { 
+      ACCEPTED: accepted
+    }
+    Quotes.update({ _id: ids }, 
+      { $set: set }, 
+      {multi: true}, 
+      (error, output) => { 
       if (error) {
         return res.json(makeReturnData("999", error));
       } else {
-        Quotes.find({ accepted: "1", status: "0" }, (error, submit_quotes) => {
+        let filter = {
+          ACCEPTED: "1",
+          STATUS: "0"
+        }
+        Quotes.find(
+          filter, 
+          (error, submit_quotes) => {
         if (error) {
           return res.json(makeReturnData("999", error));
         } else {
-          returnArray.submit_quotes = submit_quotes;
+          returnArray.submit_quotes = helpers.makeJsonKeyLower(submit_quotes);
+          filter = {
+            ACCEPTED: "0",
+            STATUS: "0"
+          }
           Quotes.find(
-            { accepted: "0", status: "0" },
+            filter,
             (error, accepted_quotes) => {
               if (error) {
                 return res.json(makeReturnData("999", error));
               } else {
-                returnArray.accepted_quotes = accepted_quotes;
+                returnArray.accepted_quotes = helpers.makeJsonKeyLower(accepted_quotes);
                 return res.json(makeReturnData("100", returnArray));
               }
             }
@@ -192,7 +222,7 @@ router.post("/update_quotes_accepted", async (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.json({
       api: "update_qoutes_accepted",
       message: error,
