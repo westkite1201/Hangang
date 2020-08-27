@@ -1,35 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
-import { observer } from 'mobx-react';
-import UseStores from '../../Setting/UseStores';
+import clientConfig from '../../../configuration/clientConfig';
 import './FileUploadForm.scss';
+
+import { useDispatch } from 'react-redux';
+import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
-const PATH = 'http://localhost:3031/api/file/';
-function ImageList({ filesPathList, setBackgroundUrl, selectedBackgroundUrl }) {
+const PATH = clientConfig.endpoint.api + '/file/';
+function ImageList({
+  filesPathList,
+  setSelectedBackgroundUrl,
+  selectedBackgroundUrl
+}) {
   console.log(filesPathList);
   if (_.isEmpty(filesPathList)) {
     console.log('isEmpty ');
     return <div></div>;
   } else {
+    console.log('filesPathList ', filesPathList);
     let imageList = filesPathList.map((item, index) => {
-      let url = PATH + 'image/' + USER_ID + '/' + item;
+      let url = PATH + 'image/' + item;
       let className = url === selectedBackgroundUrl ? 'selected' : '';
 
       return (
         <Grid item xs={4} key={item}>
-          <div
+          <ImgDiv
             style={{ width: '200px', height: '100px', cursor: 'pointer' }}
             className={className}
           >
             <img
               alt="background"
               src={url}
-              onClick={() => setBackgroundUrl(url)}
+              onClick={() => setSelectedBackgroundUrl(url)}
             ></img>
-          </div>
+          </ImgDiv>
         </Grid>
       );
     });
@@ -37,14 +44,27 @@ function ImageList({ filesPathList, setBackgroundUrl, selectedBackgroundUrl }) {
     return imageList;
   }
 }
-const FileUploadForm = observer(props => {
-  const { setting } = UseStores();
+const ImgDiv = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+const FileUploadForm = ({
+  setSelectedBackgroundUrl,
+  selectedBackgroundUrl,
+  backGroundChangeToUrl
+}) => {
+  const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
   const [filesPathList, setFilesPathList] = useState([]);
 
+  useEffect(() => {
+    getFileList();
+  }, []);
   async function getFileList() {
     let data = {
-      user_id: USER_ID,
+      user_id: USER_ID
     };
     let res = await axios.post(PATH + 'getImageFilePath', data);
     console.log('res ', res.data.data.files);
@@ -80,11 +100,12 @@ const FileUploadForm = observer(props => {
     try {
       const res = await axios.post(
         'http://localhost:3031/api/file/uploadFiles',
-        formData,
+        formData
       );
       console.log(res);
       if (res.data.code !== 200) {
         alert('저장되었습니다!');
+        getFileList();
       } else {
         alert('저장에 실패하였습니다.');
       }
@@ -94,7 +115,7 @@ const FileUploadForm = observer(props => {
   }
 
   /* fileUpload  */
-  const fileUpload = event => {
+  const fileUpload = (event) => {
     console.log(event.target.files);
     let fileInput = document.getElementById('fileAdd');
     if (_.isNil(fileInput)) {
@@ -108,20 +129,48 @@ const FileUploadForm = observer(props => {
 
     setFiles(event.target.files);
   };
+  const fileDelete = async (e) => {
+    e.preventDefault();
+    try {
+      let data = {
+        imageUrlPath: selectedBackgroundUrl
+      };
+      const res = await axios.post(
+        'http://localhost:3031/api/file/delete_file_image',
+        data
+      );
+      if (res.status === 200) {
+        dispatch({
+          type: SUCCESS_TOAST,
+          payload: {}
+        });
+        getFileList();
+      } else {
+        alert('삭제에 실패하였습니다.');
+        dispatch({
+          type: FAILURE_TOAST,
+          payload: {}
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div>
-      <button onClick={getFileList}> getFileList </button>
+      {/*
       <button onClick={setting.settingBackgroundURLRedis}>
         해당 백그라운드 저장
       </button>
-
+      */}
       <form encType="multipart/form-data" onSubmit={onSubmitForm}>
         <div className="filebox">
           <label id="labelSubmit" for="submit">
             save
           </label>
           <input id="submit" type="submit" />
+
           <label id="labelFileAdd" for="fileAdd">
             File Add
           </label>
@@ -132,19 +181,21 @@ const FileUploadForm = observer(props => {
             onChange={fileUpload}
             multiple
           />
+          <button onClick={fileDelete}>해당 이미지 파일삭제 </button>
         </div>
       </form>
       <div>
         <Grid container spacing={3}>
           <ImageList
             filesPathList={filesPathList}
-            setBackgroundUrl={setting.setBackgroundUrl}
-            selectedBackgroundUrl={setting.selectedBackgroundUrl}
+            setSelectedBackgroundUrl={setSelectedBackgroundUrl}
+            selectedBackgroundUrl={selectedBackgroundUrl}
           />
         </Grid>
       </div>
+      <button onClick={backGroundChangeToUrl}>확인</button>
     </div>
   );
-});
+};
 
 export default FileUploadForm;
