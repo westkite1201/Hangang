@@ -5,7 +5,6 @@ let express = require('express');
 let router = express.Router();
 const _ = require('lodash');
 const mime = require('mime');
-
 /* multiple file Upload example  */
 let FILE_ROOT_DIR = process.cwd();
 let FILE_FORDER_PATH = '/public/images/';
@@ -157,7 +156,7 @@ router.get('/image/:filename', function (req, res) {
 // 파일들을 반호나
 
 router.post('/getImageFilePath', function (req, res) {
-  const store_dir = FILE_ROOT_DIR + FILE_FORDER_PATH + req.body.user_id;
+  const store_dir = FILE_ROOT_DIR + FILE_FORDER_PATH;
   try {
     let files = fs.readdirSync(store_dir); // 디렉토리를 읽어온다
     //console.log(' files', files);
@@ -173,6 +172,7 @@ router.post('/getImageFilePath', function (req, res) {
   }
 });
 //unsplash container 이용할때 사용
+//upload photho
 router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
   req,
   res
@@ -181,13 +181,7 @@ router.get('/getImageDownloadToUrl/:url/:id/:userId', async function (
     request = require('request');
 
   let url = req.params.url;
-  let path =
-    FILE_ROOT_DIR +
-    FILE_FORDER_PATH +
-    req.params.userId +
-    '/' +
-    req.params.id +
-    '.jpg';
+  let path = FILE_ROOT_DIR + FILE_FORDER_PATH + '/' + req.params.id + '.jpg';
   // console.log('url', url);
   // console.log('path ', path);
   try {
@@ -254,6 +248,31 @@ router.post('/save_canvas_image', function (req, res) {
   }
 });
 
+router.post('/delete_file_image', function (req, res) {
+  let imageUrlPath = req.body.imageUrlPath;
+  let splitPath = imageUrlPath.split('/');
+  let imageName = splitPath[splitPath.length - 1];
+  let filePath = FILE_ROOT_DIR + FILE_FORDER_PATH + '/' + imageName;
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) return console.log('삭제할 수 없는 파일입니다');
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.log(err);
+        return res.json({
+          message: 'error' + err,
+          status: 400
+        });
+      } else {
+        return res.json({
+          message: `${filePath} 를 정상적으로 삭제했습니다`,
+          status: 200
+        });
+      }
+    });
+  });
+});
 //els 연동시
 //elasticsearchFileDataUpdate
 // // 일지 등록시 파일 저장 이후 elasticsearch 저장

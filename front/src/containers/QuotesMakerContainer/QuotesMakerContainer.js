@@ -4,6 +4,8 @@ import { Switch, Button, Upload, message } from 'antd';
 import { fabric } from 'fabric';
 import FontEditer from './FontEditor';
 import MyColorPicker from '../../component/MyColorPicker';
+import FileUploadForm from '../UnsplashContainer/FileUploadForm';
+import CustomModal from '../../component/CustomModal';
 import { getRandomHexColor } from '../../lib/helper';
 import UnsplashContainer from '../UnsplashContainer';
 import { UploadOutlined } from '@ant-design/icons';
@@ -11,6 +13,10 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'antd';
 import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
+import { Tabs } from 'antd';
+import clientConfig from '../../configuration/clientConfig';
+const { TabPane } = Tabs;
+
 // Or you can use:
 // const fabric = require("fabric").fabric;
 //http://jsfiddle.net/fabricjs/hXzvk/ 참고해보기
@@ -30,12 +36,14 @@ export default function QuotesMakerContainer() {
     b: '19',
     a: '1'
   });
+  const [modalView, setModalView] = useState(false);
   const [canvasInfo, setCanvasInfo] = useState({
     // width: 300,
     // height: 500
     width: 700,
     height: 240
   });
+  const [selectedBackgroundUrl, setSelectedBackgroundUrl] = useState();
   const fabricRef = useRef();
   const dispatch = useDispatch();
   function addText() {
@@ -103,13 +111,15 @@ export default function QuotesMakerContainer() {
     };
   }, []);
 
-  //이미지 다운로드
   const saveImage = (e) => {
     try {
+      console.log(fabricRef.current);
+
       let href = fabricRef.current.toDataURL({
-        format: 'png',
+        format: 'image/jpg',
         quality: 1
       });
+      console.log(href);
       // let data = decodeBase64Image(this.href);
       // console.log('data ', data);
       dispatch({
@@ -284,6 +294,39 @@ export default function QuotesMakerContainer() {
     canvas.renderAll();
   };
 
+  function backGroundChangeToUrl() {
+    let path = selectedBackgroundUrl;
+    let canvas = fabricRef.current;
+
+    // let img = new Image();
+    // img.crossOrigin = 'anonymous';
+    // img.src = path;
+    // let fabricImg = new fabric.Image(img);
+    fabric.Image.fromURL(
+      path,
+      function (img) {
+        let oImg = img.set({
+          left: 0,
+          top: 0,
+          crossOrigin: 'anonymous'
+        });
+
+        //img.crossOrigin = 'anonymous';
+        canvas.setBackgroundImage(oImg, canvas.renderAll.bind(canvas), {
+          scaleX: canvas.width / oImg.width,
+          scaleY: canvas.height / oImg.height,
+          backgroundImageOpacity: 1,
+          backgroundImageStretch: true
+          //crossOrigin: 'anonymous'
+        });
+        canvas.renderAll();
+      },
+
+      {
+        crossOrigin: 'anonymous'
+      }
+    );
+  }
   function backGroundChange(e) {
     let canvas = fabricRef.current;
     let file = e.target.files[0];
@@ -323,9 +366,39 @@ export default function QuotesMakerContainer() {
     setAuthor(e.target.value);
   };
 
+  const handleModalOpen = () => {
+    setModalView(true);
+  };
+  const handleModalClose = () => {
+    setModalView(false);
+  };
+
+  const callback = () => {};
   return (
     <QuotesMakerWrapper>
-      {/*<UnsplashContainer />*/}
+      {modalView && (
+        <CustomModal
+          handleModalOpen={handleModalOpen}
+          handleModalClose={handleModalClose}
+          component={
+            <div style={{ width: '60%', margin: '0 auto' }}>
+              <Tabs defaultActiveKey="1" onChange={callback}>
+                <TabPane tab="my server" key="1">
+                  <FileUploadForm
+                    setSelectedBackgroundUrl={setSelectedBackgroundUrl}
+                    selectedBackgroundUrl={selectedBackgroundUrl}
+                    backGroundChangeToUrl={backGroundChangeToUrl}
+                  />
+                </TabPane>
+                <TabPane tab="Find Unsplash" key="2">
+                  <UnsplashContainer />
+                </TabPane>
+              </Tabs>
+            </div>
+          }
+          modalView={modalView}
+        />
+      )}
       <EditerWrapper>
         <FontEditer
           fontSize={fontSize}
@@ -343,7 +416,7 @@ export default function QuotesMakerContainer() {
             multiple
           />
         </InputBox>
-        <Button>백그라운드 찾아보기 </Button>
+        <Button onClick={handleModalOpen}>백그라운드 찾아보기 </Button>
         <Button onClick={deleteObject}>오브젝트 삭제</Button>
         <Button onClick={addText}>텍스트 추가</Button>
         <Button onClick={() => switchType('type1')}>카드 타입 1</Button>
