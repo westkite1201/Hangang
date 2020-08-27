@@ -7,7 +7,13 @@ import {
   MehOutlined
 } from '@ant-design/icons';
 import styled from 'styled-components';
-const AboutCard = ({ thumbnailPath, memUsername, memNickname, memInfo }) => {
+const AboutCard = ({
+  thumbnailPath,
+  memUsername,
+  memNickname,
+  memInfo,
+  githubUrl
+}) => {
   return (
     <div className="my_infomation_wrapper">
       <div className="my_infomation_container">
@@ -26,16 +32,16 @@ const AboutCard = ({ thumbnailPath, memUsername, memNickname, memInfo }) => {
         </div>
         <div className="my_infomation_body">
           <div className="my_infomation_name">
-            {memUsername}김서연 - {memNickname}westkite1201
+            {memUsername}
+            <span className="my_infomation_nick_name">{memNickname}</span>
           </div>
-          <div className="my_infomation_contents">
-            {memInfo}
-            한량이 되고 싶은 못된 개발자, UI에 관심이 많고 개발자란 타이틀에
-            요상한 로망이 있는 프론트앤더
-          </div>
+
+          <div className="my_infomation_contents">{memInfo}</div>
           <IconContainer>
             <div>
-              <GithubOutlined />
+              <GithubOutlined
+                onClick={() => window.open(githubUrl, '_blank')}
+              />
             </div>
             <div>
               <InstagramOutlined />
@@ -52,7 +58,7 @@ const AboutCard = ({ thumbnailPath, memUsername, memNickname, memInfo }) => {
 
 const IconContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   font-size: 20px;
   div {
     padding: 5px;
