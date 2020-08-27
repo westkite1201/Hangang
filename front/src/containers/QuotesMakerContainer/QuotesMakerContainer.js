@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'antd';
 import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
 import { Tabs } from 'antd';
-
+import clientConfig from '../../configuration/clientConfig';
 const { TabPane } = Tabs;
 
 // Or you can use:
@@ -113,10 +113,13 @@ export default function QuotesMakerContainer() {
 
   const saveImage = (e) => {
     try {
+      console.log(fabricRef.current);
+
       let href = fabricRef.current.toDataURL({
-        format: 'png',
+        format: 'image/jpg',
         quality: 1
       });
+      console.log(href);
       // let data = decodeBase64Image(this.href);
       // console.log('data ', data);
       dispatch({
@@ -294,19 +297,35 @@ export default function QuotesMakerContainer() {
   function backGroundChangeToUrl() {
     let path = selectedBackgroundUrl;
     let canvas = fabricRef.current;
-    fabric.Image.fromURL(path, function (img) {
-      let oImg = img.set({
-        left: 0,
-        top: 0
-      });
-      canvas.setBackgroundImage(oImg, canvas.renderAll.bind(canvas), {
-        scaleX: canvas.width / oImg.width,
-        scaleY: canvas.height / oImg.height,
-        backgroundImageOpacity: 1,
-        backgroundImageStretch: true
-      });
-      canvas.renderAll();
-    });
+
+    // let img = new Image();
+    // img.crossOrigin = 'anonymous';
+    // img.src = path;
+    // let fabricImg = new fabric.Image(img);
+    fabric.Image.fromURL(
+      path,
+      function (img) {
+        let oImg = img.set({
+          left: 0,
+          top: 0,
+          crossOrigin: 'anonymous'
+        });
+
+        //img.crossOrigin = 'anonymous';
+        canvas.setBackgroundImage(oImg, canvas.renderAll.bind(canvas), {
+          scaleX: canvas.width / oImg.width,
+          scaleY: canvas.height / oImg.height,
+          backgroundImageOpacity: 1,
+          backgroundImageStretch: true
+          //crossOrigin: 'anonymous'
+        });
+        canvas.renderAll();
+      },
+
+      {
+        crossOrigin: 'anonymous'
+      }
+    );
   }
   function backGroundChange(e) {
     let canvas = fabricRef.current;
