@@ -1,16 +1,18 @@
 .my_infomation_wrapper {
   padding: 10px 20px;
   //background: linear-gradient(to right, rgb(127, 104, 220), rgb(176, 106, 179));
-  background: linear-gradient(
-    to right,
-    #bdc3c7,
-    #2c3e50
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  // background: linear-gradient(
+  //   to right,
+  //   #bdc3c7,
+  //   #2c3e50
+  // ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   //background : linear-gradient(to right, #fd746c, #ff9068);
   border-radius: 20px;
-  margin: 10px;
-  color: white;
+  margin: auto;
+  color: black;
+  min-width: 500px;
+  max-width: 500px;
   .my_infomation_container {
     display: flex;
     align-items: center;
@@ -25,14 +27,25 @@
     }
     .my_infomation_body {
       margin-left: 20px;
+      min-width: 300px;
+      text-align: left;
       .my_infomation_name {
+        text-align: left;
         font-family: 'BlackHanSans-Regular';
         font-size: 1.4rem;
         margin: -2px 0 4px -1px;
+        color: #8973b0;
+        .my_infomation_nick_name {
+          padding-left: 10px;
+          text-align: left;
+          font-size: 1.2rem;
+          color: #9d6fa5;
+        }
       }
+
       .my_infomation_contents {
         font-family: 'NanumBrushScript-Regular';
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: 400;
       }
     }
