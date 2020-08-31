@@ -7,6 +7,7 @@ import HangangSubmitQoutesContainer from './containers/HangangSubmitQoutesContai
 import QuotesGridViewComponent from './containers/QuotesGridViewComponent';
 import QuotesMakerContainer from './containers/QuotesMakerContainer';
 import AboutContainer from './containers/AboutContainer';
+import QuotesManageContainer from './containers/QuotesManageContainer';
 export default (props) => {
   useEffect(() => {}, []);
 
@@ -24,6 +25,11 @@ export default (props) => {
       <Route exact path="/about" component={AboutContainer} />
       <Route exact path="/quotes" component={QuotesGridViewComponent}></Route>
       <Route exact path="/quotesmaker" component={QuotesMakerContainer}></Route>
+      <Route
+        exact
+        path="/quotesmanage"
+        component={QuotesManageContainer}
+      ></Route>
     </div>
   );
 };
