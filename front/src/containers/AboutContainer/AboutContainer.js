@@ -6,8 +6,8 @@ const AboutContainer = (props) => {
   return (
     <div>
       <Grid container spacing={3}>
-        <Grid item xs={2} md={2} lg={2}></Grid>
-        <Grid item xs={8} md={8} lg={8}>
+        <Grid item xs={1} md={2} lg={2}></Grid>
+        <Grid item xs={10} md={8} lg={8}>
           <AboutCardContainer>
             <AboutCard
               thumbnailPath={'/images/명성.jpg'}
@@ -27,7 +27,7 @@ const AboutContainer = (props) => {
             />
           </AboutCardContainer>
         </Grid>
-        <Grid item xs={2} md={2} lg={2}></Grid>
+        <Grid item xs={1} md={2} lg={2}></Grid>
       </Grid>
     </div>
   );

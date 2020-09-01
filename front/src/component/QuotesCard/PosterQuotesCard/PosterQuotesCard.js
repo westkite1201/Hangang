@@ -16,6 +16,11 @@ const PosterQuotesCard = ({ quotes }) => {
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
     boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)'
   };
+  const makePosterText = (str) => {
+    return str.split('\n').map((item) => {
+      return <div>{item}</div>;
+    });
+  };
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}
@@ -23,7 +28,7 @@ const PosterQuotesCard = ({ quotes }) => {
       style={mouseOver ? cardHoverStyle : {}}
     >
       <BackGround />
-      <QuotesContent>{quotes.word}</QuotesContent>
+      <QuotesContent>{makePosterText(quotes.word)}</QuotesContent>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
   );
