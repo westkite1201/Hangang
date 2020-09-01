@@ -2,7 +2,8 @@ import produce from 'immer';
 import { toast } from 'react-toastify';
 export const initialState = {
   riverTempData: [],
-  quotesData: []
+  quotesData: [],
+  backgroundImage: ''
 };
 
 export const GET_HANGANG_TEMP_REQUEST = 'quotes/GET_HANGANG_TEMP_REQUEST';
