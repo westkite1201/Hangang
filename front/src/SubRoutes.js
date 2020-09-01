@@ -8,6 +8,7 @@ import QuotesGridViewComponent from './containers/QuotesGridViewComponent';
 import QuotesMakerContainer from './containers/QuotesMakerContainer';
 import AboutContainer from './containers/AboutContainer';
 import QuotesManageContainer from './containers/QuotesManageContainer';
+import PreviewContainer from './containers/PreviewContainer';
 export default (props) => {
   useEffect(() => {}, []);
 
@@ -30,6 +31,7 @@ export default (props) => {
         path="/quotesmanage"
         component={QuotesManageContainer}
       ></Route>
+      <Route exact path="/preview" component={PreviewContainer}></Route>
     </div>
   );
 };
