@@ -15,16 +15,14 @@ function ImageList({
   setSelectedBackgroundUrl,
   selectedBackgroundUrl
 }) {
-  console.log(filesPathList);
   if (_.isEmpty(filesPathList)) {
     console.log('isEmpty ');
     return <div></div>;
   } else {
-    console.log('filesPathList ', filesPathList);
+    //console.log('filesPathList ', filesPathList);
     let imageList = filesPathList.map((item, index) => {
       let url = PATH + 'image/' + item;
       let className = url === selectedBackgroundUrl ? 'selected' : '';
-
       return (
         <Grid item xs={4} key={item}>
           <ImgDiv
@@ -81,19 +79,14 @@ const FileUploadForm = ({
       return;
     }
     let formData = new FormData();
-
-    // let userId = cookies.get('user_id');
-    // let user_name = cookies.get('user_name');
     let userId = 'testUser';
     let userName = 'testUserName';
     formData.append('user_id', userId);
     formData.append('user_name', userName);
-
     for (const key of Object.keys(files)) {
       formData.append('files', files[key]);
     }
     //formData
-
     for (let pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }
@@ -126,9 +119,9 @@ const FileUploadForm = ({
       alert('한번에 10개 이상은 저장하실수 없습니다. ');
       return;
     }
-
     setFiles(event.target.files);
   };
+
   const fileDelete = async (e) => {
     e.preventDefault();
     try {

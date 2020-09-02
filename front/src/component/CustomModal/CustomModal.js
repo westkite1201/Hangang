@@ -51,6 +51,7 @@ export default function CustomModal({
           <div className={classes.paper}>
             <div>
               {component}
+              <button onClick={handleModalClose}>확인</button>
               <button onClick={handleModalClose}>취소</button>
             </div>
           </div>
