@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Input, Button } from 'antd';
 import QuotesCard from '../../component/QuotesCard';
-import UnsplashContainer from '../UnsplashContainer';
+import BackgroundSettingCotainer from '../containers/BackgroundSettingCotainer';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 const PreviewContainer = () => {
+  const { selectedBackgroundUrl } = useSelector((state) => state.quotes);
+  const [modalView, setModalView] = useState(false);
   const spaceInsert = (str) => {
     return str.replace(/#/gi, '\n');
   };
   const [quotes, setQuotes] = useState({
+    backgroundImagePath: selectedBackgroundUrl,
     card_exps_typ_cd: '10',
     word: '',
     name: ''
@@ -31,11 +35,20 @@ const PreviewContainer = () => {
       card_exps_typ_cd: type
     });
   };
-
+  const handleModalOpen = () => {
+    setModalView(true);
+  };
+  const handleModalClose = () => {
+    setModalView(false);
+  };
   return (
     <PreviewWrapper>
       <EditerContainer>
-        {/*<UnsplashContainer />*/}
+        <BackgroundSettingCotainer
+          modalView={modalView}
+          handleModalOpen={handleModalOpen}
+          handleModalClose={handleModalClose}
+        />
         <div>
           <Button onClick={() => handleCardType('10')}>카드 타입 1</Button>
           <Button onClick={() => handleCardType('20')}>카드 타입 2</Button>
@@ -53,9 +66,7 @@ const PreviewContainer = () => {
   );
 };
 
-const PreviewWrapper = styled.div`
-  display: flex;
-`;
+const PreviewWrapper = styled.div``;
 const EditerContainer = styled.div``;
 const QuotesCardContainer = styled.div``;
 

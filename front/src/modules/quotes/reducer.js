@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 export const initialState = {
   riverTempData: [],
   quotesData: [],
-  backgroundImage: ''
+  selectedBackgroundUrl: ''
 };
 
 export const GET_HANGANG_TEMP_REQUEST = 'quotes/GET_HANGANG_TEMP_REQUEST';
@@ -15,14 +15,20 @@ export const GET_QUOTES_REQUEST_ADMIN = 'quotes/GET_QUOTES_REQUEST_ADMIN';
 export const GET_QUOTES_SUCCESS = 'quotes/GET_QUOTES_SUCCESS';
 export const GET_QUOTES_FAILURE = 'quotes/GET_QUOTES_FAILURE';
 export const GET_QUOTES_SUBMIT = 'quotes/GET_QUOTES_SUBMIT';
-
+//fabric Banner Maker 사용
 export const SAVE_CANVAS_IMAGE_SUCCESS = 'quotes/SAVE_CANVAS_IMAGE_SUCCESS';
 export const SAVE_CANVAS_IMAGE_FAILURE = 'quotes/SAVE_CANVAS_IMAGE_FAILURE';
 export const SAVE_CANVAS_IMAGE_REQUEST = 'quotes/SAVE_CANVAS_IMAGE_REQUEST';
+//css Banner Maker 사용
+export const SET_BACKGROUND_IMAGE = 'quotes/SAVE_CANVAS_IMAGE_REQUEST';
 
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case SET_BACKGROUND_IMAGE: {
+        draft.selectedBackgroundUrl = action.payload;
+        break;
+      }
       case GET_HANGANG_TEMP_SUCCESS: {
         draft.riverTempData = action.payload;
 
