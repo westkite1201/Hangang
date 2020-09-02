@@ -27,7 +27,13 @@ const PosterQuotesCard = ({ quotes }) => {
       onMouseLeave={handleMouseLeave}
       style={mouseOver ? cardHoverStyle : {}}
     >
-      <BackGround />
+      <BackGround
+        backgroundImagePath={
+          quotes.backgroundImagePath
+            ? quotes.backgroundImagePath
+            : '/images/temp.jpeg'
+        }
+      />
       <QuotesContent>{makePosterText(quotes.word)}</QuotesContent>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
@@ -42,7 +48,7 @@ const BackGround = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
-  background-image: url('/images/temp.jpeg');
+  background-image: url(${(props) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;

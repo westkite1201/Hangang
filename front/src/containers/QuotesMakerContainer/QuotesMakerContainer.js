@@ -16,7 +16,6 @@ import { SAVE_CANVAS_IMAGE_REQUEST } from '../../modules/quotes/reducer';
 import { Tabs } from 'antd';
 import clientConfig from '../../configuration/clientConfig';
 const { TabPane } = Tabs;
-
 // Or you can use:
 // const fabric = require("fabric").fabric;
 //http://jsfiddle.net/fabricjs/hXzvk/ 참고해보기
