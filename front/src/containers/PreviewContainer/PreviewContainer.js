@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Button } from 'antd';
 import QuotesCard from '../../component/QuotesCard';
 import BackgroundSettingContainer from '../BackgroundSettingContainer';
@@ -10,12 +10,21 @@ const PreviewContainer = () => {
   const spaceInsert = (str) => {
     return str.replace(/#/gi, '\n');
   };
+
+  console.log('selectedBackgroundUrl ', selectedBackgroundUrl);
   const [quotes, setQuotes] = useState({
     backgroundImagePath: selectedBackgroundUrl,
     card_exps_typ_cd: '10',
     word: '',
     name: ''
   });
+
+  useEffect(() => {
+    setQuotes({
+      ...quotes,
+      backgroundImagePath: selectedBackgroundUrl
+    });
+  }, [selectedBackgroundUrl]);
 
   const handleContentChange = (e) => {
     setQuotes({
@@ -43,6 +52,9 @@ const PreviewContainer = () => {
   };
   return (
     <PreviewWrapper>
+      <QuotesCardContainer>
+        <QuotesCard quotes={quotes}></QuotesCard>
+      </QuotesCardContainer>
       <EditerContainer>
         <BackgroundSettingContainer
           modalView={modalView}
@@ -60,15 +72,15 @@ const PreviewContainer = () => {
           <Input placeholder="저자" onChange={handleAuthorChange} />
         </div>
       </EditerContainer>
-      <QuotesCardContainer>
-        <QuotesCard quotes={quotes}></QuotesCard>
-      </QuotesCardContainer>
+      <Button> 업 로 드</Button>
     </PreviewWrapper>
   );
 };
 
 const PreviewWrapper = styled.div``;
 const EditerContainer = styled.div``;
-const QuotesCardContainer = styled.div``;
+const QuotesCardContainer = styled.div`
+  padding: 2rem;
+`;
 
 export default PreviewContainer;

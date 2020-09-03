@@ -63,6 +63,16 @@ export async function updateQuotesAccepted(param) {
   );
   return response.data;
 }
+
+export async function submitQuotes(param) {
+  const body = param;
+  const response = await axios.post(
+    `${cilentConfig.endpoint.api}/hangang/insert_quotes`,
+    body
+  );
+  return response.data;
+}
+
 // router.get('/word_data', async (req, res) => {
 //     try {
 //       return res.json({
