@@ -21,8 +21,6 @@ const BackgroundSettingContainer = ({
       payload: image
     });
   };
-  //현재 백그라운드 변경
-  const backGroundChangeToUrl = () => {};
   return (
     <div>
       {modalView && (
