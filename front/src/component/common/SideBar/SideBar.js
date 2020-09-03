@@ -35,22 +35,15 @@ const SideBar = (props) => {
       </StyledLink>
 
       <br />
-
-      <StyledLink id="contact" className="menu-item" to="/admin">
+      {/*
+      <StyledLink id="admin" className="menu-item" to="/admin">
         admin
       </StyledLink>
       <br />
-
+    */}
       <StyledLink id="about" className="menu-item" to="/about">
         About
       </StyledLink>
-
-      <br />
-
-      <StyledLink id="contact" className="menu-item" to="/contact">
-        Contact
-      </StyledLink>
-
       <br />
     </Menu>
   );
