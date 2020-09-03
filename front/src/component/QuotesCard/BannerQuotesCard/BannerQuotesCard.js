@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '20px',
     display: 'flex',
     height: '300px',
+    maxWidth: '1800px',
     position: 'relative',
     overflow: 'visible',
     fontFamily: 'Spoqa Han Sans',
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '20px',
     display: 'flex',
     height: '300px',
+    maxWidth: '1800px',
     position: 'relative',
     overflow: 'visible',
     fontFamily: 'Spoqa Han Sans',
@@ -29,15 +31,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const HomeCardItemNew = ({ quotes }) => {
+const BannerQuotesCard = ({ quotes }) => {
   const cardReferenece = useRef();
   const classes = useStyles();
-  let defaultImg = '/images/river.jpeg';
+  let defaultImg = quotes.backgroundImagePath
+    ? quotes.backgroundImagePath
+    : '/images/river.jpeg';
 
   useEffect(() => {
     cardReferenece.current.style.opacity = 1;
   }, []);
 
+  console.log('BannerQuotesCard ', quotes);
   const [mouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = () => {
@@ -75,4 +80,4 @@ const HomeCardItemNew = ({ quotes }) => {
     </Card>
   );
 };
-export default HomeCardItemNew;
+export default BannerQuotesCard;
