@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button } from 'antd';
 import QuotesCard from '../../component/QuotesCard';
-import BackgroundSettingCotainer from '../containers/BackgroundSettingCotainer';
+import BackgroundSettingContainer from '../BackgroundSettingContainer';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 const PreviewContainer = () => {
@@ -44,12 +44,13 @@ const PreviewContainer = () => {
   return (
     <PreviewWrapper>
       <EditerContainer>
-        <BackgroundSettingCotainer
+        <BackgroundSettingContainer
           modalView={modalView}
           handleModalOpen={handleModalOpen}
           handleModalClose={handleModalClose}
         />
         <div>
+          <Button onClick={handleModalOpen}>백그라운드 찾아보기 </Button>
           <Button onClick={() => handleCardType('10')}>카드 타입 1</Button>
           <Button onClick={() => handleCardType('20')}>카드 타입 2</Button>
           <Button onClick={() => handleCardType('30')}>카드 타입 2</Button>
