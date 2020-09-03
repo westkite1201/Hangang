@@ -20,7 +20,11 @@ export const SAVE_CANVAS_IMAGE_SUCCESS = 'quotes/SAVE_CANVAS_IMAGE_SUCCESS';
 export const SAVE_CANVAS_IMAGE_FAILURE = 'quotes/SAVE_CANVAS_IMAGE_FAILURE';
 export const SAVE_CANVAS_IMAGE_REQUEST = 'quotes/SAVE_CANVAS_IMAGE_REQUEST';
 //css Banner Maker 사용
-export const SET_BACKGROUND_IMAGE = 'quotes/SAVE_CANVAS_IMAGE_REQUEST';
+export const SET_BACKGROUND_IMAGE = 'quotes/SET_BACKGROUND_IMAGE';
+
+export const SUBMIT_QUOTES_SUCCESS = 'quotes/SUBMIT_QUOTES_SUCCESS';
+export const SUBMIT_QUOTES_FAILURE = 'quotes/SUBMIT_QUOTES_FAILURE';
+export const SUBMIT_QUOTES_REQUEST = 'quotes/SUBMIT_QUOTES_REQUEST';
 
 export default (state = initialState, action) => {
   return produce(state, (draft) => {

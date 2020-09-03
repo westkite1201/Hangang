@@ -3,7 +3,8 @@ import {
   getQuotes,
   getSubmitQuotes,
   getQuotesAdmin,
-  saveCanvasImage
+  saveCanvasImage,
+  submitQuotes
 } from '../../lib/api/hangang';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import {
@@ -17,7 +18,10 @@ import {
   GET_QUOTES_SUBMIT,
   SAVE_CANVAS_IMAGE_FAILURE,
   SAVE_CANVAS_IMAGE_SUCCESS,
-  SAVE_CANVAS_IMAGE_REQUEST
+  SAVE_CANVAS_IMAGE_REQUEST,
+  SUBMIT_QUOTES_REQUEST,
+  SUBMIT_QUOTES_SUCCESS,
+  SUBMIT_QUOTES_FAILURE
 } from './reducer';
 
 function* getHangangTempSaga(action) {
@@ -139,11 +143,34 @@ function* saveCanvasImageSaga(action) {
     });
   }
 }
-
+function* submitQuotesSaga(action) {
+  try {
+    console.log('submitQuotes');
+    const submitQuotesResponse = yield call(submitQuotes, action.payload);
+    yield put({
+      type: SUBMIT_QUOTES_SUCCESS,
+      payload: {
+        loading: false,
+        data: submitQuotesResponse.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: SUBMIT_QUOTES_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
 export function* quotesSaga() {
   yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
   yield takeEvery(GET_QUOTES_REQUEST, getQuotesSaga);
   yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
   yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
   yield takeEvery(SAVE_CANVAS_IMAGE_REQUEST, saveCanvasImageSaga);
+  yield takeEvery(SUBMIT_QUOTES_REQUEST, submitQuotesSaga);
 }
