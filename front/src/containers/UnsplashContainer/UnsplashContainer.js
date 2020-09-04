@@ -9,6 +9,8 @@ import Loading from '../../component/base/Loading';
 //import FileUploadForm from './FileUploadForm';
 import { useDispatch } from 'react-redux';
 import { SUCCESS_TOAST, FAILURE_TOAST } from '../../modules/toast/reducer';
+import { SET_BACKGROUND_IMAGE } from '../../modules/quotes/reducer';
+
 const PER_PAGE = 30;
 
 const UnsplashContainer = () => {
@@ -65,7 +67,6 @@ const UnsplashContainer = () => {
         await loadRandomImage();
         return;
       }
-
       currentQuery.current = query;
       currentPage.current = 1;
       try {
@@ -143,6 +144,10 @@ const UnsplashContainer = () => {
     console.log(photo);
     setPhoto(photo);
     setSelected(photo.id);
+    dispatch({
+      type: SET_BACKGROUND_IMAGE,
+      payload: { url: photo.urls.regular, isUnsplash: true }
+    });
   };
 
   useEffect(() => {
@@ -153,7 +158,7 @@ const UnsplashContainer = () => {
     }
     //loadRandomImage();
     return () => observer && observer.disconnect();
-  }, [targetRef.curr]);
+  }, [targetRef.current]);
 
   const _onIntersect = ([entry]) => {
     console.log('entry ', entry.isIntersecting);
@@ -188,7 +193,7 @@ const UnsplashContainer = () => {
     }
   };
   return (
-    <div style={{ marginTop: '50px' }}>
+    <div>
       {/*<FileUploadForm />*/}
       <SearchForm
         onSearch={searchImage}

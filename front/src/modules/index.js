@@ -1,7 +1,4 @@
 import { combineReducers } from 'redux';
-//import todos from './todos';
-//import hangang from './hangang';
-//import { todoSaga } from './todos';
 import hangang from './hangang';
 import quotes from './quotes';
 import toast from './toast';
