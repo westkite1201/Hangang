@@ -14,6 +14,7 @@ const QuotesCardList = ({ quotesList }) => {
 const QuotesGridViewComponent = () => {
   const { quotesData } = useSelector((state) => state.hangang);
   const { data: quotesList } = quotesData;
+  console.log('data ', quotesList);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({

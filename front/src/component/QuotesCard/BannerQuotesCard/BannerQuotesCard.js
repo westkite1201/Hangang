@@ -3,7 +3,7 @@ import './BannerQuotesCard.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { isNil } from 'lodash';
-
+import styled from 'styled-components';
 const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: '20px',
@@ -80,4 +80,5 @@ const BannerQuotesCard = ({ quotes }) => {
     </Card>
   );
 };
+
 export default BannerQuotesCard;
