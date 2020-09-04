@@ -21,19 +21,31 @@ const PosterQuotesCard = ({ quotes }) => {
       return <div>{item}</div>;
     });
   };
+  const seletedPath = () => {
+    const {
+      usePreview,
+      backgroundImagePath,
+      thumbnail_background_image
+    } = quotes;
+    if (usePreview) {
+      if (backgroundImagePath) {
+        return backgroundImagePath;
+      }
+      return '/images/temp.jpeg';
+    } else {
+      if (thumbnail_background_image) {
+        return thumbnail_background_image;
+      }
+      return '/images/temp.jpeg';
+    }
+  };
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}
       onMouseLeave={handleMouseLeave}
       style={mouseOver ? cardHoverStyle : {}}
     >
-      <BackGround
-        backgroundImagePath={
-          quotes.backgroundImagePath
-            ? quotes.backgroundImagePath
-            : '/images/temp.jpeg'
-        }
-      />
+      <BackGround backgroundImagePath={seletedPath()} />
       <QuotesContent>{makePosterText(quotes.word)}</QuotesContent>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
@@ -65,7 +77,6 @@ const QuotesWrapper = styled.div`
   height: 450px;
   width: 100%;
   max-width: 300px;
-  //background: black;
   color: white;
   border-radius: 4px;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
@@ -87,7 +98,7 @@ const QuotesContent = styled.div`
   }
 `;
 const QuotesAuthor = styled.h4`
-  //font-weight: bold;
+  color: white;
   font-size: 1rem;
   text-align: center;
 `;

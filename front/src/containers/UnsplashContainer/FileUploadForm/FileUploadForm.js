@@ -25,10 +25,7 @@ function ImageList({
       let className = url === selectedBackgroundUrl ? 'selected' : '';
       return (
         <Grid item xs={4} key={item}>
-          <ImgDiv
-            style={{ width: '200px', height: '100px', cursor: 'pointer' }}
-            className={className}
-          >
+          <ImgDiv className={className}>
             <img
               alt="background"
               src={url}
@@ -65,8 +62,6 @@ const FileUploadForm = ({
       user_id: USER_ID
     };
     let res = await axios.post(PATH + 'getImageFilePath', data);
-    console.log('res ', res.data.data.files);
-
     setFilesPathList(res.data.data.files);
   }
 
@@ -177,7 +172,7 @@ const FileUploadForm = ({
           <button onClick={fileDelete}>해당 이미지 파일삭제 </button>
         </div>
       </form>
-      <div>
+      <div style={{ height: '400px', overflow: 'auto' }}>
         <Grid container spacing={3}>
           <ImageList
             filesPathList={filesPathList}

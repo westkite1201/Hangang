@@ -21,7 +21,10 @@ import {
   SAVE_CANVAS_IMAGE_REQUEST,
   SUBMIT_QUOTES_REQUEST,
   SUBMIT_QUOTES_SUCCESS,
-  SUBMIT_QUOTES_FAILURE
+  SUBMIT_QUOTES_FAILURE,
+  UPLOAD_IMAGE_TO_UNSPLASH_REQUEST,
+  UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS,
+  UPLOAD_IMAGE_TO_UNSPLASH_FAILURE
 } from './reducer';
 
 function* getHangangTempSaga(action) {
@@ -166,6 +169,30 @@ function* submitQuotesSaga(action) {
     });
   }
 }
+
+function* uploadImageSaga(action) {
+  try {
+    console.log('submitQuotes');
+    const submitQuotesResponse = yield call(submitQuotes, action.payload);
+    yield put({
+      type: UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS,
+      payload: {
+        loading: false,
+        data: submitQuotesResponse.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: UPLOAD_IMAGE_TO_UNSPLASH_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
 export function* quotesSaga() {
   yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
   yield takeEvery(GET_QUOTES_REQUEST, getQuotesSaga);
@@ -173,4 +200,5 @@ export function* quotesSaga() {
   yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
   yield takeEvery(SAVE_CANVAS_IMAGE_REQUEST, saveCanvasImageSaga);
   yield takeEvery(SUBMIT_QUOTES_REQUEST, submitQuotesSaga);
+  yield takeEvery(UPLOAD_IMAGE_TO_UNSPLASH_REQUEST, uploadImageSaga);
 }
