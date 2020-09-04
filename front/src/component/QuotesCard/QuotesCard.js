@@ -20,7 +20,7 @@ function CardComponent({ quotes }) {
   }
 }
 const QuotesCard = ({ quotes, index }) => {
-  const { card_exps_typ_cd } = quotes;
+  const { card_exps_typ_cd, usePreview } = quotes;
   if (card_exps_typ_cd === BANNER) {
     return (
       <Grid item xs={12} md={12} lg={12} key={index}>
@@ -29,7 +29,13 @@ const QuotesCard = ({ quotes, index }) => {
     );
   } else {
     return (
-      <Grid item xs={12} md={6} lg={4} key={index}>
+      <Grid
+        item
+        xs={12}
+        md={usePreview ? 12 : 6}
+        lg={usePreview ? 12 : 4}
+        key={index}
+      >
         <CardComponent quotes={quotes} />
       </Grid>
     );

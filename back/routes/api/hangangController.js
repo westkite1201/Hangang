@@ -163,17 +163,27 @@ router.post('/insert_quotes', async (req, res) => {
     const {
       name,
       word,
-      thumbnail_user_image,
-      thumbnail_background_image,
-      accepted
+      thumbnailUserImage,
+      backgroundImagePath,
+      accepted,
+      card_exps_typ_cd
     } = req.body;
-    const data = helpers.makeJsonKeyUpper({
-      name,
-      word,
-      thumbnail_user_image,
-      thumbnail_background_image,
-      accepted
-    });
+    // const data = helpers.makeJsonKeyUpper({
+    //   name,
+    //   word,
+    //   thumbnail_user_image,
+    //   thumbnail_background_image,
+    //   accepted
+    // });
+    const data = {
+      NAME: name,
+      WORD: word,
+      THUMBNAIL_USER_IMAGE: thumbnailUserImage,
+      THUMBNAIL_BACKGROUND_IMAGE: backgroundImagePath,
+      CARD_EXPS_TYP_CD: card_exps_typ_cd,
+      ACCEPTED: accepted
+    };
+    console.log(data);
     const quotes = new Quotes(data);
     quotes.save((error) => {
       if (error) {
