@@ -6,6 +6,7 @@ import {
   saveCanvasImage,
   submitQuotes
 } from '../../lib/api/hangang';
+import { getImageDownloadToUrl } from '../../lib/api/unsplash';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import {
   GET_HANGANG_TEMP_SUCCESS,
@@ -26,7 +27,8 @@ import {
   UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS,
   UPLOAD_IMAGE_TO_UNSPLASH_FAILURE
 } from './reducer';
-
+import { REQUEST_TOAST } from '../toast/reducer';
+import { extractImageFileName } from '../../lib/helper';
 function* getHangangTempSaga(action) {
   try {
     console.log('getHangangTemp', action.payload);
@@ -148,16 +150,57 @@ function* saveCanvasImageSaga(action) {
 }
 function* submitQuotesSaga(action) {
   try {
-    console.log('submitQuotes');
-    const submitQuotesResponse = yield call(submitQuotes, action.payload);
-    yield put({
-      type: SUBMIT_QUOTES_SUCCESS,
-      payload: {
-        loading: false,
-        data: submitQuotesResponse.data,
-        error: null
+    console.log('submitQuotes', action);
+    // unsplash 에서 선택후 업로드시 업로드 후에
+    const { isUnsplash } = action.payload;
+
+    if (isUnsplash) {
+      yield put({
+        type: REQUEST_TOAST,
+        payload: {
+          message: 'unsplash 이미지 업로드'
+        }
+      });
+      const imageUploadResponse = yield call(
+        getImageDownloadToUrl,
+        action.payload
+      );
+      const { message, status } = imageUploadResponse;
+      console.log('[seo] imageUploadResponse', imageUploadResponse);
+      if (message === 'success' || status === ' 200') {
+        action.payload.backgroundImagePath = extractImageFileName(
+          action.payload
+        );
+        const submitQuotesResponse = yield call(submitQuotes, action.payload);
+        yield put({
+          type: SUBMIT_QUOTES_SUCCESS,
+          payload: {
+            loading: false,
+            data: submitQuotesResponse.data,
+            error: null
+          }
+        });
+      } else {
+        yield put({
+          type: UPLOAD_IMAGE_TO_UNSPLASH_FAILURE,
+          payload: {
+            loading: false,
+            data: [],
+            error: 'image upload fail'
+          }
+        });
       }
-    });
+    } else {
+      const submitQuotesResponse = yield call(submitQuotes, action.payload);
+      yield put({
+        type: SUBMIT_QUOTES_SUCCESS,
+        payload: {
+          loading: false,
+          data: submitQuotesResponse.data,
+          error: null
+        }
+      });
+    }
   } catch (e) {
     yield put({
       type: SUBMIT_QUOTES_FAILURE,
@@ -173,7 +216,10 @@ function* submitQuotesSaga(action) {
 function* uploadImageSaga(action) {
   try {
     console.log('submitQuotes');
-    const submitQuotesResponse = yield call(submitQuotes, action.payload);
+    const submitQuotesResponse = yield call(
+      getImageDownloadToUrl,
+      action.payload
+    );
     yield put({
       type: UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS,
       payload: {

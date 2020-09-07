@@ -19,7 +19,9 @@ const PreviewContainer = () => {
   };
   const dispatch = useDispatch();
   const [quotes, setQuotes] = useState({
-    backgroundImagePath: selectedBackgroundUrl,
+    backgroundImagePath: selectedBackgroundUrl.url,
+    isUnsplash: selectedBackgroundUrl.isUnsplash,
+    id: selectedBackgroundUrl.id,
     thumbnailUserImage: '',
     card_exps_typ_cd: '10',
     word: '',
@@ -31,7 +33,9 @@ const PreviewContainer = () => {
   useEffect(() => {
     setQuotes({
       ...quotes,
-      backgroundImagePath: selectedBackgroundUrl
+      backgroundImagePath: selectedBackgroundUrl.url,
+      isUnsplash: selectedBackgroundUrl.isUnsplash,
+      id: selectedBackgroundUrl.id
     });
   }, [selectedBackgroundUrl]);
 
@@ -62,10 +66,11 @@ const PreviewContainer = () => {
     });
   };
   const setSelectedBackgroundUrl = (image) => {
-    console.log('setSelectedBackgroundUrl ', image);
+    let array = image.split('/');
+    let imagePathName = array[array.length - 1];
     dispatch({
       type: SET_BACKGROUND_IMAGE,
-      payload: image
+      payload: { url: imagePathName, isUnsplash: false }
     });
   };
   const callback = () => {};
