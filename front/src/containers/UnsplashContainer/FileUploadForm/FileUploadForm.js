@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 import clientConfig from '../../../configuration/clientConfig';
 import './FileUploadForm.scss';
-
+import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
@@ -19,10 +19,13 @@ function ImageList({
     console.log('isEmpty ');
     return <div></div>;
   } else {
-    //console.log('filesPathList ', filesPathList);
     let imageList = filesPathList.map((item, index) => {
       let url = PATH + 'image/' + item;
-      let className = url === selectedBackgroundUrl ? 'selected' : '';
+      let className =
+        url ===
+        clientConfig.endpoint.api + '/file/image/' + selectedBackgroundUrl.url
+          ? 'selected'
+          : '';
       return (
         <Grid item xs={4} key={item}>
           <ImgDiv className={className}>
@@ -57,6 +60,7 @@ const FileUploadForm = ({
   useEffect(() => {
     getFileList();
   }, []);
+
   async function getFileList() {
     let data = {
       user_id: USER_ID
@@ -87,7 +91,7 @@ const FileUploadForm = ({
     }
     try {
       const res = await axios.post(
-        'http://localhost:3031/api/file/uploadFiles',
+        clientConfig.endpoint.api + '/file/uploadFiles',
         formData
       );
       console.log(res);
@@ -124,7 +128,7 @@ const FileUploadForm = ({
         imageUrlPath: selectedBackgroundUrl
       };
       const res = await axios.post(
-        'http://localhost:3031/api/file/delete_file_image',
+        clientConfig.endpoint.api + '/file/delete_file_image',
         data
       );
       if (res.status === 200) {
@@ -147,31 +151,29 @@ const FileUploadForm = ({
 
   return (
     <div>
-      {/*
-      <button onClick={setting.settingBackgroundURLRedis}>
-        해당 백그라운드 저장
-      </button>
-      */}
-      <form encType="multipart/form-data" onSubmit={onSubmitForm}>
-        <div className="filebox">
-          <label id="labelSubmit" for="submit">
-            save
-          </label>
-          <input id="submit" type="submit" />
+      <InputContainer>
+        <Button onClick={getFileList}>refresh</Button>
+        <form encType="multipart/form-data" onSubmit={onSubmitForm}>
+          <div className="filebox">
+            <label id="labelFileAdd" for="fileAdd">
+              File Add
+            </label>
+            <input
+              id="fileAdd"
+              name="files"
+              type="file"
+              onChange={fileUpload}
+              multiple
+            />
+            <label id="labelSubmit" for="submit">
+              save
+            </label>
+            <input id="submit" type="submit" />
+            <Button onClick={fileDelete}>해당 이미지 파일삭제 </Button>
+          </div>
+        </form>
+      </InputContainer>
 
-          <label id="labelFileAdd" for="fileAdd">
-            File Add
-          </label>
-          <input
-            id="fileAdd"
-            name="files"
-            type="file"
-            onChange={fileUpload}
-            multiple
-          />
-          <button onClick={fileDelete}>해당 이미지 파일삭제 </button>
-        </div>
-      </form>
       <div style={{ height: '400px', overflow: 'auto' }}>
         <Grid container spacing={3}>
           <ImageList
@@ -181,9 +183,13 @@ const FileUploadForm = ({
           />
         </Grid>
       </div>
-      <button onClick={backGroundChangeToUrl}>확인</button>
+      <Button onClick={backGroundChangeToUrl}>확인</Button>
     </div>
   );
 };
 
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 export default FileUploadForm;

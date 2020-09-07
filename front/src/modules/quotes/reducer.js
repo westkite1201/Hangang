@@ -12,7 +12,7 @@ const TOAST_OPTION = {
 export const initialState = {
   riverTempData: [],
   quotesData: [],
-  selectedBackgroundUrl: ''
+  selectedBackgroundUrl: { url: '', isUnsplash: true, id: '' }
 };
 
 export const GET_HANGANG_TEMP_REQUEST = 'quotes/GET_HANGANG_TEMP_REQUEST';
@@ -82,6 +82,15 @@ export default (state = initialState, action) => {
         break;
       }
       case SUBMIT_QUOTES_FAILURE: {
+        toast.warn('저장에 실패하였습니다!ㅜㅜ', TOAST_OPTION);
+        break;
+      }
+      case UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS: {
+        toast.success('저장에 성공하였습니다!ㅎㅎ', TOAST_OPTION);
+        break;
+      }
+
+      case UPLOAD_IMAGE_TO_UNSPLASH_FAILURE: {
         toast.warn('저장에 실패하였습니다!ㅜㅜ', TOAST_OPTION);
         break;
       }

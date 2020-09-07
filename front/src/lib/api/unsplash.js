@@ -36,11 +36,12 @@ export const getImage = async (url, name) => {
 };
 
 export const getImageDownloadToUrl = async (params) => {
+  let imagePath = params.url ? params.url : params.backgroundImagePath;
   return axios
     .get(
       `${
         cilentConfig.endpoint.api
-      }/file/getImageDownloadToUrl/${encodeURIComponent(params.url)}/${
+      }/file/getImageDownloadToUrl/${encodeURIComponent(imagePath)}/${
         params.id
       }/testUser`
     )

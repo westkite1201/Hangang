@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { stationLocationArray } from './CommonData';
+import clientConfig from '../configuration/clientConfig';
 
 /* 좌표 거리 계산 */
 export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
@@ -94,3 +95,39 @@ export const getContrastYIQ = (color) => {
 // eslint-disable-next-line
 export const getRandomHexColor = () =>
   `#${`0${(~~(Math.random() * 16777215)).toString(16)}`.slice(-6)}`;
+
+//quotes에 보여울 filename 조립
+export const getImageFileFullPath = (quotes) => {
+  const {
+    usePreview,
+    backgroundImagePath,
+    thumbnail_background_image,
+    isUnsplash
+  } = quotes;
+  if (usePreview) {
+    if (backgroundImagePath) {
+      if (isUnsplash) {
+        return backgroundImagePath;
+      }
+      return clientConfig.endpoint.api + '/file/image/' + backgroundImagePath;
+    }
+    return '/images/temp.jpeg';
+  } else {
+    if (thumbnail_background_image) {
+      return (
+        clientConfig.endpoint.api + '/file/image/' + thumbnail_background_image
+      );
+    }
+    return '/images/temp.jpeg';
+  }
+};
+//insert_quotes 하기전 이미지 이름 추출
+export const extractImageFileName = (quotes) => {
+  const { backgroundImagePath, isUnsplash, id } = quotes;
+  //qutoes id
+  if (isUnsplash) {
+    return id + '.jpg';
+  } else {
+    return backgroundImagePath;
+  }
+};
