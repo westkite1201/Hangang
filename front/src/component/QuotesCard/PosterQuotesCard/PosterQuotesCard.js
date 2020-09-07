@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { getImageFileFullPath } from '../../../lib/helper';
 
 const PosterQuotesCard = ({ quotes }) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -21,31 +22,18 @@ const PosterQuotesCard = ({ quotes }) => {
       return <div>{item}</div>;
     });
   };
-  const seletedPath = () => {
-    const {
-      usePreview,
-      backgroundImagePath,
-      thumbnail_background_image
-    } = quotes;
-    if (usePreview) {
-      if (backgroundImagePath) {
-        return backgroundImagePath;
-      }
-      return '/images/temp.jpeg';
-    } else {
-      if (thumbnail_background_image) {
-        return thumbnail_background_image;
-      }
-      return '/images/temp.jpeg';
-    }
-  };
+  console.log(
+    '[seo] getImageFileFullPath ',
+    quotes,
+    getImageFileFullPath(quotes)
+  );
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}
       onMouseLeave={handleMouseLeave}
       style={mouseOver ? cardHoverStyle : {}}
     >
-      <BackGround backgroundImagePath={seletedPath()} />
+      <BackGround backgroundImagePath={getImageFileFullPath(quotes)} />
       <QuotesContent>{makePosterText(quotes.word)}</QuotesContent>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
