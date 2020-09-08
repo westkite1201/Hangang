@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 // Define Schemes
 const memberSchema = new Schema(
   {
-    MEM_IDX: { type: String, required: true },
     MEM_EMAIL: { type: String, required: true },
     MEM_PASSWORD: { type: String, required: true },
     MEM_USER_NAME: { type: String, required: true },

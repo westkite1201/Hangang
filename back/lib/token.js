@@ -1,9 +1,4 @@
 const jwt = require('jsonwebtoken');
-const util = require('util');
-const config = require('./serverConfig');
-
-const async = require('async');
-
 const generateToken = (payload) => {
   try {
     // console.log('---------- auth:generateToken ---------')
@@ -19,7 +14,7 @@ const generateToken = (payload) => {
         gb_cd: payload.gb_cd,
         mem_avater_path: payload.mem_avater_path
       },
-      config.auth.jwt.secret,
+      process.env.JWT_SECRET,
       {
         expiresIn: '1d'
       }
@@ -29,7 +24,6 @@ const generateToken = (payload) => {
     return token;
   } catch (error) {
     return error;
-    console.error(error);
   }
 };
 
@@ -49,7 +43,7 @@ const verifyToken = async (token) => {
     // verify and decode token
     const verify_info = jwt.verify(
       token,
-      config.auth.jwt.secret,
+      process.env.JWT_SECRET,
       (err, decoded) => {
         if (err) {
           // winstonLogger.log('error', err);
