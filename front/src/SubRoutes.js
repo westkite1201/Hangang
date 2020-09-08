@@ -9,6 +9,8 @@ import QuotesMakerContainer from './containers/QuotesMakerContainer';
 import AboutContainer from './containers/AboutContainer';
 import QuotesManageContainer from './containers/QuotesManageContainer';
 import PreviewContainer from './containers/PreviewContainer';
+import LoginContainer from './containers/LoginContainer';
+
 export default (props) => {
   useEffect(() => {}, []);
 
@@ -32,6 +34,7 @@ export default (props) => {
         component={QuotesManageContainer}
       ></Route>
       <Route exact path="/preview" component={PreviewContainer}></Route>
+      <Route exact path="/login" component={LoginContainer}></Route>
     </div>
   );
 };
