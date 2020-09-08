@@ -63,6 +63,7 @@
     "react-color": "^2.18.1",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
+    "react-kakao-login": "1.2.2",
     "react-konva": "^16.13.0-5",
     "react-lazyload": "^3.0.0",
     "react-redux": "^7.2.1",
