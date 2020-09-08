@@ -1,67 +1,47 @@
 let express = require('express');
 let router = express.Router();
-const async = require('async');
+//const async = require('async');
 const Member = require('../../mongo/models/member');
-const token = require('../../src/lib/token');
-//const helpers = require('../../lib/helpers');
-const crypto = require('crypto');
+const token = require('../../lib/token');
+//const crypto = require('crypto');
 const _ = require('lodash');
 let bcrypt = require('bcrypt-nodejs');
-const authMiddleware = require('../../middlewares/auth');
+//const authMiddleware = require('../../middlewares/auth');
+
+const helper = require('../../lib/helpers');
 
 // /    GET /api/auth/check
-const check = (req, res) => {
-  console.log('check in');
-  res.json({
-    success: true,
-    info: req.decoded
-  });
-};
-router.use('/check', authMiddleware);
-router.get('/check', check);
-
+// const check = (req, res) => {
+//   console.log('check in');
+//   res.json({
+//     success: true,
+//     info: req.decoded
+//   });
+// };
+// router.use('/check', authMiddleware);
+// router.get('/check', check);
 bcryptCheck = async (password, rows) => {
-  console.log(rows);
+  console.log(rows[0]);
   try {
-    const jwtToken = await new Promise((resolve, reject) => {
-      bcrypt.compare(password, rows[0].mem_password, (err, res) => {
-        console.log(res);
-        if (err) {
-          reject(err);
-        } else if (res) {
-          //성공시
-          console.log('bcryptCheck , res', res);
-          payload = {
-            mem_idx: rows[0].mem_idx,
-            mem_username: rows[0].mem_username,
-            mem_email: rows[0].mem_email,
-            gb_cd: rows[0].mem_gb_cd,
-            mem_avater_path: rows[0].mem_avater_path
-          };
-          resolve(token.generateToken(payload));
-        } else {
-          reject();
-        }
-      });
-    });
+    const jwtToken = await helper.bcryptCompare(password, rows);
     return jwtToken;
   } catch (e) {
     console.error(e);
   }
 };
-/* 로그인  new */
+
+/* 로그인  */
 router.post('/login', async (req, res) => {
   try {
-    const data = {
-      mem_email: req.body.mem_email,
-      mem_password: req.body.mem_password
+    let filter = {
+      MEM_EMAIL: req.body.memEmail
     };
-    const password = data.mem_password;
-    let rows = await authDaoNew.getLoginData(data);
-    console.log('rows', rows);
-    if (!_.isEmpty(rows)) {
+    let memberRow = await Member.find(filter);
+    if (memberRow && memberRow.length !== 0) {
       //온경우
-      let jwtToken = await bcryptCheck(password, rows);
+      const password = req.body.memPassword;
+      let jwtToken = await bcryptCheck(password, memberRow);
+      console.log(jwtToken);
       if (jwtToken) {
         res.json({
           message: 'logged in successfully',
@@ -71,8 +51,6 @@ router.post('/login', async (req, res) => {
       } else {
         res.json({ message: 'error', status: 400 });
       }
-    } else {
-      return res.json({ message: 'error', status: 400 });
     }
   } catch (e) {
     console.log('error', e);
@@ -93,8 +71,8 @@ checkValidationPassword = (password, res) => {
 /* 회원가입 */
 router.post('/setMemberSignup', async (req, res) => {
   console.log('hello setMemberSignUp');
-  //res.cookie('favorite', favorite);
-  if (!checkValidationPassword(req.body.mem_password)) {
+  //test
+  if (!checkValidationPassword(req.body.memPassword)) {
     console.log('notVaildation');
     return res.json({
       message: 'fail',
@@ -102,79 +80,32 @@ router.post('/setMemberSignup', async (req, res) => {
       //error: error
     });
   }
-
   try {
-    const data = {
-      mem_username: req.body.mem_username,
-      mem_userid: req.body.mem_email,
-      mem_email: req.body.mem_email,
-      mem_password: req.body.mem_password,
-      mem_gb_cd: req.body.mem_gb_cd
+    let filter = {
+      MEM_EMAIL: req.body.memEmail
     };
-    const userData = {
-      mem_username: req.body.mem_username,
-      mem_userid: req.body.mem_email,
-      mem_email: req.body.mem_email,
-      mem_password: req.body.mem_password,
-      mem_gb_cd: req.body.mem_gb_cd
-    };
-    let password = req.body.mem_password;
-
-    console.log(data);
-    async.waterfall(
-      [
-        (cb) => {
-          authDao.connect(cb);
-        },
-        (conn, cb) => {
-          authDao.getEmailIsAlreadyExist(conn, data, cb); //로그인 중복체크
-        },
-        (conn, data, cb) => {
-          console.log('data ', data);
-          if (data[0].EXISTFLAG === 'NONE') {
-            console.log('1');
-            bcrypt.genSalt(10, function (err, salt) {
-              if (err) {
-                console.log('bcrypt.getSalt() error ', err.message);
-              } else {
-                console.log('password ', password);
-                bcrypt.hash(password, salt, null, function (err, hash) {
-                  if (err) {
-                    console.log('bcy', err.message);
-                  } else {
-                    userData.mem_password = hash;
-                    authDao.setMemberSignUp(conn, userData, cb);
-                  }
-                });
-              }
-            });
-          } else {
-            cb(null, conn, { message: '가입이 되어 있습니다.' });
-          }
-        },
-        (conn, data, cb) => {
-          console.log('hello ', data);
-          cb(null, conn, data);
-        }
-      ],
-      (error, conn, result) => {
-        console.log(error);
-        if (conn) {
-          authDao.release(conn);
-        }
-
-        if (error) {
-          return res.json({
-            message: 'fail',
-            code: 500,
-            error: error
-          });
-        } else {
-          console.log('result', result);
-          return res.json({ status: 200, message: '로그인 성공 ' });
-        }
-      }
-    );
+    let memberRow = await Member.find(filter);
+    if (memberRow && memberRow.length !== 0) {
+      return res.json({
+        status: 404,
+        message: 'email already exist'
+      });
+    } else {
+      let password = req.body.memPassword;
+      const bcySalt = await helper.getBcryptSalt();
+      const hashedPassword = await helper.getHashedPassword(password, bcySalt);
+      let userData = {
+        MEM_EMAIL: req.body.memEmail,
+        MEM_PASSWORD: hashedPassword,
+        MEM_USER_NAME: req.body.memUserName
+      };
+      const member = new Member(userData);
+      await member.save();
+      return res.json({
+        status: '200',
+        message: 'success sign up'
+      });
+    }
   } catch (error) {
     console.error(error);
     return res.json({
