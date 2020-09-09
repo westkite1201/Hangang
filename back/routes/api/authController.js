@@ -10,6 +10,7 @@ let bcrypt = require('bcrypt-nodejs');
 
 const helper = require('../../lib/helpers');
 
+const request = require('request');
 // /    GET /api/auth/check
 // const check = (req, res) => {
 //   console.log('check in');
@@ -30,6 +31,29 @@ bcryptCheck = async (password, rows) => {
   }
 };
 
+router.post('/check_goolge', async (req, res) => {
+  try {
+    let accessToken = req.body.access_token;
+    const PEOPLE_URI = 'https://www.googleapis.com/auth/profile.emails.read';
+
+    const options = {
+      uri: PEOPLE_URI,
+      method: 'get',
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      }
+    };
+
+    request.get(options, function (err, response) {
+      console.log(err);
+      res.json({
+        mesage: response
+      });
+    });
+  } catch (e) {
+    console.log(e);
+  }
+});
 /* 로그인  */
 router.post('/login', async (req, res) => {
   try {
