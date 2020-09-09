@@ -116,4 +116,14 @@ router.post('/setMemberSignup', async (req, res) => {
   }
 });
 
+/* 카톡 로그인 라우터 */
+router.get('/kakao-login', async (req, res) => {
+  console.log('kakao-login');
+  console.log('req: ', req);
+
+  return res.json({
+    status: 200,
+    message: 'success kakao login'
+  });
+});
 module.exports = router;
