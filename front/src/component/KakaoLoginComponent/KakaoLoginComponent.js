@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import KaKaoLogin from 'react-kakao-login';
+import axios from 'axios';
 
 function KakaoLoginComponent(props) {
-
-    const { loginSuccess, loginFail } = props
     useEffect(() => {
+        
+    }, []); 
 
-    }, []);
+    const loginSuccess = (data) => {
+        const { profile } = data;
+        const { id, kakao_account: kakaoAccount, properties} = profile;
 
-    const [data, setData] = useState();
-    
+        console.log('login success data: ', data);
+        console.log('login success profile: ', profile);
+    }
+
+    const loginFail = (data) => {
+        console.log('login fail: ', data);
+    }
+    const kakaoLogin = () => {
+        const kakaoObject = window.Kakao;
+    }
+
     return(
         <div>
             <h1>카카오톡 간편 로그인</h1>
             <h4>로그인 후 더 많은 혜택을 누리세요!</h4>
-            {/* <StKaKaoLogin>
-                <img src={img} alt="a" onClick={this.loginWithKakao} />
-            </StKaKaoLogin> */}
             <br></br>
             <KaKaoBtn
                 jsKey={'3a69dfcb367898e48e1e2dc3188a8d5c'}
-                buttonText="KaKao"
+                buttonText="NPM으로만든거"
                 onSuccess={loginSuccess}
                 onFailure={loginFail}
                 getProfile={true}
