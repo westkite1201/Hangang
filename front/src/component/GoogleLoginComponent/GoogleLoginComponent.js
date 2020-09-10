@@ -18,3 +18,4 @@ const GoogleLoginComponent = (props) => {
 };
 
 export default GoogleLoginComponent;
+ 
