@@ -6,11 +6,12 @@ const token = require('../../lib/token');
 //const crypto = require('crypto');
 const _ = require('lodash');
 let bcrypt = require('bcrypt-nodejs');
-//const authMiddleware = require('../../middlewares/auth');
+const authMiddleware = require('../../middlewares/auth');
 
 const helper = require('../../lib/helpers');
 
-const request = require('request');
+//const request = require('request');
+const request = require('request-promise-native');
 // /    GET /api/auth/check
 // const check = (req, res) => {
 //   console.log('check in');
@@ -31,25 +32,84 @@ bcryptCheck = async (password, rows) => {
   }
 };
 
-router.post('/check_goolge', async (req, res) => {
+//google, kakao
+router.post('/check_google', async (req, res) => {
   try {
     let accessToken = req.body.access_token;
-    const PEOPLE_URI = 'https://www.googleapis.com/auth/profile.emails.read';
+    let snsType = req.body.snsType;
+    console.log(snsType);
+    let options;
+    if (snsType === 'GOOGLE') {
+      const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
+      options = {
+        uri: PEOPLE_URI,
+        method: 'get',
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      };
+    } else {
+      //카카오
+      const PEOPLE_URI = '';
+      options = {
+        uri: PEOPLE_URI,
+        method: 'get',
+        headers: {
+          Authorization: 'Bearer ' + accessToken
+        }
+      };
+    }
 
-    const options = {
-      uri: PEOPLE_URI,
-      method: 'get',
-      headers: {
-        Authorization: 'Bearer ' + accessToken
+    let result = await request.get(options);
+    result = JSON.parse(result);
+    //id가 검증되었다면 ( 정상적 구글 로그인 )
+    if (result.verified_email) {
+      const { id, email, picture, name } = result;
+      let filter = {
+        MEM_USER_ID: id
+      };
+      let memberRow = await Member.find(filter);
+      //가입된 id이 존재한다면,
+      if (memberRow && memberRow.length !== 0) {
+        let password = id + '_' + process.env.JWT_SECRET;
+        let jwtToken = await bcryptCheck(password, memberRow);
+        if (jwtToken) {
+          return res.json({
+            message: 'logged in successfully',
+            token: jwtToken,
+            code: 200
+          });
+        }
+      } else {
+        //가입된 id 가 존재 하지 않는다면 가입 처리 진행
+        let password = id + '_' + process.env.JWT_SECRET;
+        const bcySalt = await helper.getBcryptSalt();
+        const hashedPassword = await helper.getHashedPassword(
+          password,
+          bcySalt
+        );
+        let userData = {
+          MEM_EMAIL: email,
+          MEM_USER_ID: id,
+          MEM_PASSWORD: hashedPassword,
+          MEM_USER_NAME: name,
+          MEM_AVATER_PATH: picture,
+          MEM_SIGN_TYPE: 'SNS'
+        };
+        const member = new Member(userData);
+        await member.save();
+        //'success sign up'
+
+        let jwtToken = await bcryptCheck(password, memberRow);
+        if (jwtToken) {
+          return res.json({
+            message: 'logged in successfully',
+            token: jwtToken,
+            code: 200
+          });
+        }
       }
-    };
-
-    request.get(options, function (err, response) {
-      console.log(err);
-      res.json({
-        mesage: response
-      });
-    });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -65,9 +125,13 @@ router.post('/login', async (req, res) => {
       //온경우
       const password = req.body.memPassword;
       let jwtToken = await bcryptCheck(password, memberRow);
-      console.log(jwtToken);
+      //console.log(jwtToken);
+      // res.cookie('access-token', jwtToken, {
+      //   maxAge: 1000 * 60 * 60 * 24 * 1,
+      //   httpOnly: false
+      // });
       if (jwtToken) {
-        res.json({
+        return res.json({
           message: 'logged in successfully',
           token: jwtToken,
           code: 200
@@ -92,7 +156,7 @@ checkValidationPassword = (password, res) => {
   return true;
 };
 
-/* 회원가입 */
+/* local 회원가입 */
 router.post('/setMemberSignup', async (req, res) => {
   console.log('hello setMemberSignUp');
   //test
@@ -121,7 +185,8 @@ router.post('/setMemberSignup', async (req, res) => {
       let userData = {
         MEM_EMAIL: req.body.memEmail,
         MEM_PASSWORD: hashedPassword,
-        MEM_USER_NAME: req.body.memUserName
+        MEM_USER_NAME: req.body.memUserName,
+        MEM_SIGN_TYPE: 'LOCAL'
       };
       const member = new Member(userData);
       await member.save();

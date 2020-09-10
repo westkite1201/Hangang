@@ -2,25 +2,11 @@ const jwt = require('jsonwebtoken');
 const generateToken = (payload) => {
   try {
     // console.log('---------- auth:generateToken ---------')
-    // console.log('req.user => ');
-    // console.log(req.user);
-
     //const expiresIn = 60 * 60 * 24;     // 1 days
-    const token = jwt.sign(
-      {
-        mem_idx: payload.mem_idx,
-        mem_username: payload.mem_username,
-        mem_email: payload.mem_email,
-        gb_cd: payload.gb_cd,
-        mem_avater_path: payload.mem_avater_path
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '1d'
-      }
-    );
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '1d'
+    });
     // console.log(token);
-
     return token;
   } catch (error) {
     return error;
