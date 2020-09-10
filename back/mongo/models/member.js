@@ -16,7 +16,9 @@ const memberSchema = new Schema(
     MEM_REG_TIME: {
       type: String,
       default: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
-    }
+    },
+    MEM_USER_ID: { type: String, required: false, default: parseInt(Math.random() * 10000000000)},
+    MEM_SIGN_TYPE: { type: String, required: true }
   },
   {
     collection: 'MEMBER'
