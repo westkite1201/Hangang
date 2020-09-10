@@ -12,7 +12,7 @@ function LoginContainer() {
 
   return (
     <div>
-      <KakaoLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
+      <KakaoLoginComponent />
       <GoogleLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
     </div>
   );
