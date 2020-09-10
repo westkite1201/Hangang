@@ -52,7 +52,8 @@ const bcryptCompare = (password, rows) => {
         payload = {
           mem_email: rows[0].MEM_EMAIL,
           gb_cd: rows[0].MEM_GB_CD,
-          mem_avater_path: rows[0].MEM_AVATER_PATH
+          mem_avater_path: rows[0].MEM_AVATER_PATH,
+          mem_user_name: rows[0].MEM_USER_NAME
         };
         resolve(token.generateToken(payload));
       } else {
