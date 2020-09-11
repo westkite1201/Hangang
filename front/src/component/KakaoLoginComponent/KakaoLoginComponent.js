@@ -1,27 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import KaKaoLogin from 'react-kakao-login';
-import axios from 'axios';
 
 function KakaoLoginComponent(props) {
+    const { loginSuccess, loginFail } = props;
     useEffect(() => {
-        
+
     }, []); 
-
-    const loginSuccess = (data) => {
-        const { profile } = data;
-        const { id, kakao_account: kakaoAccount, properties} = profile;
-
-        console.log('login success data: ', data);
-        console.log('login success profile: ', profile);
-    }
-
-    const loginFail = (data) => {
-        console.log('login fail: ', data);
-    }
-    const kakaoLogin = () => {
-        const kakaoObject = window.Kakao;
-    }
 
     return(
         <div>
@@ -29,7 +14,7 @@ function KakaoLoginComponent(props) {
             <h4>로그인 후 더 많은 혜택을 누리세요!</h4>
             <br></br>
             <KaKaoBtn
-                jsKey={'3a69dfcb367898e48e1e2dc3188a8d5c'}
+                jsKey={process.env.KAKAO_JAVASCRIPT_KEY}
                 buttonText="NPM으로만든거"
                 onSuccess={loginSuccess}
                 onFailure={loginFail}
