@@ -18,7 +18,7 @@ function LoginContainer() {
 
   return (
     <div>
-      <KakaoLoginComponent />
+      <KakaoLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
       <GoogleLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
       <AuthContent title="로그인">
         <InputWithLabel label="이메일" name="email" placeholder="이메일" />

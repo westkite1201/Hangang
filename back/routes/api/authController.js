@@ -33,11 +33,10 @@ bcryptCheck = async (password, rows) => {
 };
 
 //google, kakao
-router.post('/check_google', async (req, res) => {
+router.post('/check_sns_login', async (req, res) => {
   try {
     let accessToken = req.body.access_token;
-    let snsType = req.body.snsType;
-    console.log(snsType);
+    let snsType = req.body.sns_type;
     let options;
     if (snsType === 'GOOGLE') {
       const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
@@ -50,7 +49,7 @@ router.post('/check_google', async (req, res) => {
       };
     } else {
       //카카오
-      const PEOPLE_URI = '';
+      const PEOPLE_URI = 'https://kapi.kakao.com/v2/user/me';
       options = {
         uri: PEOPLE_URI,
         method: 'get',
