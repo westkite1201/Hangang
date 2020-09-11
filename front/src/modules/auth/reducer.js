@@ -35,7 +35,8 @@ export default (state = initialState, action) => {
       }
       case LOGIN_SUCCESS: {
         draft.memberInfo.isLogin = true;
-        localStorage.setItem('access_token', action.payload.token);
+        console.log('action.payload ', action.payload);
+        localStorage.setItem('access_token', action.payload.data.token);
         toast('로그인에 성공하였습니다!', TOAST_OPTION);
         break;
       }
