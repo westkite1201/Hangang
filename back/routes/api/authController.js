@@ -121,10 +121,11 @@ router.post('/login', async (req, res) => {
     };
     let memberRow = await Member.find(filter);
     if (memberRow && memberRow.length !== 0) {
+      console.log('isExist');
       //온경우
       const password = req.body.memPassword;
       let jwtToken = await bcryptCheck(password, memberRow);
-      //console.log(jwtToken);
+      console.log(jwtToken);
       // res.cookie('access-token', jwtToken, {
       //   maxAge: 1000 * 60 * 60 * 24 * 1,
       //   httpOnly: false
@@ -133,11 +134,13 @@ router.post('/login', async (req, res) => {
         return res.json({
           message: 'logged in successfully',
           token: jwtToken,
-          code: 200
+          status: 200
         });
       } else {
-        res.json({ message: 'error', status: 400 });
+        return res.json({ message: 'error', status: 400 });
       }
+    } else {
+      return res.json({ message: '가입된 정보가 없습니다.', status: 400 });
     }
   } catch (e) {
     console.log('error', e);
