@@ -1,7 +1,13 @@
-import { getHangangTemp, getQuotes, getSubmitQuotes, getQuotesAdmin, updateQuotesAccepted } from '../../lib/api/hangang';
+import {
+  getHangangTemp,
+  getQuotes,
+  getSubmitQuotes,
+  getQuotesAdmin,
+  updateQuotesAccepted
+} from '../../lib/api/hangang';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import {
-  GET_HANGANG_TEMP_SUCCESS,
+GET_HANGANG_TEMP_SUCCESS,
   GET_HANGANG_TEMP_REQUEST,
   GET_HANGANG_TEMP_FAILURE,
   GET_QUOTES_REQUEST,
@@ -9,7 +15,6 @@ import {
   GET_QUOTES_SUCCESS,
   GET_QUOTES_FAILURE,
   GET_QUOTES_SUBMIT,
-
   PUT_QUOTES_ACCEPTED
 } from './reducer';
 
