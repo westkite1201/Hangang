@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import authHelpers from '../../lib/authHelpers';
+import authHelpers from '../lib/authHelpers';
 /* high order 컴포넌트  */
 /* A higher order component is frequently written as a function that returns a class. */
 export default function withAuth(AuthComponent) {

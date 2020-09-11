@@ -1,6 +1,6 @@
 import decode from 'jwt-decode';
 
-export default class AuthHelperMethods {
+export default class authHelpers {
   // Initializing important variables
   constructor(domain) {
     //THIS LINE IS ONLY USED WHEN YOU'RE IN PRODUCTION MODE!
@@ -12,8 +12,8 @@ export default class AuthHelperMethods {
       method: 'POST',
       body: JSON.stringify({
         username,
-        password,
-      }),
+        password
+      })
     }).then((res) => {
       this.setToken(res.token); // Setting the token in localStorage
       return Promise.resolve(res);
@@ -74,7 +74,7 @@ export default class AuthHelperMethods {
     // performs api calls sending the required authentication headers
     const headers = {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     };
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
@@ -84,7 +84,7 @@ export default class AuthHelperMethods {
 
     return fetch(url, {
       headers,
-      ...options,
+      ...options
     })
       .then(this._checkStatus)
       .then((response) => response.json());
