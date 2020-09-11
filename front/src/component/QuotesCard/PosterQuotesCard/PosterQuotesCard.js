@@ -74,7 +74,7 @@ const QuotesWrapper = styled.div`
 
 const QuotesContent = styled.div`
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.4rem;
   text-align: center;
   padding: 20%;
   @media only screen and (min-width: 768px) {
