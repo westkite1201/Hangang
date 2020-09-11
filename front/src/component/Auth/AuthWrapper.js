@@ -15,6 +15,7 @@ const Positioner = styled.div`
 // 너비, 그림자 설정
 const ShadowedBox = styled.div`
   width: 500px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 16px 0px;
 `;
 
 // 로고

@@ -3,6 +3,7 @@ import KakaoLoginComponent from '../../component/KakaoLoginComponent';
 import GoogleLoginComponent from '../../component/GoogleLoginComponent';
 import { LOGIN_REQUEST } from '../../modules/auth/reducer';
 import {
+  AuthWrapper,
   AuthContent,
   InputWithLabel,
   AuthButton,
@@ -11,6 +12,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 
 function LoginContainer({ history }) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const dispatch = useDispatch();
   const { memberInfo } = useSelector((state) => state.auth);
 
@@ -20,12 +23,33 @@ function LoginContainer({ history }) {
     }
   }, [memberInfo, history]);
 
-  const enterLogin = useCallback((e) => {
-    //console.log('enter  Login ee', enterLogin);
-    if (e.keyCode === 13) {
-      onClickLogin();
-    }
-  }, []);
+  const onClickLogin = () => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      payload: {
+        memEmail: email,
+        memPassword: password
+      }
+    });
+  };
+  const enterLogin = useCallback(
+    (e) => {
+      const disPatchLogin = () => {
+        dispatch({
+          type: LOGIN_REQUEST,
+          payload: {
+            memEmail: email,
+            memPassword: password
+          }
+        });
+      };
+      //console.log('enter  Login ee', enterLogin);
+      if (e.keyCode === 13) {
+        disPatchLogin();
+      }
+    },
+    [dispatch, email, password]
+  );
 
   useEffect(() => {
     window.addEventListener('keydown', enterLogin);
@@ -41,8 +65,6 @@ function LoginContainer({ history }) {
   const loginFail = (data) => {
     console.log('login fail: ', data);
   };
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
 
   const handlePassword = (e) => {
     console.log('hell', password);
@@ -52,37 +74,32 @@ function LoginContainer({ history }) {
     console.log('hell', email);
     setEmail(e.target.value);
   };
-  const onClickLogin = () => {
-    dispatch({
-      type: LOGIN_REQUEST,
-      payload: {
-        memEmail: email,
-        memPassword: password
-      }
-    });
-  };
 
   return (
     <div>
+      <AuthWrapper>
+        <AuthContent title="로그인">
+          <InputWithLabel
+            label="이메일"
+            name="email"
+            placeholder="이메일"
+            onChange={handleEmail}
+          />
+          <InputWithLabel
+            label="비밀번호"
+            name="password"
+            placeholder="비밀번호"
+            type="password"
+            onChange={handlePassword}
+          />
+          <AuthButton onClick={onClickLogin}>로그인</AuthButton>
+          <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>
+        </AuthContent>
+      </AuthWrapper>
+      {/*
       <KakaoLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
       <GoogleLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
-      <AuthContent title="로그인">
-        <InputWithLabel
-          label="이메일"
-          name="email"
-          placeholder="이메일"
-          onChange={handleEmail}
-        />
-        <InputWithLabel
-          label="비밀번호"
-          name="password"
-          placeholder="비밀번호"
-          type="password"
-          onChange={handlePassword}
-        />
-        <AuthButton onClick={onClickLogin}>로그인</AuthButton>
-        <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>
-      </AuthContent>
+      */}
     </div>
   );
 }
