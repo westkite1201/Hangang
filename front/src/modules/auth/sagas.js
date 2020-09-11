@@ -20,7 +20,7 @@ function* loginHangangSaga(action) {
         type: LOGIN_SUCCESS,
         payload: {
           loading: false,
-          data: loginData.data,
+          data: loginData,
           error: null
         }
       });

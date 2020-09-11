@@ -16,6 +16,7 @@ import {
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
+import WithAuth from '../../lib/WithAuth';
 
 let returnIdList = [];
 
@@ -51,7 +52,12 @@ const QuotesCardList = ({ quotesList }) => {
   );
 };
 
-const HangangAdminContainer = () => {
+const HangangAdminContainer = ({ history, confirm }) => {
+  console.log('confirm, ', confirm);
+  if (confirm.gb_cd !== '1') {
+    alert('권한이 없습니다!');
+    history.replace('/');
+  }
   const { quotesData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
   const [submitQuotes, setSubmitQuotes] = useState();
@@ -221,4 +227,4 @@ const BackGround = styled.div`
   filter: blur(4px);
   -webkit-filter: blur(4px);
 `;
-export default HangangAdminContainer;
+export default WithAuth(HangangAdminContainer);
