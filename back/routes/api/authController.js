@@ -93,7 +93,7 @@ router.post('/check_sns_login', async (req, res) => {
           MEM_PASSWORD: hashedPassword,
           MEM_USER_NAME: name,
           MEM_AVATER_PATH: picture,
-          MEM_SIGN_TYPE: 'SNS'
+          MEM_SIGN_TYPE: snsType
         };
         const member = new Member(userData);
         await member.save();
