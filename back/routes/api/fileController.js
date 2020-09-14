@@ -28,8 +28,28 @@ let storage = multer.diskStorage({
   }
 });
 
+let limits = {
+  files: 1, // allow only 1 file per request
+  fileSize: 1024 * 1024 * 5, // 5 MB (max file size)
+};
+
+const fileFilter = function(req, file, cb) {
+// supported image file mimetypes
+const allowedMimes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif', 'image/jpg'];
+
+  if (_.includes(allowedMimes, file.mimetype)) {
+  // allow supported image files
+    cb(null, true);
+  } else {
+    // throw error for invalid files
+    cb(new Error('Invalid file type. Only jpg, png and gif image files are allowed.'));
+  }
+};
+
 let upload = multer({
-  storage: storage
+  storage: storage,
+  limits: limits,
+  fileFilter: fileFilter
 }).array('files', 10);
 
 router.post('/uploadFiles', async (req, res, next) => {
@@ -231,6 +251,8 @@ router.post('/save_canvas_image', function (req, res) {
   var base64Data = imgB64Data.replace(/^data:image\/png;base64,/, '');
   let fileName = content + '_' + author + '.' + extension;
   let path = FILE_ROOT_DIR + FILE_FORDER_PATH + fileName;
+
+  console.log('req.body');
   try {
     require('fs').writeFile(path, base64Data, 'base64', function (err) {
       console.log(err);
