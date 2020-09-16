@@ -56,7 +56,7 @@ const HangangAdminContainer = ({ history, confirm }) => {
   console.log('confirm, ', confirm);
   if (confirm.gb_cd !== '1') {
     alert('권한이 없습니다!');
-    history.replace('/');
+    history.push('/');
   }
   const { quotesData } = useSelector((state) => state.hangang);
   const [acceptedQuotes, setAcceptedQuotes] = useState();
@@ -170,14 +170,14 @@ const HangangAdminContainer = ({ history, confirm }) => {
         </div>
         <hr></hr>
       </Title>
-      <Grid container spacing={1}>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={10}>
+      <Grid container spacing={3}>
+        <Grid item xs={1} md={1} lg={1}></Grid>
+        <Grid item xs={10} md={10} lg={10}>
           <Grid container spacing={1}>
             {showQuotes && <QuotesCardList quotesList={showQuotes} />}
           </Grid>
         </Grid>
-        <Grid item xs={1}></Grid>
+        <Grid item xs={1} md={1} lg={1}></Grid>
       </Grid>
     </Wrapper>
   );
