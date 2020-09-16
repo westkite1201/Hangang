@@ -9,6 +9,7 @@ import {
   AuthButton,
   RightAlignedLink
 } from '../../component/Auth';
+import Root from '../../component/Wave/Root';
 import { useSelector, useDispatch } from 'react-redux';
 
 function LoginContainer({ history }) {
@@ -103,9 +104,16 @@ function LoginContainer({ history }) {
           <AuthButton onClick={onClickLogin}>로그인</AuthButton>
           <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>
         </AuthContent>
-        <KakaoLoginComponent loginSuccess={snsLoginSuccess} loginFail={snsLoginFail} />
-        <GoogleLoginComponent loginSuccess={snsLoginSuccess} loginFail={snsLoginFail} />
+        <KakaoLoginComponent
+          loginSuccess={snsLoginSuccess}
+          loginFail={snsLoginFail}
+        />
+        <GoogleLoginComponent
+          loginSuccess={snsLoginSuccess}
+          loginFail={snsLoginFail}
+        />
       </AuthWrapper>
+      <Root />
     </div>
   );
 }
