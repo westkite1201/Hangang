@@ -5,19 +5,27 @@ import KaKaoLogin from 'react-kakao-login';
 function KakaoLoginComponent(props) {
     const { loginSuccess, loginFail } = props;
     useEffect(() => {
-
+        
     }, []); 
 
+    const kakaoLoginSuccess = (data) => {
+        const { profile, response } = data
+        const loginData = {
+            id: profile.id,
+            access_token: response.access_token
+        }
+        loginSuccess(loginData, 'KAKAO');
+    }
+    const kakaoLoginFail = (data) => {
+        loginFail(data, 'KAKAO')
+    }
     return(
         <div>
-            <h1>카카오톡 간편 로그인</h1>
-            <h4>로그인 후 더 많은 혜택을 누리세요!</h4>
-            <br></br>
             <KaKaoBtn
                 jsKey={process.env.KAKAO_JAVASCRIPT_KEY}
-                buttonText="NPM으로만든거"
-                onSuccess={loginSuccess}
-                onFailure={loginFail}
+                buttonText="카카오톡로그인"
+                onSuccess={kakaoLoginSuccess}
+                onFailure={kakaoLoginFail}
                 getProfile={true}
             />
         </div>

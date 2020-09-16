@@ -33,7 +33,7 @@ bcryptCheck = async (password, rows) => {
 };
 
 //google, kakao
-router.post('/check_sns_login', async (req, res) => {
+router.post('/sns-login', async (req, res) => {
   try {
     let accessToken = req.body.access_token;
     let snsType = req.body.sns_type;
@@ -207,14 +207,4 @@ router.post('/setMemberSignup', async (req, res) => {
   }
 });
 
-/* 카톡 로그인 라우터 */
-router.get('/kakao-login', async (req, res) => {
-  console.log('kakao-login');
-  console.log('req: ', req);
-
-  return res.json({
-    status: 200,
-    message: 'success kakao login'
-  });
-});
 module.exports = router;

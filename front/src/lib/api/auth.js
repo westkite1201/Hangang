@@ -22,3 +22,10 @@ export async function signUpHangang(payload) {
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+export async function snsLoginHangang(payload) {
+  const response = await axios.post(
+    `${cilentConfig.endpoint.api}/auth/sns-login`,
+    payload
+  )
+  return response.data
+}
