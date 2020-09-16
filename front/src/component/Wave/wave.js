@@ -13,8 +13,8 @@ export class wave {
     this.stageHeight = stageHeight;
 
     /* 중간을 각각 넓이, 높이를 2로 나눈 값으로 지정 */
-    this.centerX = stageWidth / 2 + 180;
-    this.centerY = stageHeight / 2 + 180;
+    this.centerX = stageWidth / 2 + 250;
+    this.centerY = stageHeight / 2 + 250;
 
     /* 
     각 점의 간격은 `전체 넓이 / (전체 점의 숫자 - 1)` 이 됩니다.  

@@ -93,6 +93,10 @@ export default class Root extends Component {
   }
 
   render() {
-    return <canvas ref={this.canvasRef} />;
+    return (
+      <div style={{ position: 'absolute' }}>
+        <canvas ref={this.canvasRef} />;
+      </div>
+    );
   }
 }
