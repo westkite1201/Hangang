@@ -1,4 +1,4 @@
-import { loginHangang, signUpHangang } from '../../lib/api/auth';
+import { loginHangang, signUpHangang, snsLoginHangang } from '../../lib/api/auth';
 import { put, call, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -7,7 +7,11 @@ import {
   LOGIN_SUCCESS,
   SIGN_UP_REQUEST,
   SIGN_UP_FAILURE,
-  SIGN_UP_SUCCESS
+  SIGN_UP_SUCCESS,
+
+  SNS_LOGIN_REQUEST,
+  SNS_LOGIN_FAILURE,
+  SNS_LOGIN_SUCCESS
 } from './reducer';
 
 function* loginHangangSaga(action) {
@@ -71,7 +75,32 @@ function* signUpHangangSaga(action) {
     });
   }
 }
+function* snsLoginHangangSaga(action) {
+  try {
+    console.log('snsLoginHangangSaga', action.payload);
+    const snsLoginData = yield call(snsLoginHangang, action.payload);
+    console.log('snsLogin ', snsLoginData);
+    yield put({
+      type: SNS_LOGIN_SUCCESS,
+      payload: {
+        loading: false,
+        data: snsLoginData.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: SNS_LOGIN_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
 export function* authSaga() {
   yield takeEvery(LOGIN_REQUEST, loginHangangSaga);
   yield takeEvery(SIGN_UP_REQUEST, signUpHangangSaga);
+  yield takeEvery(SNS_LOGIN_REQUEST, snsLoginHangangSaga);
 }

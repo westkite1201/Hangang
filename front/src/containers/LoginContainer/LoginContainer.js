@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import KakaoLoginComponent from '../../component/KakaoLoginComponent';
 import GoogleLoginComponent from '../../component/GoogleLoginComponent';
-import { LOGIN_REQUEST } from '../../modules/auth/reducer';
+import { LOGIN_REQUEST, SNS_LOGIN_REQUEST } from '../../modules/auth/reducer';
 import {
   AuthWrapper,
   AuthContent,
@@ -58,12 +58,20 @@ function LoginContainer({ history }) {
     };
   }, [enterLogin]);
 
-  const loginSuccess = (data) => {
-    console.log('login success: ', data);
+  const snsLoginSuccess = (data, type) => {
+    dispatch({
+      type: SNS_LOGIN_REQUEST,
+      payload: {
+        id: data.id,
+        accessToken: data.access_token,
+        sns_type: type
+      }
+    });
   };
 
-  const loginFail = (data) => {
+  const snsLoginFail = (data, type) => {
     console.log('login fail: ', data);
+    console.log('login fail: ', type);
   };
 
   const handlePassword = (e) => {
@@ -95,11 +103,9 @@ function LoginContainer({ history }) {
           <AuthButton onClick={onClickLogin}>로그인</AuthButton>
           <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>
         </AuthContent>
+        <KakaoLoginComponent loginSuccess={snsLoginSuccess} loginFail={snsLoginFail} />
+        <GoogleLoginComponent loginSuccess={snsLoginSuccess} loginFail={snsLoginFail} />
       </AuthWrapper>
-      {/*
-      <KakaoLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
-      <GoogleLoginComponent loginSuccess={loginSuccess} loginFail={loginFail} />
-      */}
     </div>
   );
 }
