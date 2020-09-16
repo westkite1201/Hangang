@@ -23,6 +23,11 @@ export const LOGIN_SUCCESS = 'login/LOGIN_SUCCESS';
 export const SIGN_UP_REQUEST = 'login/SIGN_UP_REQUEST';
 export const SIGN_UP_FAILURE = 'login/SIGN_UP_FAILURE';
 export const SIGN_UP_SUCCESS = 'login/SIGN_UP_SUCCESS';
+
+export const SNS_LOGIN_REQUEST = 'login/SNS_LOGIN_REQUEST';
+export const SNS_LOGIN_FAILURE = 'login/SNS_LOGIN_FAILURE';
+export const SNS_LOGIN_SUCCESS = 'login/SNS_LOGIN_SUCCESS';
+
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
@@ -45,6 +50,18 @@ export default (state = initialState, action) => {
       }
       case SIGN_UP_SUCCESS: {
         draft.memberInfo = action.payload;
+        break;
+      }
+      case SNS_LOGIN_SUCCESS: {
+        console.log('SNS_LOGIN SUCCESS: ', action.payload)
+        break; 
+      }
+      case SNS_LOGIN_FAILURE: {
+        console.log('SNS_LOGIN_FAIL: ', action.payload)
+        break;
+      }
+      case SNS_LOGIN_REQUEST: {
+        console.log('SNS_LOGIN REQUEST', action.payload)
         break;
       }
       default: {
