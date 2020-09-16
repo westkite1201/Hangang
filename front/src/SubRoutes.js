@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 //import TodoContainer from './containers/TodoContainer';
 import HangangContainer from './containers/HangangContainer';
 import HangangAdminContainer from './containers/HangangAdminContainer';
@@ -10,13 +10,12 @@ import AboutContainer from './containers/AboutContainer';
 import QuotesManageContainer from './containers/QuotesManageContainer';
 import PreviewContainer from './containers/PreviewContainer';
 import LoginContainer from './containers/LoginContainer';
-
+import WaveContainer from './containers/WaveContainer';
 export default (props) => {
-  useEffect(() => {}, []);
-
   return (
     <div>
       <Route exact path="/" component={HangangContainer} />
+      <Route exact path="/wave" component={WaveContainer} />
       {/*<Route exact path="/todo" component={TodoContainer} />*/}
       <Route exact path="/admin" component={HangangAdminContainer} />
       <Route
