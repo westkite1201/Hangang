@@ -14,9 +14,12 @@ export default function withAuth(AuthComponent) {
     /* In the componentDid<ount, we would want to do a couple of important tasks in order to verify the current users authentication status
     prior to granting them enterance into the app. */
     componentDidMount() {
-      //console.log("hello");
+      console.log('hello');
+      const { history } = this.props;
+
       if (!Auth.loggedIn()) {
-        //console.log("not lOGGED");
+        console.log('not lOGGED');
+        history.push('/login');
         //Router.push('/login');
       } else {
         // console.log("is LoggedIn");
@@ -32,14 +35,15 @@ export default function withAuth(AuthComponent) {
           /* Oh snap! Looks like there's an error so we'll print it out and log the user out for security reasons. */
           console.log(err);
           Auth.logout();
-          //Router.push('/login');
+          history.push('/login');
         }
       }
     }
 
     _handleLogout = () => {
+      const { history } = this.props;
       this.Auth.logout();
-      //Router.push('/login');
+      history.push('/login');
     };
 
     render() {
