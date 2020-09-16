@@ -1,10 +1,11 @@
 import React from 'react';
 import Root from '../../component/Wave/Root';
+import Money from '../../component/Money';
 import styled from 'styled-components';
 const WaveContainer = () => {
   return (
     <Sbody>
-      <Root />
+      <Money />
     </Sbody>
   );
 };
