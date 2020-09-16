@@ -14,7 +14,7 @@ export class Point {
     this.fieldY = y; // 기본 Y 중심
     this.speed = 0.05;
     this.cur = index;
-    this.max = Math.random() * 100 + 80;
+    this.max = Math.random() * 100 + 50;
   }
 
   update() {
