@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React from 'react';
 //import TodoContainer from './containers/TodoContainer';
 import HangangContainer from './containers/HangangContainer';
 import HangangAdminContainer from './containers/HangangAdminContainer';
