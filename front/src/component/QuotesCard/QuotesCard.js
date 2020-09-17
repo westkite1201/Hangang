@@ -4,6 +4,7 @@ import PosterQuotesCard from './PosterQuotesCard';
 import ThumbQuotesCard from './ThumbQuotesCard';
 import { getContentCardType } from '../../lib/helper';
 import { Grid } from '@material-ui/core';
+import { Checkbox } from '@material-ui/core';
 import { BANNER, POSTER } from '../../lib/CommonString';
 //pst_exps_typ_cd =  10 // 일반콘텐츠
 //=20 //
@@ -19,12 +20,19 @@ function CardComponent({ quotes }) {
       return <ThumbQuotesCard quotes={quotes} />;
   }
 }
-const QuotesCard = ({ quotes, index }) => {
+const QuotesCard = ({ quotes, index, onChecked }) => {
   const { card_exps_typ_cd, usePreview } = quotes;
   if (card_exps_typ_cd === BANNER) {
     return (
       <Grid item xs={12} md={12} lg={12} key={index}>
         <CardComponent quotes={quotes} />
+        {onChecked && (
+          <Checkbox
+            key={'quote-card-checkbox-' + index}
+            id={quotes._id}
+            onChange={onChecked}
+          />
+        )}
       </Grid>
     );
   } else {
@@ -37,6 +45,13 @@ const QuotesCard = ({ quotes, index }) => {
         key={index}
       >
         <CardComponent quotes={quotes} />
+        {onChecked && (
+          <Checkbox
+            key={'quote-card-checkbox-' + index}
+            id={quotes._id}
+            onChange={onChecked}
+          />
+        )}
       </Grid>
     );
   }
