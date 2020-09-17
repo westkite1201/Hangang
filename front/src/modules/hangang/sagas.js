@@ -116,9 +116,7 @@ function* getSubmitQuotesSaga(action) {
 
 function* putQuotesAccepted(action) {
   try {
-    console.log('[masonms] putQuotesAccepted: ', action);
     const quotesAcceptedData = yield call(updateQuotesAccepted, action.payload);
-    console.log('[masonms] quotesAcceptedData: ', quotesAcceptedData);
     yield put({
       type: GET_QUOTES_SUCCESS,
       payload: {
