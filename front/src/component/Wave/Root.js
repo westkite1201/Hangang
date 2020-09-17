@@ -14,6 +14,9 @@ export default class Root extends Component {
     this.stageHeight = document.body.clientHeight;
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+  }
   componentDidMount() {
     /*
     Canvas는 getContext() 메소드를 이용해서 렌더링 컨텍스트와
@@ -38,7 +41,7 @@ export default class Root extends Component {
    http://sculove.github.io/blog/2016/12/29/addEventListener-passive/
    https://joshua1988.github.io/web-development/javascript/event-propagation-delegation/
    */
-    window.addEventListener('resize', this.resize.bind(this), {
+    window.addEventListener('resize', this.resize, {
       once: false,
       passive: false,
       capture: false
@@ -61,7 +64,7 @@ export default class Root extends Component {
   }
 
   /* 사이즈가 변했을 때 실행될 콜백 */
-  resize() {
+  resize = () => {
     /* 레티나 디스플레이에서 올바른 화면을 보여주기 위해 설정 */
     this.stageWidth = document.body.clientWidth;
     this.stageHeight = document.body.clientHeight;
@@ -79,7 +82,7 @@ export default class Root extends Component {
 
     /* 웨이브에도 리사이즈가 적용 되도록 설정 */
     this.waveGroup.resize(this.stageWidth, this.stageHeight);
-  }
+  };
 
   /* 애니메이션 관련 루틴 정의 */
   animate(t) {
