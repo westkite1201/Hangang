@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 import QuotesCard from '../../component/QuotesCard';
+
+import { useInfinteScroll } from '../../hooks';
 
 const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, key) => {
@@ -13,6 +15,21 @@ const QuotesCardList = ({ quotesList }) => {
 /* 명언 그리드  */
 const QuotesGridViewComponent = () => {
   const { quotesData } = useSelector((state) => state.hangang);
+
+  const [target, setTarget] = useState(null);
+
+  useInfinteScroll({
+    target,
+    onIntersect: ([{ isIntersecting }]) => {
+      if (isIntersecting) {
+        dispatch({
+          type: GET_QUOTES_REQUEST,
+          payload: { accepted: '0' }
+        });
+      }
+    }
+  });
+
   const { data: quotesList } = quotesData;
   console.log('data ', quotesList);
   const dispatch = useDispatch();
@@ -31,6 +48,7 @@ const QuotesGridViewComponent = () => {
           {quotesList && quotesList.length !== 0 && (
             <QuotesCardList quotesList={quotesList} />
           )}
+          <div ref={setTarget} className="last-item" />
         </Grid>
       </Grid>
       <Grid item xs={1} md={1} lg={1}></Grid>
