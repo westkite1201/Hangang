@@ -38,6 +38,7 @@ router.post('/sns-login', async (req, res) => {
     let accessToken = req.body.access_token;
     let snsType = req.body.sns_type;
     let options;
+
     if (snsType === 'GOOGLE') {
       const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
       options = {
@@ -61,45 +62,59 @@ router.post('/sns-login', async (req, res) => {
 
     let result = await request.get(options);
     result = JSON.parse(result);
-    //id가 검증되었다면 ( 정상적 구글 로그인 )
-    if (result.verified_email) {
-      const { id, email, picture, name } = result;
-      let filter = {
-        MEM_USER_ID: id
-      };
-      let memberRow = await Member.find(filter);
-      //가입된 id이 존재한다면,
-      if (memberRow && memberRow.length !== 0) {
-        let password = id + '_' + process.env.JWT_SECRET;
-        let jwtToken = await bcryptCheck(password, memberRow);
+    const userId = result.id;
+    let tempData = {};
+
+    if (snsType === 'GOOGLE') {
+      tempData.verifiedEmail = result.verified_email;
+      tempData.email = result.email;
+      tempData.name = result.name;
+      tempData.picture = result.picture;
+    } else {
+      const { kakao_account } = result;
+      tempData.verifiedEmail = kakao_account.is_email_verified
+      tempData.email = (kakao_account.email && kakao_account.email !== undefined ? kakao_account.email : userId);
+      tempData.name = kakao_account.profile.nickname;
+      tempData.picture = kakao_account.profile.thumbnail_image_url;
+    }
+
+    // SNS로그인시 E-mail 검증 완료
+    if (tempData.verifiedEmail) {
+      const filter = {
+        MEM_USER_ID: userId
+      }
+
+      const findMember = await Member.find(filter);
+
+      if (findMember && findMember.length !== 0) {  // userId로 DB조회 결과 유저 있음
+        const password = userId + '_' + process.env.JWT_SECRET;
+        const jwtToken = await bcryptCheck(password, findMember);
         if (jwtToken) {
           return res.json({
-            message: 'logged in successfully',
-            token: jwtToken,
-            code: 200
-          });
+            message: 'sns login success',
+            code: 200,
+            token: jwtToken
+          })
         }
-      } else {
-        //가입된 id 가 존재 하지 않는다면 가입 처리 진행
-        let password = id + '_' + process.env.JWT_SECRET;
+      } else { // userId로 DB조회결과 유저 없음 -> 회원가입 진행(ID와 email은 동일)
+        let password = userId + '_' + process.env.JWT_SECRET;
         const bcySalt = await helper.getBcryptSalt();
         const hashedPassword = await helper.getHashedPassword(
           password,
           bcySalt
         );
         let userData = {
-          MEM_EMAIL: email,
-          MEM_USER_ID: id,
+          MEM_EMAIL: tempData.email,
+          MEM_USER_ID: userId,
           MEM_PASSWORD: hashedPassword,
-          MEM_USER_NAME: name,
-          MEM_AVATER_PATH: picture,
+          MEM_USER_NAME: tempData.name,
+          MEM_AVATER_PATH: tempData.picture,
           MEM_SIGN_TYPE: snsType
         };
         const member = new Member(userData);
         await member.save();
-        //'success sign up'
 
-        let jwtToken = await bcryptCheck(password, memberRow);
+        let jwtToken = await bcryptCheck(password, findMember);
         if (jwtToken) {
           return res.json({
             message: 'logged in successfully',
@@ -108,6 +123,8 @@ router.post('/sns-login', async (req, res) => {
           });
         }
       }
+    } else {  // 검증안되었을때, 회원가입으로 돌릴지? 협의필요
+
     }
   } catch (e) {
     console.log(e);

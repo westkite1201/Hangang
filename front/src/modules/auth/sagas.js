@@ -77,14 +77,12 @@ function* signUpHangangSaga(action) {
 }
 function* snsLoginHangangSaga(action) {
   try {
-    console.log('snsLoginHangangSaga', action.payload);
     const snsLoginData = yield call(snsLoginHangang, action.payload);
-    console.log('snsLogin ', snsLoginData);
     yield put({
       type: SNS_LOGIN_SUCCESS,
       payload: {
         loading: false,
-        data: snsLoginData.data,
+        data: snsLoginData,
         error: null
       }
     });
