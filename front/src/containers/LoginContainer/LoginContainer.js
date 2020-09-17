@@ -64,7 +64,7 @@ function LoginContainer({ history }) {
       type: SNS_LOGIN_REQUEST,
       payload: {
         id: data.id,
-        accessToken: data.access_token,
+        access_token: data.access_token,
         sns_type: type
       }
     });

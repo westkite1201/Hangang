@@ -53,7 +53,10 @@ export default (state = initialState, action) => {
         break;
       }
       case SNS_LOGIN_SUCCESS: {
-        console.log('SNS_LOGIN SUCCESS: ', action.payload)
+        draft.memberInfo.isLogin = true;
+        console.log('action.payload ', action.payload);
+        localStorage.setItem('access_token', action.payload.data.token);
+        toast('SNS로그인에 성공하였습니다!', TOAST_OPTION);
         break; 
       }
       case SNS_LOGIN_FAILURE: {
