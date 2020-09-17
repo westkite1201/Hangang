@@ -95,7 +95,6 @@ router.post('/word_data', async (req, res) => {
       ACCEPTED: accepted,
       STATUS: '0'
     };
-
     Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -107,7 +106,7 @@ router.post('/word_data', async (req, res) => {
           return res.json(makeReturnData('100', jsonObj));
         }
       }
-    }).skip((parseInt(pageNum)*parseInt(pageCount))).limit(parseInt(pageCount));
+    }).skip((parseInt(pageNum-1)*parseInt(pageCount))).limit(parseInt(pageCount));
   } catch (error) {
     console.error(error);
     return res.json({
