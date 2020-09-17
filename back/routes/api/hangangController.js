@@ -90,11 +90,12 @@ router.get('/hangang_data', async function (req, res, next) {
  */
 router.post('/word_data', async (req, res) => {
   try {
-    const { accepted } = req.body;
+    const { accepted, pageNum, pageCount } = req.body;
     const filter = {
       ACCEPTED: accepted,
       STATUS: '0'
     };
+
     Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -106,7 +107,7 @@ router.post('/word_data', async (req, res) => {
           return res.json(makeReturnData('100', jsonObj));
         }
       }
-    });
+    }).skip((parseInt(pageNum)*parseInt(pageCount))).limit(parseInt(pageCount));
   } catch (error) {
     console.error(error);
     return res.json({
