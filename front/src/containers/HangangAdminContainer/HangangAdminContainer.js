@@ -35,18 +35,12 @@ const QuotesCardList = ({ quotesList }) => {
     quotesList &&
     quotesList.map((quotes, index) => {
       return (
-        <div className="quote-container">
-          <QuotesCard
-            quotes={quotes}
-            key={'quote-card-' + index}
-            index={'quote-card-' + index}
-          />
-          <Checkbox
-            key={'quote-card-checkbox-' + index}
-            id={quotes._id}
-            onChange={onChecked}
-          />
-        </div>
+        <QuotesCard
+          quotes={quotes}
+          onChecked={onChecked}
+          key={'quote-card-' + index}
+          index={'quote-card-' + index}
+        />
       );
     })
   );
@@ -72,11 +66,13 @@ const HangangAdminContainer = ({ history, confirm }) => {
     '/images/river.jpeg'
   );
   useEffect(() => {
-    dispatch({
-      type: GET_QUOTES_REQUEST_ADMIN,
-      payload: { accepted: '1' }
-    });
-  }, [dispatch]);
+    if (confirm.gb_cd === '1') {
+      dispatch({
+        type: GET_QUOTES_REQUEST_ADMIN,
+        payload: { accepted: '1' }
+      });
+    }
+  }, [confirm.gb_cd, dispatch]);
 
   useEffect(() => {
     const { data } = quotesData;
