@@ -22,11 +22,11 @@ const PosterQuotesCard = ({ quotes }) => {
       return <div>{item}</div>;
     });
   };
-  console.log(
-    '[seo] getImageFileFullPath ',
-    quotes,
-    getImageFileFullPath(quotes)
-  );
+  // console.log(
+  //   '[seo] getImageFileFullPath ',
+  //   quotes,
+  //   getImageFileFullPath(quotes)
+  // );
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}

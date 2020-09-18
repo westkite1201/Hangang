@@ -11,6 +11,7 @@ import QuotesManageContainer from './containers/QuotesManageContainer';
 import PreviewContainer from './containers/PreviewContainer';
 import LoginContainer from './containers/LoginContainer';
 import WaveContainer from './containers/WaveContainer';
+import TestContainer from './containers/TestContainer/TestContainer.tsx';
 export default (props) => {
   return (
     <div>
@@ -34,6 +35,7 @@ export default (props) => {
       ></Route>
       <Route exact path="/preview" component={PreviewContainer}></Route>
       <Route exact path="/login" component={LoginContainer}></Route>
+      <Route exact path="/test" component={TestContainer}></Route>
     </div>
   );
 };
