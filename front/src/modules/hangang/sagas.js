@@ -7,7 +7,7 @@ import {
 } from '../../lib/api/hangang';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import {
-GET_HANGANG_TEMP_SUCCESS,
+  GET_HANGANG_TEMP_SUCCESS,
   GET_HANGANG_TEMP_REQUEST,
   GET_HANGANG_TEMP_FAILURE,
   GET_QUOTES_REQUEST,
@@ -47,7 +47,7 @@ function* getQuotesSaga(action) {
   try {
     console.log('getQuotes', action.payload);
     const quotesData = yield call(getQuotes, action.payload);
-
+    console.log('quotesData', quotesData);
     yield put({
       type: GET_QUOTES_SUCCESS,
       payload: {

@@ -11,16 +11,17 @@ export async function getHangangTemp() {
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
-export async function getQuotes() {
+export async function getQuotes(params) {
   //   const data = {
   //     todoNum: todoNum
   //   };
-  const body = {
-    accepted: '0'
-  };
+  // const body = {
+  //   accepted: '0'
+  // };
+  console.log(params);
   const response = await axios.post(
     `${cilentConfig.endpoint.api}/hangang/word_data`,
-    body
+    params
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }

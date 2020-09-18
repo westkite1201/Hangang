@@ -58,7 +58,7 @@ function* getQuotesSaga(action) {
   try {
     console.log('getQuotes', action.payload);
     const quotesData = yield call(getQuotes, action.payload);
-
+    console.log('quotesData ', quotesData);
     yield put({
       type: GET_QUOTES_SUCCESS,
       payload: {
