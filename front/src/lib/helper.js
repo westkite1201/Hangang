@@ -61,7 +61,7 @@ export function getBackgroundImage() {
     console.log('저녁', getRandomInt(0, 0));
     //일단 새벽이미지 사용
     return `/images/hangang/dawn_${getRandomInt(0, 0)}.jpg`;
-  } else if (2000 < time && time <= 600) {
+  } else if ((2000 < time && time <= 2400) || time <= 600) {
     console.log('밤');
     return `/images/hangang/night_${getRandomInt(0, 2)}.jpg`;
   }
