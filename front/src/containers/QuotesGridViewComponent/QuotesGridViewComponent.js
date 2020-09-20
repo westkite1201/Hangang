@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 import QuotesCard from '../../component/QuotesCard';
 import Loading from '../../component/common/Loading/Loading.tsx';
+import styled from 'styled-components';
+
 import { useInfinteScroll } from '../../hooks';
 
 const PAGE_COUNT = 5;
@@ -55,19 +57,23 @@ const QuotesGridViewComponent = () => {
   }, [dispatch]);
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={1} md={1} lg={1}></Grid>
-      <Grid item xs={10} md={10} lg={10}>
-        <Grid container spacing={3}>
-          {quotesList && quotesList.length !== 0 && (
-            <QuotesCardList quotesList={quotesList} />
-          )}
-          {loading && <Loading />}
-          <div ref={setTarget} className="last-item" />
+    <QuotesWrapper>
+      <Grid container spacing={3}>
+        <Grid item xs={1} md={1} lg={1}></Grid>
+        <Grid item xs={10} md={10} lg={10}>
+          <Grid container spacing={3}>
+            {quotesList && quotesList.length !== 0 && (
+              <QuotesCardList quotesList={quotesList} />
+            )}
+          </Grid>
         </Grid>
+        <Grid item xs={1} md={1} lg={1}></Grid>
       </Grid>
-      <Grid item xs={1} md={1} lg={1}></Grid>
-    </Grid>
+    </QuotesWrapper>
   );
 };
+const QuotesWrapper = styled.div`
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+`;
 export default QuotesGridViewComponent;
