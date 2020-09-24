@@ -1,12 +1,13 @@
 import produce from 'immer';
-
+const PAGE_COUNT = 5;
 export const initialState = {
   riverTempData: [],
   quotesData: {
     loading: false,
     data: [],
     error: null,
-    totalCount: 0
+    totalCount: 0,
+    isLast: false
   },
   pageNum: 1
 };
@@ -26,7 +27,11 @@ export default (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
       case GET_QUOTES_REQUEST: {
-        console.log('GET_QUOTES_REQUEST ', GET_QUOTES_REQUEST);
+        console.log('GET_QUOTES_REQUEST ', draft.quotesData);
+        if (draft.quotesData.isLast) {
+          draft.quotesData.loading = false;
+          break;
+        }
         draft.quotesData.loading = true;
         break;
       }
@@ -41,11 +46,22 @@ export default (state = initialState, action) => {
       case GET_QUOTES_SUCCESS: {
         const { loading, data, error } = action.payload;
         console.log('GET_QUOTES_SUCCESS ', loading, data, error);
+
+        if (draft.quotesData.isLast) {
+          break;
+        }
         draft.quotesData.data = draft.quotesData.data.concat(data.quotes_array);
         draft.quotesData.loading = loading;
         draft.quotesData.error = error;
         draft.quotesData.totalCount = parseInt(data.total_count);
         draft.pageNum += 1;
+        let maxPageNum = Math.ceil(parseInt(data.total_count) / PAGE_COUNT) + 1;
+        console.log('maxPageNum', maxPageNum, 'draft.pageNum', draft.pageNum);
+        if (maxPageNum === draft.pageNum) {
+          draft.quotesData.isLast = true;
+          draft.quotesData.loading = false;
+          break;
+        }
         break;
       }
       case GET_QUOTES_FAILURE: {
