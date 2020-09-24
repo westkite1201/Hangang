@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
+import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개발자 도구
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'antd/dist/antd.css';
@@ -15,7 +16,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
 sagaMiddleware.run(rootSaga);
 
