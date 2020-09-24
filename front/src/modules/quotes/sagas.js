@@ -7,7 +7,7 @@ import {
   submitQuotes
 } from '../../lib/api/hangang';
 import { getImageDownloadToUrl } from '../../lib/api/unsplash';
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   GET_HANGANG_TEMP_SUCCESS,
   GET_HANGANG_TEMP_REQUEST,
@@ -241,7 +241,7 @@ function* uploadImageSaga(action) {
 }
 export function* quotesSaga() {
   yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
-  yield takeEvery(GET_QUOTES_REQUEST, getQuotesSaga);
+  yield takeLatest(GET_QUOTES_REQUEST, getQuotesSaga);
   yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
   yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
   yield takeEvery(SAVE_CANVAS_IMAGE_REQUEST, saveCanvasImageSaga);
