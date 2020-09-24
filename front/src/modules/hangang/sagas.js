@@ -5,7 +5,7 @@ import {
   getQuotesAdmin,
   updateQuotesAccepted
 } from '../../lib/api/hangang';
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { put, call, delay, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   GET_HANGANG_TEMP_SUCCESS,
   GET_HANGANG_TEMP_REQUEST,
@@ -48,6 +48,7 @@ function* getQuotesSaga(action) {
     console.log('getQuotes', action.payload);
     const quotesData = yield call(getQuotes, action.payload);
     console.log('quotesData', quotesData);
+    yield delay(500);
     yield put({
       type: GET_QUOTES_SUCCESS,
       payload: {
@@ -138,7 +139,7 @@ function* putQuotesAccepted(action) {
 }
 export function* hangangSaga() {
   yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
-  yield takeEvery(GET_QUOTES_REQUEST, getQuotesSaga);
+  yield takeLatest(GET_QUOTES_REQUEST, getQuotesSaga);
   yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
   yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
   yield takeEvery(PUT_QUOTES_ACCEPTED, putQuotesAccepted);

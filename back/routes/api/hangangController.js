@@ -11,9 +11,9 @@ require('moment-timezone');
 const helpers = require('../../common/helpers');
 
 const STATUS_CODE = {
-  '200': 'success',
-  '404': 'data not found',
-  '999': 'etc'
+  200: 'success',
+  404: 'data not found',
+  999: 'etc'
 };
 
 /* 한강 물 데이터 저장 */
@@ -94,7 +94,7 @@ router.post('/word_data', async (req, res) => {
     const filter = {
       ACCEPTED: accepted,
       STATUS: '0'
-    };    
+    };
     Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -104,11 +104,18 @@ router.post('/word_data', async (req, res) => {
         } else {
           Quotes.countDocuments(filter, (error, count) => {
             const jsonObj = helpers.makeJsonKeyLower(quotes);
-            return res.json(makeReturnData('100', {quotes_array: jsonObj, total_count: count}));
+            return res.json(
+              makeReturnData('200', {
+                quotes_array: jsonObj,
+                total_count: count
+              })
+            );
           });
         }
       }
-    }).skip((parseInt(pageNum-1)*parseInt(pageCount))).limit(parseInt(pageCount));
+    })
+      .skip(parseInt(pageNum - 1) * parseInt(pageCount))
+      .limit(parseInt(pageCount));
   } catch (error) {
     console.error(error);
     return res.json({

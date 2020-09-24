@@ -11,7 +11,7 @@ import { useInfinteScroll } from '../../hooks';
 const PAGE_COUNT = 5;
 const QuotesCardList = ({ quotesList }) => {
   return quotesList.map((quotes, key) => {
-    return <QuotesCard quotes={quotes} key={key} />;
+    return <QuotesCard quotes={quotes} key={quotes._id} />;
   });
 };
 
@@ -26,7 +26,7 @@ const QuotesGridViewComponent = () => {
       if (
         isIntersecting &&
         !quotesData.isLoading &&
-        maxPageNum.current < pageNum
+        maxPageNum.current > pageNum
       ) {
         dispatch({
           type: GET_QUOTES_REQUEST,
@@ -43,10 +43,8 @@ const QuotesGridViewComponent = () => {
       totalCount,
       Math.ceil(totalCount / PAGE_COUNT)
     );
-    maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT);
+    maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT) + 1;
   }, [totalCount]);
-
-  console.log('data ', quotesList);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -54,7 +52,7 @@ const QuotesGridViewComponent = () => {
       type: GET_QUOTES_REQUEST,
       payload: { accepted: '0', pageNum: pageNum, pageCount: PAGE_COUNT }
     });
-  }, [dispatch]);
+  }, []);
 
   return (
     <QuotesWrapper>
@@ -65,6 +63,12 @@ const QuotesGridViewComponent = () => {
             {quotesList && quotesList.length !== 0 && (
               <QuotesCardList quotesList={quotesList} />
             )}
+            {loading && (
+              <LoadingWrapper>
+                <Loading size={50} color={'#b197fc'} />
+              </LoadingWrapper>
+            )}
+            <div ref={setTarget} className="last-item" />
           </Grid>
         </Grid>
         <Grid item xs={1} md={1} lg={1}></Grid>
@@ -73,7 +77,10 @@ const QuotesGridViewComponent = () => {
   );
 };
 const QuotesWrapper = styled.div`
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding-top: 1.8rem;
+  padding-bottom: 1.8rem;
+`;
+const LoadingWrapper = styled.div`
+  margin: auto;
 `;
 export default QuotesGridViewComponent;
