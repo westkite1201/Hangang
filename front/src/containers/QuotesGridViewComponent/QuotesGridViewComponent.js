@@ -23,11 +23,7 @@ const QuotesGridViewComponent = () => {
   useInfinteScroll({
     target,
     onIntersect: ([{ isIntersecting }]) => {
-      if (
-        isIntersecting &&
-        !quotesData.isLoading &&
-        maxPageNum.current > pageNum
-      ) {
+      if (isIntersecting && !quotesData.isLoading && !quotesData.isLast) {
         dispatch({
           type: GET_QUOTES_REQUEST,
           payload: { accepted: '0', pageNum: pageNum, pageCount: PAGE_COUNT }
@@ -36,23 +32,26 @@ const QuotesGridViewComponent = () => {
     }
   });
 
-  const { data: quotesList, loading, totalCount } = quotesData;
+  const { data: quotesList, loading, totalCount, isLast } = quotesData;
+  console.log('isLast!!!', isLast);
   useEffect(() => {
     console.log(
       ' Math.ceil(totalCount / PAGE_COUNT) ',
       totalCount,
       Math.ceil(totalCount / PAGE_COUNT)
     );
-    maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT) + 1;
+    maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT);
   }, [totalCount]);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({
-      type: GET_QUOTES_REQUEST,
-      payload: { accepted: '0', pageNum: pageNum, pageCount: PAGE_COUNT }
-    });
-  }, []);
+    if (!isLast) {
+      dispatch({
+        type: GET_QUOTES_REQUEST,
+        payload: { accepted: '0', pageNum: pageNum, pageCount: PAGE_COUNT }
+      });
+    }
+  }, [isLast, dispatch]);
 
   return (
     <QuotesWrapper>
@@ -68,6 +67,7 @@ const QuotesGridViewComponent = () => {
                 <Loading size={50} color={'#b197fc'} />
               </LoadingWrapper>
             )}
+            {isLast && <ThisisLast>마지막 게시물입니다</ThisisLast>}
             <div ref={setTarget} className="last-item" />
           </Grid>
         </Grid>
@@ -82,5 +82,8 @@ const QuotesWrapper = styled.div`
 `;
 const LoadingWrapper = styled.div`
   margin: auto;
+`;
+const ThisisLast = styled.div`
+  background: red;
 `;
 export default QuotesGridViewComponent;
