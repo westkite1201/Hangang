@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import { Checks } from './Checks.tsx';
+import Checks from './Checks';
 const labels = ['check 1', 'check 2', 'check 3'];
 
 const TestContainer: React.FunctionComponent = () => {
