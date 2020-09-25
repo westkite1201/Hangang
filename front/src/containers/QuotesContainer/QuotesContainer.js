@@ -5,6 +5,7 @@ import QuotesItem from '../../component/QuotesItem';
 import styled from 'styled-components';
 // import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 //swiper
+const PAGE_COUNT = 5;
 const QuotesContainer = (props) => {
   const slider1 = useRef();
   const { quotesData } = useSelector((state) => state.quotes);
@@ -13,7 +14,7 @@ const QuotesContainer = (props) => {
   useEffect(() => {
     dispatch({
       type: props.actionType,
-      payload: { accepted: '0' }
+      payload: { accepted: '0', pageNum: 1, pageCount: PAGE_COUNT }
     });
   }, [props.actionType, dispatch]);
   const settings = {
