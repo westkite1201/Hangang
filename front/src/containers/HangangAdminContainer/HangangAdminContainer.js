@@ -46,8 +46,8 @@ const QuotesCardList = ({ quotesList }) => {
 };
 
 const HangangAdminContainer = ({ history, confirm }) => {
-  console.log('confirm, ', confirm);
-  if (false && confirm.gb_cd !== '1') {
+  //console.log('confirm, ', confirm);
+  if (confirm.gb_cd !== '1') {
     alert('권한이 없습니다!');
     history.push('/');
   }
@@ -62,7 +62,7 @@ const HangangAdminContainer = ({ history, confirm }) => {
     '/images/river.jpeg'
   );
   useEffect(() => {
-    if (true || confirm.gb_cd === '1') {
+    if (confirm.gb_cd === '1') {
       dispatch({
         type: GET_QUOTES_ADMIN_REQUEST,
         payload: { accepted: '1' }
