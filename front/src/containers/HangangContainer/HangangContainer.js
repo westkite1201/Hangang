@@ -6,6 +6,7 @@ import {
   GET_QUOTES_REQUEST
 } from '../../modules/hangang/reducer';
 import QuotesContainer from '../QuotesContainer';
+import ButtonContainer from '../ButtonContainer';
 import { getNearbyStaionArray, getBackgroundImage } from '../../lib/helper';
 import moment from 'moment';
 import { useSpring, animated } from 'react-spring';
@@ -187,6 +188,7 @@ function HangangContainer() {
         <QuetesWrapper>
           <QuotesContainer actionType={GET_QUOTES_REQUEST} />
         </QuetesWrapper>
+        <ButtonContainer/>
       </TitleWrapper>
     </Wrapper>
   );
