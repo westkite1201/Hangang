@@ -63,7 +63,7 @@ const StationInfoContainer = styled.div`
 `;
 
 let backGroundtimer = null;
-function HangangContainer() {
+function HangangContainer(props) {
   const [backgroundImagePath, setBackGroundImagePath] = useState(
     '/images/river.jpeg'
   );
@@ -188,7 +188,7 @@ function HangangContainer() {
         <QuetesWrapper>
           <QuotesContainer actionType={GET_QUOTES_REQUEST} />
         </QuetesWrapper>
-        <ButtonContainer/>
+        <ButtonContainer history={props.history}/>
       </TitleWrapper>
     </Wrapper>
   );
