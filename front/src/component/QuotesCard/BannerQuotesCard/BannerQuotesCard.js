@@ -3,6 +3,7 @@ import './BannerQuotesCard.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { isNil } from 'lodash';
+import { getImageFileFullPath } from '../../../lib/helper';
 import styled from 'styled-components';
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -65,11 +66,7 @@ const BannerQuotesCard = ({ quotes }) => {
       <div
         className="quotes-card-wrapper"
         style={{
-          backgroundImage: `url(${
-            isNil(quotes.thumbnail) || quotes.thumbnail === ''
-              ? defaultImg
-              : quotes.thumbnail
-          })`
+          backgroundImage: `url(${getImageFileFullPath(quotes)})`
         }}
       >
         <div className="card-header-center">

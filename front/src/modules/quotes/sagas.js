@@ -1,106 +1,34 @@
 import {
-  getHangangTemp,
   getQuotes,
   getSubmitQuotes,
   getQuotesAdmin,
   saveCanvasImage,
-  submitQuotes
-} from '../../lib/api/hangang';
+  submitQuotes,
+  updateQuotesAccepted
+} from '../../lib/api/quotes';
 import { getImageDownloadToUrl } from '../../lib/api/unsplash';
-import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
+import { put, call, takeEvery, delay, takeLatest } from 'redux-saga/effects';
 import {
-  GET_HANGANG_TEMP_SUCCESS,
-  GET_HANGANG_TEMP_REQUEST,
-  GET_HANGANG_TEMP_FAILURE,
   GET_QUOTES_REQUEST,
-  GET_QUOTES_REQUEST_ADMIN,
   GET_QUOTES_SUCCESS,
   GET_QUOTES_FAILURE,
-  GET_QUOTES_SUBMIT,
+  GET_QUOTES_ADMIN_REQUEST,
+  GET_QUOTES_ADMIN_FAILURE,
+  GET_QUOTES_ADMIN_SUCCESS,
   SAVE_CANVAS_IMAGE_FAILURE,
   SAVE_CANVAS_IMAGE_SUCCESS,
   SAVE_CANVAS_IMAGE_REQUEST,
+  GET_QUOTES_SUBMIT,
   SUBMIT_QUOTES_REQUEST,
   SUBMIT_QUOTES_SUCCESS,
   SUBMIT_QUOTES_FAILURE,
   UPLOAD_IMAGE_TO_UNSPLASH_REQUEST,
   UPLOAD_IMAGE_TO_UNSPLASH_SUCCESS,
-  UPLOAD_IMAGE_TO_UNSPLASH_FAILURE
+  UPLOAD_IMAGE_TO_UNSPLASH_FAILURE,
+  PUT_QUOTES_ACCEPTED
 } from './reducer';
 import { REQUEST_TOAST } from '../toast/reducer';
 import { extractImageFileName } from '../../lib/helper';
-function* getHangangTempSaga(action) {
-  try {
-    console.log('getHangangTemp', action.payload);
-    const hangangTemp = yield call(getHangangTemp, action.payload);
-    console.log('hangangTemp ', hangangTemp);
-    yield put({
-      type: GET_HANGANG_TEMP_SUCCESS,
-      payload: {
-        loading: false,
-        data: hangangTemp.data,
-        error: null
-      }
-    });
-  } catch (e) {
-    yield put({
-      type: GET_HANGANG_TEMP_FAILURE,
-      payload: {
-        loading: false,
-        data: [],
-        error: e
-      }
-    });
-  }
-}
-
-function* getQuotesSaga(action) {
-  try {
-    console.log('getQuotes', action.payload);
-    const quotesData = yield call(getQuotes, action.payload);
-    console.log('quotesData ', quotesData);
-    yield put({
-      type: GET_QUOTES_SUCCESS,
-      payload: {
-        loading: false,
-        data: quotesData.data,
-        error: null
-      }
-    });
-  } catch (e) {
-    yield put({
-      type: GET_QUOTES_FAILURE,
-      payload: {
-        loading: false,
-        data: [],
-        error: e
-      }
-    });
-  }
-}
-
-function* getQuotesSagaAdmin(action) {
-  try {
-    const quotesSubmitData = yield call(getQuotesAdmin, action.payload);
-    yield put({
-      type: GET_QUOTES_SUCCESS,
-      payload: {
-        loading: false,
-        data: quotesSubmitData.data,
-        error: null
-      }
-    });
-  } catch (e) {
-    yield put({
-      type: GET_QUOTES_FAILURE,
-      payload: {
-        loading: false,
-        data: [],
-        error: e
-      }
-    });
-  }
-}
 
 function* getSubmitQuotesSaga(action) {
   try {
@@ -166,7 +94,7 @@ function* submitQuotesSaga(action) {
         action.payload
       );
       const { message, status } = imageUploadResponse;
-      console.log('[seo] imageUploadResponse', imageUploadResponse);
+      //console.log('[seo] imageUploadResponse', imageUploadResponse);
       if (message === 'success' || status === ' 200') {
         action.payload.backgroundImagePath = extractImageFileName(
           action.payload
@@ -239,12 +167,86 @@ function* uploadImageSaga(action) {
     });
   }
 }
+
+function* getQuotesSaga(action) {
+  try {
+    console.log('getQuotes', action.payload);
+    const quotesData = yield call(getQuotes, action.payload);
+    console.log('quotesData', quotesData);
+    yield delay(500);
+    yield put({
+      type: GET_QUOTES_SUCCESS,
+      payload: {
+        loading: false,
+        data: quotesData.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: GET_QUOTES_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
+
+function* getQuotesSagaAdmin(action) {
+  try {
+    const quotesSubmitData = yield call(getQuotesAdmin, action.payload);
+    yield put({
+      type: GET_QUOTES_ADMIN_SUCCESS,
+      payload: {
+        loading: false,
+        data: quotesSubmitData.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: GET_QUOTES_ADMIN_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
+
+function* putQuotesAccepted(action) {
+  try {
+    const quotesAcceptedData = yield call(updateQuotesAccepted, action.payload);
+    yield put({
+      type: GET_QUOTES_SUCCESS,
+      payload: {
+        loading: false,
+        data: quotesAcceptedData.data,
+        error: null
+      }
+    });
+  } catch (e) {
+    yield put({
+      type: GET_QUOTES_FAILURE,
+      payload: {
+        loading: false,
+        data: [],
+        error: e
+      }
+    });
+  }
+}
+
 export function* quotesSaga() {
-  yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
-  yield takeLatest(GET_QUOTES_REQUEST, getQuotesSaga);
-  yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
-  yield takeEvery(GET_QUOTES_REQUEST_ADMIN, getQuotesSagaAdmin);
   yield takeEvery(SAVE_CANVAS_IMAGE_REQUEST, saveCanvasImageSaga);
   yield takeEvery(SUBMIT_QUOTES_REQUEST, submitQuotesSaga);
   yield takeEvery(UPLOAD_IMAGE_TO_UNSPLASH_REQUEST, uploadImageSaga);
+
+  yield takeLatest(GET_QUOTES_REQUEST, getQuotesSaga);
+  yield takeEvery(GET_QUOTES_SUBMIT, getSubmitQuotesSaga);
+  yield takeEvery(GET_QUOTES_ADMIN_REQUEST, getQuotesSagaAdmin);
+  yield takeEvery(PUT_QUOTES_ACCEPTED, putQuotesAccepted);
 }
