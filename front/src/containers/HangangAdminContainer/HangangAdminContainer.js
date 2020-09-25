@@ -8,11 +8,10 @@ import {
   RadioGroup,
   Radio
 } from '@material-ui/core';
-import { Checkbox } from '@material-ui/core';
 import {
-  GET_QUOTES_REQUEST_ADMIN,
+  GET_QUOTES_ADMIN_REQUEST,
   PUT_QUOTES_ACCEPTED
-} from '../../modules/hangang/reducer';
+} from '../../modules/quotes/reducer';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import QuotesCard from '../../component/QuotesCard';
@@ -48,15 +47,12 @@ const QuotesCardList = ({ quotesList }) => {
 
 const HangangAdminContainer = ({ history, confirm }) => {
   console.log('confirm, ', confirm);
-  if (confirm.gb_cd !== '1') {
+  if (false && confirm.gb_cd !== '1') {
     alert('권한이 없습니다!');
     history.push('/');
   }
-  const { quotesData } = useSelector((state) => state.hangang);
-  const [acceptedQuotes, setAcceptedQuotes] = useState();
-  const [submitQuotes, setSubmitQuotes] = useState();
+  const { quotesAdminData } = useSelector((state) => state.quotes);
   const [showQuotes, setShowQuotes] = useState();
-  const [tempList, setTempList] = useState();
 
   const [isAcceptedManage, setIsAcceptedManage] = useState(false); // 초기값은 submit 받은 데이터를 보여줌
   const [showCode, setShowCode] = useState('10');
@@ -66,60 +62,56 @@ const HangangAdminContainer = ({ history, confirm }) => {
     '/images/river.jpeg'
   );
   useEffect(() => {
-    if (confirm.gb_cd === '1') {
+    if (true || confirm.gb_cd === '1') {
       dispatch({
-        type: GET_QUOTES_REQUEST_ADMIN,
+        type: GET_QUOTES_ADMIN_REQUEST,
         payload: { accepted: '1' }
       });
     }
   }, [confirm.gb_cd, dispatch]);
 
   useEffect(() => {
-    const { data } = quotesData;
+    const { data } = quotesAdminData;
     if (data) {
       const {
         accepted_quotes: acceptedQuotes,
         submit_quotes: submitQuotes
       } = data;
-      setAcceptedQuotes(acceptedQuotes);
-      setSubmitQuotes(submitQuotes);
-      setShowQuotes(submitQuotes);
-      setTempList(submitQuotes);
-    }
-  }, [quotesData]);
-
-  useEffect(() => {
-    setShowQuotes(isAcceptedManage ? acceptedQuotes : submitQuotes);
-    setTempList(isAcceptedManage ? acceptedQuotes : submitQuotes);
-    handleChangeCode(
-      {
-        target: {
-          value: '10'
+      let filterAccecptContent = acceptedQuotes;
+      let filterSubmitContent = submitQuotes;
+      if (isAcceptedManage) {
+        // 전체
+        filterAccecptContent = acceptedQuotes;
+        if (showCode !== '전체') {
+          filterAccecptContent =
+            acceptedQuotes &&
+            acceptedQuotes.filter((item) => {
+              return showCode === item.card_exps_typ_cd;
+            });
         }
-      },
-      isAcceptedManage ? acceptedQuotes : submitQuotes
-    );
-  }, [isAcceptedManage]);
+      } else {
+        // 요청
+        filterSubmitContent = submitQuotes;
+        if (showCode !== '전체') {
+          filterSubmitContent =
+            submitQuotes &&
+            submitQuotes.filter((item) => {
+              return showCode === item.card_exps_typ_cd;
+            });
+        }
+      }
+      setShowQuotes(
+        isAcceptedManage ? filterAccecptContent : filterSubmitContent
+      );
+    }
+  }, [isAcceptedManage, quotesAdminData, showCode]);
 
-  const titleStyle = useSpring({
-    config: { duration: 1000, easing: easings.easeExpOut },
-    transform: 'translate3d(0, 0, 0) ',
-    opacity: '1',
-    backgroundColor: 'black'
-  });
+  const handleChangeCode = (event) => {
+    setShowCode(event.target.value);
+  };
 
   const handleChangeType = (event) => {
     setIsAcceptedManage(event.target.checked);
-  };
-
-  const handleChangeCode = (event, filterList = tempList) => {
-    setShowCode(event.target.value);
-    if (filterList) {
-      const temp = filterList.filter(
-        (quote) => quote.card_exps_typ_cd === event.target.value
-      );
-      setShowQuotes(temp);
-    }
   };
 
   const handleClickButton = (accepted) => {
@@ -130,15 +122,14 @@ const HangangAdminContainer = ({ history, confirm }) => {
     returnIdList = [];
   };
 
+  console.log('showQuotes ', showQuotes);
   return (
     <Wrapper>
       <BackGround backgroundImagePath={backgroundImagePath} />
       <Title>
         <div style={{ padding: '30px 0 30px 0' }}>
           <hr></hr>
-          <animated.div style={titleStyle}>
-            <div>확인좀 해주세요...</div>
-          </animated.div>
+          <div>확인좀 해주세요...</div>
           <FormControlLabel
             control={
               <Switch checked={isAcceptedManage} onChange={handleChangeType} />
@@ -152,7 +143,7 @@ const HangangAdminContainer = ({ history, confirm }) => {
             onChange={(event) => handleChangeCode(event)}
             row
           >
-            {[10, 20, 30].map((value, index) => (
+            {[10, 20, 30, '전체'].map((value, index) => (
               <FormControlLabel
                 key={index}
                 value={value.toString()}
@@ -183,14 +174,6 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-const TitleWrapper = styled.div`
-  position: relative;
-  padding-top: 10%;
-  /*height: 100vh;*/
-  text-align: center;
-  /* justify-content: center;
-  align-items: center; */
-`;
 const Title = styled.div`
   position: relative;
   color: white;
@@ -202,11 +185,7 @@ const Title = styled.div`
     margin-left: -98px;
   }
 `;
-const TitleTemperture = styled.div`
-  color: white;
-  text-align: center;
-  font-size: 4rem;
-`;
+
 const BackGround = styled.div`
   overflow-y: hidden;
   z-index: -1;

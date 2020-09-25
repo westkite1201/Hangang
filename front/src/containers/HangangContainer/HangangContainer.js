@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
-  GET_HANGANG_TEMP_REQUEST,
-  GET_QUOTES_REQUEST
-} from '../../modules/hangang/reducer';
+import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
+import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
 import QuotesContainer from '../QuotesContainer';
 import ButtonContainer from '../ButtonContainer';
 import { getNearbyStaionArray, getBackgroundImage } from '../../lib/helper';
@@ -127,9 +125,11 @@ function HangangContainer() {
       type: GET_HANGANG_TEMP_REQUEST,
       payload: {}
     });
+    //현재 위치 확인
     nowGeolocation();
     //backGroundTimer 세팅
     setBackGroundImagePath(getBackgroundImage());
+    //1시간에 한번 변경함
     backGroundtimer = setInterval(() => {
       setBackGroundImagePath(getBackgroundImage());
     }, 1000 * 3600);

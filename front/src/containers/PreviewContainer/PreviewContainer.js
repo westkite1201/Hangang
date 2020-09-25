@@ -27,6 +27,7 @@ const PreviewContainer = () => {
     word: '',
     name: '',
     fontColor: '',
+    accepted: '0',
     usePreview: true
   });
 
@@ -100,7 +101,7 @@ const PreviewContainer = () => {
         <div>
           <Button onClick={() => handleCardType('10')}>카드 타입 1</Button>
           <Button onClick={() => handleCardType('20')}>카드 타입 2</Button>
-          <Button onClick={() => handleCardType('30')}>카드 타입 2</Button>
+          <Button onClick={() => handleCardType('30')}>카드 타입 3</Button>
         </div>
         <InputContainer>
           <Input placeholder="내용" onChange={handleContentChange} />
