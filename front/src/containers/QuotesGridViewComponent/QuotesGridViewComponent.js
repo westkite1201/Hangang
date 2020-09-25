@@ -5,7 +5,7 @@ import { GET_QUOTES_REQUEST } from '../../modules/hangang/reducer';
 import QuotesCard from '../../component/QuotesCard';
 import Loading from '../../component/common/Loading/Loading.tsx';
 import styled from 'styled-components';
-
+import InfoCard from '../../component/common/InfoCard/InfoCard.tsx';
 import { useInfinteScroll } from '../../hooks';
 
 const PAGE_COUNT = 5;
@@ -33,7 +33,7 @@ const QuotesGridViewComponent = () => {
   });
 
   const { data: quotesList, loading, totalCount, isLast } = quotesData;
-  console.log('isLast!!!', isLast);
+
   useEffect(() => {
     console.log(
       ' Math.ceil(totalCount / PAGE_COUNT) ',
@@ -67,7 +67,7 @@ const QuotesGridViewComponent = () => {
                 <Loading size={50} color={'#b197fc'} />
               </LoadingWrapper>
             )}
-            {isLast && <ThisisLast>마지막 게시물입니다</ThisisLast>}
+            {isLast && <InfoCard info="마지막 카드 입니다.." />}
             <div ref={setTarget} className="last-item" />
           </Grid>
         </Grid>

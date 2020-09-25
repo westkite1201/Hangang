@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs", // 빌과의 모듈 방식을 commonjs 방식을 한다는 뜻
+    "target": "es5", //빌드 결과물을 es6 방식을 한다는 뜻
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react",
+    "removeComments": true,
+    "noEmit": true,
+    "pretty": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "moduleResolution": "node", //모듈 해석 방식은 node 처럼 한다는 뜻
+    "esModuleInterop": true,
+    "noImplicitAny": false // 암시적으로 선언되었는데 any로 추론되면 에러를 알려준다.
+  },
+  "exclude": ["node_modules"]
+}
