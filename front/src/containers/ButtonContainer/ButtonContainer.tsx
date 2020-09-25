@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,10 +7,11 @@ import {
     LOGOUT_REQUEST
 } from '../../modules/auth/reducer';
 
-const ButtonContainer: React.FunctionComponent = () => {
+const ButtonContainer: React.FC<RouteComponentProps> = (props) => {
         // variable part
         const dispatch = useDispatch();
         const { memberInfo: {isLogin, token} } = useSelector((state) => state.auth)
+        const { history } = props;
         const [userLogin, setUserLogin] = useState<boolean>(false);
         const [buttonView, setButtonView] = useState<JSX.Element>();
         
@@ -30,15 +32,13 @@ const ButtonContainer: React.FunctionComponent = () => {
         const callButton = (callType) => {
             console.log(callType);
             switch (callType) {
-                case 'login':   // 로그인 요청
-    
+                case 'login':   // 로그인 페이지 요청
+                    history.push('/login');
                     break;
                 case 'logout':  // 로그아웃 요청
                     dispatch({
                         type: LOGOUT_REQUEST
                     });
-                    break;
-                case 'regist':  // 회원가입 요청
                     break;
                 default:
                     break;
@@ -60,7 +60,6 @@ const ButtonContainer: React.FunctionComponent = () => {
             return(
                 <Fragment>
                     <button onClick={() => callButton('login')}>로그인</button>
-                    <button onClick={() => callButton('regist')}>회원가입</button>
                 </Fragment>
             )
         }
