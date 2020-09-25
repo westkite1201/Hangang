@@ -7,14 +7,15 @@ import styled from 'styled-components';
 //swiper
 const QuotesContainer = (props) => {
   const slider1 = useRef();
-  const { quotesData } = useSelector((state) => state.hangang);
+  const { quotesData } = useSelector((state) => state.quotes);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch({
       type: props.actionType,
       payload: { accepted: '0' }
     });
-  }, [dispatch]);
+  }, [props.actionType, dispatch]);
   const settings = {
     dots: false,
     infinite: true,
