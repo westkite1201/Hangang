@@ -28,6 +28,8 @@ export const SNS_LOGIN_REQUEST = 'login/SNS_LOGIN_REQUEST';
 export const SNS_LOGIN_FAILURE = 'login/SNS_LOGIN_FAILURE';
 export const SNS_LOGIN_SUCCESS = 'login/SNS_LOGIN_SUCCESS';
 
+export const LOGOUT_REQUEST = 'login/LOGOUT_REQUEST';
+
 export default (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
@@ -40,6 +42,7 @@ export default (state = initialState, action) => {
       }
       case LOGIN_SUCCESS: {
         draft.memberInfo.isLogin = true;
+        draft.memberInfo.token = action.payload.data.token;
         console.log('action.payload ', action.payload);
         localStorage.setItem('access_token', action.payload.data.token);
         toast('로그인에 성공하였습니다!', TOAST_OPTION);
@@ -54,6 +57,7 @@ export default (state = initialState, action) => {
       }
       case SNS_LOGIN_SUCCESS: {
         draft.memberInfo.isLogin = true;
+        draft.memberInfo.token = action.payload.data.token;
         console.log('action.payload ', action.payload);
         localStorage.setItem('access_token', action.payload.data.token);
         toast('SNS로그인에 성공하였습니다!', TOAST_OPTION);
@@ -65,6 +69,10 @@ export default (state = initialState, action) => {
       }
       case SNS_LOGIN_REQUEST: {
         console.log('SNS_LOGIN REQUEST', action.payload)
+        break;
+      }
+      case LOGOUT_REQUEST: {
+        draft.memberInfo = initialState.memberInfo;
         break;
       }
       default: {
