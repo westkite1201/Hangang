@@ -23,7 +23,6 @@ const request = require('request-promise-native');
 // router.use('/check', authMiddleware);
 // router.get('/check', check);
 bcryptCheck = async (password, rows) => {
-  console.log(rows[0]);
   try {
     const jwtToken = await helper.bcryptCompare(password, rows);
     return jwtToken;
@@ -84,8 +83,7 @@ router.post('/sns-login', async (req, res) => {
         MEM_USER_ID: userId
       }
 
-      const findMember = await Member.find(filter);
-
+      let findMember = await Member.find(filter);
       if (findMember && findMember.length !== 0) {  // userId로 DB조회 결과 유저 있음
         const password = userId + '_' + process.env.JWT_SECRET;
         const jwtToken = await bcryptCheck(password, findMember);
@@ -113,8 +111,9 @@ router.post('/sns-login', async (req, res) => {
         };
         const member = new Member(userData);
         await member.save();
-
-        let jwtToken = await bcryptCheck(password, findMember);
+        const tmpArray = [];
+        tmpArray.push(member);
+        let jwtToken = await bcryptCheck(password, tmpArray);
         if (jwtToken) {
           return res.json({
             message: 'logged in successfully',
