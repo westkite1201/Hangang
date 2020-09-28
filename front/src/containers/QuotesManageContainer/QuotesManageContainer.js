@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
 const initial = Array.from({ length: 10 }, (v, k) => k).map((k) => {
   const custom = {
     id: `id-${k}`,
@@ -37,7 +38,7 @@ function Quote({ quote, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {quote.content}
+          {quote.word}
         </QuoteItem>
       )}
     </Draggable>
@@ -46,13 +47,38 @@ function Quote({ quote, index }) {
 
 const QuoteList = React.memo(function QuoteList({ quotes }) {
   return quotes.map((quote, index) => {
-    return <Quote quote={quote} index={index} key={quote.id} />;
+    return <Quote quote={quote} index={index} key={quote._id} />;
   });
 });
 
+function addId(quotes) {
+  return quotes.reduce((acc, curr) => {
+    acc.push({ ...curr, id: curr._id });
+    return acc;
+  }, []);
+}
 function QuotesManageContainer() {
   const [state, setState] = useState({ quotes: initial });
+  const { quotesData } = useSelector((state) => state.quotes);
 
+  console.log('state', state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    function dispatchQuotes() {
+      dispatch({
+        //전부다 받아오기
+        type: GET_QUOTES_REQUEST,
+        payload: { accepted: '0' }
+      });
+    }
+    dispatchQuotes();
+  }, [dispatch]);
+  useEffect(() => {
+    if (quotesData.data && quotesData.data.length !== 0) {
+      setState({ quotes: addId(quotesData.data) });
+    }
+  }, [quotesData.data]);
   function onDragEnd(result) {
     if (!result.destination) {
       return;
