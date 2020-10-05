@@ -49,25 +49,26 @@ const ButtonContainer: React.FC<RouteComponentProps> = (props) => {
         // render part
         const afterLogin = () => {
             return (
-                <Fragment>
-                    <button onClick={() => callButton('logout')}>
-                        로그아웃
-                    </button>
-                </Fragment>
+                <button onClick={() => callButton('logout')}>
+                    로그아웃
+                </button>
             )
         }
         const afterLogout = () => {
             return(
-                <Fragment>
-                    <button onClick={() => callButton('login')}>로그인</button>
-                </Fragment>
+                <button onClick={() => callButton('login')}>
+                    로그인
+                </button>
             )
         }
         return(
-            <Fragment>
+            <ButtonWrapper>
                 {buttonView}
-            </Fragment>
+            </ButtonWrapper>
         )
     }
 
+const ButtonWrapper = styled.div`
+    top: 2px;
+`
 export default ButtonContainer;
