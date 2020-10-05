@@ -38,7 +38,8 @@ function Quote({ quote, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {quote.word}
+          <div>{quote.word}</div>
+          <div> {quote.name}</div>
         </QuoteItem>
       )}
     </Draggable>
@@ -63,22 +64,23 @@ function QuotesManageContainer() {
 
   console.log('state', state);
   const dispatch = useDispatch();
-
   useEffect(() => {
+    //전부다 받아오기
     function dispatchQuotes() {
       dispatch({
-        //전부다 받아오기
         type: GET_QUOTES_REQUEST,
         payload: { accepted: '0' }
       });
     }
     dispatchQuotes();
   }, [dispatch]);
+
   useEffect(() => {
     if (quotesData.data && quotesData.data.length !== 0) {
       setState({ quotes: addId(quotesData.data) });
     }
   }, [quotesData.data]);
+
   function onDragEnd(result) {
     if (!result.destination) {
       return;
