@@ -13,18 +13,23 @@ import produce from 'immer';
 //   userTodos: asyncState.initial()
 // };
 
+// export const getAsyncTodo = asyncAction<string, ITodo, string>(ASYNC_TOGO);
 export const initialState: HangangsState = {
   riverTempData: asyncState.initial()
 };
 
 const todos = createReducer<HangangsState, HangangsAction>(initialState, {
-  [GET_HANGANG_TEMP_SUCCESS]: (state, action: HangangsAction) => {
+  [GET_HANGANG_TEMP_SUCCESS]: (state, action) => {
     return produce(state, (draft) => {
-      draft.riverTempData.data = action.payload.data;
+      draft.riverTempData.data = action.payload;
       draft.riverTempData.loading = false;
-      draft.riverTempData.error = action.payload.error;
+      draft.riverTempData.error = null;
     });
-  }
+  },
+  [GET_HANGANG_TEMP_FAILURE]: (state, action) => ({
+    ...state,
+    riverTempData: asyncState.error(action.payload)
+  })
   // [GET_USER_TODO]: (state) => ({
   //   ...state,
   //   userTodos: asyncState.load()
@@ -32,10 +37,6 @@ const todos = createReducer<HangangsState, HangangsAction>(initialState, {
   // [GET_HANGANG_TEMP_SUCCESS]: (state, action) => ({
   //   ...state,
   //   riverTempData: asyncState.success(action.payload)
-  // })
-  // [GET_HANGANG_TEMP_FAILURE]: (state, action) => ({
-  //   ...state,
-  //   userTodos: asyncState.error(action.payload)
   // })
 });
 
