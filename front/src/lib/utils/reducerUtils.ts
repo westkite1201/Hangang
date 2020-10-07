@@ -1,15 +1,39 @@
-import { AnyAction } from 'redux';
-import {
-  getType,
-  AsyncActionCreatorBuilder,
-  createAsyncAction
-} from 'typesafe-actions';
+// import { AnyAction } from 'redux';
+// import {
+//   getType,
+//   AsyncActionCreatorBuilder,
+//   createAsyncAction
+// } from 'typesafe-actions';
+
+// type TAsyncAction = {
+//   REQUEST: string;
+//   SUCCESS?: string;
+//   FAILURE?: string;
+// };
+
+// export const asyncAction = <T, P, J>(asyncAction: TAsyncAction) => {
+//   return createAsyncAction(
+//     asyncAction.REQUEST,
+//     asyncAction.SUCCESS,
+//     asyncAction.FAILURE
+//   )<T, P, J>();
+// };
 
 export type AsyncState<T, E = any> = {
   data: T | null;
   loading: boolean;
   error: E | null;
 };
+
+// export const asyncActionCreator = (actionName: string): TAsyncAction => {
+//   const asyncTypeAction: string[] = ['_REQUEST', '_SUCCESS', '_FAILURE'];
+
+//   return {
+//     REQUEST: actionName + asyncTypeAction[0],
+//     SUCCESS: actionName + asyncTypeAction[1],
+//     FAILURE: actionName + asyncTypeAction[2]
+//   };
+//};
 
 export const asyncState = {
   // 다음 코드는 화살표 함수에 Generic 을 설정 한 것입니다.
@@ -35,44 +59,44 @@ export const asyncState = {
   })
 };
 
-type AnyAsyncActionCreator = AsyncActionCreatorBuilder<any, any, any>;
+// type AnyAsyncActionCreator = AsyncActionCreatorBuilder<any, any, any>;
 
-export function createAsyncReducer<
-  S,
-  AC extends AnyAsyncActionCreator,
-  K extends keyof S
->(asyncActionCreator: AC, key: K) {
-  return (state: S, action: AnyAction) => {
-    // 각 액션 생성함수의 type 을 추출해줍니다.
-    const [request, success, failure] = [
-      asyncActionCreator.request,
-      asyncActionCreator.success,
-      asyncActionCreator.failure
-    ].map(getType);
-    switch (action.type) {
-      case request:
-        return {
-          ...state,
-          [key]: asyncState.load()
-        };
-      case success:
-        return {
-          ...state,
-          [key]: asyncState.success(action.payload)
-        };
-      case failure:
-        return {
-          ...state,
-          [key]: asyncState.error(action.payload)
-        };
-      default:
-        return state;
-    }
-  };
-}
-export function transformToArray<AC extends AnyAsyncActionCreator>(
-  asyncActionCreator: AC
-) {
-  const { request, success, failure } = asyncActionCreator;
-  return [request, success, failure];
-}
+// export function createAsyncReducer<
+//   S,
+//   AC extends AnyAsyncActionCreator,
+//   K extends keyof S
+// >(asyncActionCreator: AC, key: K) {
+//   return (state: S, action: AnyAction) => {
+//     // 각 액션 생성함수의 type 을 추출해줍니다.
+//     const [request, success, failure] = [
+//       asyncActionCreator.request,
+//       asyncActionCreator.success,
+//       asyncActionCreator.failure
+//     ].map(getType);
+//     switch (action.type) {
+//       case request:
+//         return {
+//           ...state,
+//           [key]: asyncState.load()
+//         };
+//       case success:
+//         return {
+//           ...state,
+//           [key]: asyncState.success(action.payload)
+//         };
+//       case failure:
+//         return {
+//           ...state,
+//           [key]: asyncState.error(action.payload)
+//         };
+//       default:
+//         return state;
+//     }
+//   };
+// }
+// export function transformToArray<AC extends AnyAsyncActionCreator>(
+//   asyncActionCreator: AC
+// ) {
+//   const { request, success, failure } = asyncActionCreator;
+//   return [request, success, failure];
+// }
