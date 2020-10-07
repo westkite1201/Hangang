@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 import styled from 'styled-components';
 
+import ButtonContainer from '../../../containers/ButtonContainer';
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   &:focus,
@@ -44,6 +46,12 @@ const SideBar = (props) => {
       <StyledLink id="about" className="menu-item" to="/about">
         About
       </StyledLink>
+      <br />
+
+      <StyledLink id="login" className="menu-item" to="/login">
+        <ButtonContainer/>
+      </StyledLink>
+      
       <br />
     </Menu>
   );
