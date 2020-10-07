@@ -33,7 +33,7 @@ const ButtonContainer: React.FC<RouteComponentProps> = (props) => {
             console.log(callType);
             switch (callType) {
                 case 'login':   // 로그인 페이지 요청
-                    history.push('/login');
+                    // history.push('/login');
                     break;
                 case 'logout':  // 로그아웃 요청
                     dispatch({
