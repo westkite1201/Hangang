@@ -76,6 +76,7 @@ function HangangContainer(props) {
 
   //function
   function getTempData(stationArray, riverTempData) {
+    console.log('riverTempData ', riverTempData);
     let stationNum = 0;
     stationArray.some((item, key) => {
       //console.log('item', item);
@@ -92,7 +93,7 @@ function HangangContainer(props) {
     if (stations && riverTempData && riverTempData.data) {
       const { tempertureData, station } = getTempData(
         stations,
-        riverTempData.data
+        riverTempData.data.data
       );
       setTempertureData(tempertureData);
       setStation(station);
@@ -188,7 +189,7 @@ function HangangContainer(props) {
         <QuetesWrapper>
           <QuotesContainer actionType={GET_QUOTES_REQUEST} />
         </QuetesWrapper>
-        <ButtonContainer history={props.history}/>
+        <ButtonContainer history={props.history} />
       </TitleWrapper>
     </Wrapper>
   );
