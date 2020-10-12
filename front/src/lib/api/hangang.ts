@@ -20,9 +20,13 @@ export interface HangangTempRes {
   data: HangangTemp[];
 }
 
+export interface IRequest {}
+export interface IError {
+  message: string;
+}
 export async function getHangangTemp() {
   //   const data = {
-  const response = await axios.get<HangangTempRes>(
+  const response = await axios.get<HangangTemp[]>(
     `${cilentConfig.endpoint.api}/hangang/hangang_data`
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
