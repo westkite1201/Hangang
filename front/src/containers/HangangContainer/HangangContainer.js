@@ -90,11 +90,9 @@ function HangangContainer(props) {
     };
   }
   useEffect(() => {
-    if (stations && riverTempData && riverTempData.data) {
-      const { tempertureData, station } = getTempData(
-        stations,
-        riverTempData.data.data
-      );
+    if (stations && riverTempData && riverTempData.length !== 0) {
+      const { tempertureData, station } = getTempData(stations, riverTempData);
+      console.log('tempertureData', tempertureData);
       setTempertureData(tempertureData);
       setStation(station);
     }

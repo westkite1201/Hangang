@@ -2,9 +2,9 @@ import { ActionType } from 'typesafe-actions';
 import * as actions from './actions';
 import { HangangTemp } from '../../lib/api/hangang';
 import { AsyncState } from '../../lib/utils/reducerUtils';
-export type HangangsAction = ActionType<typeof actions>;
+export type HangangAction = ActionType<typeof actions>;
 
-export type HangangsState = {
+export type HangangState = {
   riverTempData: AsyncState<HangangTemp, Error>;
 };
 
