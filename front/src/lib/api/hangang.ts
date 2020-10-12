@@ -31,3 +31,11 @@ export async function getHangangTemp() {
   );
   return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+
+export async function getHangangTempertureChart() {
+  //   const data = {
+  const response = await axios.get<HangangTemp[]>(
+    `${cilentConfig.endpoint.api}/hangang/hangang_data`
+  );
+  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
+}
