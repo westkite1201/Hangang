@@ -297,6 +297,32 @@ router.post('/update_quotes_accepted', async (req, res) => {
   }
 });
 
+/**
+ * QUOTES 값 변경
+ */
+
+router.post('/update_quotes_name_word', async (req, res) => {
+  try {
+    const { ids, name, word } = req.body;
+
+    const set = {
+      NAME: name,
+      WORD: word
+    };
+    let updateRow = await Quotes.update(
+      { _id: ids },
+      { $set: set },
+      { multi: true }
+    );
+    return res.json(makeReturnData('100', updateRow));
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      api: 'update_qoutes_accepted',
+      message: error
+    });
+  }
+});
 function makeReturnData(code, data) {
   return {
     result: code,
