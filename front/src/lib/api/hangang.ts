@@ -26,10 +26,11 @@ export interface IError {
 }
 export async function getHangangTemp() {
   //   const data = {
-  const response = await axios.get<HangangTemp[]>(
+  const response = await axios.get<HangangTempRes>(
     `${cilentConfig.endpoint.api}/hangang/hangang_data`
   );
-  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
+  console.log("response  ", response)
+  return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 
 export async function getHangangTempertureChart() {
