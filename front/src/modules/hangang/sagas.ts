@@ -1,6 +1,6 @@
-import { getHangangTemp } from './reducer';
+import { GET_HANGANG_TEMP_REQUEST,getHangangTempertureAsync } from './reducer';
 import createAsyncSaga from '../../lib/utils/createAsyncSaga';
-import * as API from '../../lib/api/hangang';
+import {getHangangTemp} from '../../lib/api/hangang';
 import { put, call, takeEvery } from 'redux-saga/effects';
 //import createAsyncSaga from '../../lib/utils/createAsyncSaga';
 
@@ -20,10 +20,10 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 //   }
 // }
 
-const getHangangTempSaga = createAsyncSaga(getHangangTemp, API.getHangangTemp);
+const getHangangTempSaga = createAsyncSaga(getHangangTempertureAsync, getHangangTemp);
 
 export function* hangangSaga() {
-  yield takeEvery(getHangangTemp.request, getHangangTempSaga);
+  yield takeEvery(GET_HANGANG_TEMP_REQUEST, getHangangTempSaga);
 }
 
 /*  리펙토링 버전  */

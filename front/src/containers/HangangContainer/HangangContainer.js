@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getHangangTemp } from '../../modules/hangang/reducer';
+import { getHangangTempertureAsync } from '../../modules/hangang/reducer';
 import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
 import QuotesContainer from '../QuotesContainer';
 import ButtonContainer from '../ButtonContainer';
@@ -93,7 +93,12 @@ function HangangContainer(props) {
   }
   useEffect(() => {
     console.log('riverTempData ', riverTempData);
-    if (stations && riverTempData && riverTempData.length !== 0) {
+    if (
+      stations &&
+      riverTempData &&
+      riverTempData.data &&
+      riverTempData.data.length !== 0
+    ) {
       const { tempertureData, station } = getTempData(
         stations,
         riverTempData.data
@@ -126,8 +131,8 @@ function HangangContainer(props) {
         alert('GPS를 지원하지 않습니다');
       }
     };
-    console.log('getHangangTemp ', getHangangTemp);
-    dispatch(getHangangTemp.request(''));
+
+    dispatch(getHangangTempertureAsync.request());
     //현재 위치 확인
     nowGeolocation();
     //backGroundTimer 세팅

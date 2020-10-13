@@ -9,9 +9,9 @@ function useHangangTemp() {
   const getHangangTemp = () => {
     console.log(
       "getHangangTemp.request('') ",
-      actions.getHangangTemp.request('')
+      //actions.getHangangTemperture.request('')
     );
-    dispatch(actions.getHangangTemp.request(''));
+    //dispatch(actions.getHangangTemperture.request(''));
   };
   
   return {
