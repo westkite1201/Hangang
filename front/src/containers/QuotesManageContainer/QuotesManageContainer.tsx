@@ -154,7 +154,7 @@ function QuotesManageContainer() {
     setWord(e.target.value);
   };
   const handleUpdate = () => {
-    //dispatch()
+    dispatch({})
   };
   return (
     <div>
