@@ -7,7 +7,7 @@ import HangangSubmitQoutesContainer from './containers/HangangSubmitQoutesContai
 import QuotesGridViewComponent from './containers/QuotesGridViewComponent';
 import QuotesMakerContainer from './containers/QuotesMakerContainer';
 import AboutContainer from './containers/AboutContainer';
-import QuotesManageContainer from './containers/QuotesManageContainer';
+import QuotesManageContainer from './containers//QuotesManageContainer/QuotesManageContainer.tsx';
 import PreviewContainer from './containers/PreviewContainer';
 import LoginContainer from './containers/LoginContainer';
 import WaveContainer from './containers/WaveContainer';
