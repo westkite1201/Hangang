@@ -1,15 +1,18 @@
 import { combineReducers } from 'redux';
 import hangang from './hangang';
 import quotes from './quotes';
+import quotes_ from './quotes_ts'; //ts 용
 import toast from './toast';
 import auth from './auth';
 import { hangangSaga } from './hangang';
 import { quotesSaga } from './quotes';
+import { quotesSaga_ } from './quotes_ts';
 import { authSaga } from './auth';
 import { all } from 'redux-saga/effects';
 const rootReducer = combineReducers({
   hangang,
   quotes,
+  quotes_,
   toast,
   auth
   //note
@@ -25,5 +28,5 @@ export default rootReducer;
 //사용 할 때 필요로 합니다.
 // 루트 사가를 만들어서 내보내주세요.
 export function* rootSaga() {
-  yield all([hangangSaga(), quotesSaga(), authSaga()]);
+  yield all([hangangSaga(), quotesSaga(), quotesSaga_(), authSaga()]);
 }
