@@ -303,18 +303,42 @@ router.post('/update_quotes_accepted', async (req, res) => {
 
 router.post('/update_quotes_name_word', async (req, res) => {
   try {
-    const { ids, name, word } = req.body;
-
+    console.log(req.body);
+    const { _id, name, word } = req.body;
+    console.log('ids, name ', word);
     const set = {
       NAME: name,
       WORD: word
     };
     let updateRow = await Quotes.update(
-      { _id: ids },
+      { _id: _id },
       { $set: set },
       { multi: true }
     );
-    return res.json(makeReturnData('100', updateRow));
+
+    let filter = {
+      ACCEPTED: '0',
+      STATUS: '0'
+    };
+    console.log('updateRow ', updateRow);
+    let quotesRaw = await Quotes.find(filter);
+    //console.log('quotesRaw', quotesRaw);
+    if (quotesRaw.length === 0) {
+      console.log('empty');
+      return res.json(makeReturnData('404'));
+    } else {
+      console.log('hello');
+      let count = await Quotes.countDocuments(filter);
+      console.log(count);
+      const jsonObj = helpers.makeJsonKeyLower(quotesRaw);
+
+      return res.json(
+        makeReturnData('200', {
+          quotes_array: jsonObj,
+          total_count: count
+        })
+      );
+    }
   } catch (error) {
     console.error(error);
     return res.json({

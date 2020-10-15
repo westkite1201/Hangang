@@ -1,11 +1,11 @@
-import { QuotseRes } from '../../lib/api/quotes_saga';
+import { QuoteResData ,Quote} from '../../lib/api/quotes_saga';
 import {
   AsyncState,
   asyncState,
 } from '../../lib/utils/reducerUtils';
 import {createReducer,createAsyncAction,  ActionType} from 'typesafe-actions';
 import { AxiosError } from 'axios';
-
+import {produce} from  'immer'
 export const UPDATE_QUOTES_REQUEST = 'QUOTES/UPDATE_QUOTES_REQUEST';
 export const UPDATE_QUOTES_SUCCESS = 'QUOTES/UPDATE_QUOTES_SUCCESS';
 export const UPDATE_QUOTES_FAILURE = 'QUOTES/UPDATE_QUOTES_FAILURE';
@@ -14,45 +14,59 @@ export const updateQuotesAsync = createAsyncAction(
   UPDATE_QUOTES_REQUEST,
   UPDATE_QUOTES_SUCCESS,
   UPDATE_QUOTES_FAILURE
-)<string, QuotseRes, AxiosError>();
+)<Quote, QuoteResData, AxiosError>();
 
 const actions = { updateQuotesAsync }
 
 export type QuotesAction = ActionType<typeof actions>;
 
 export type QuotesgState = {
-  quotesData: {
+  quotesData_: {
     loading: boolean;
-    data: [] | null;
+    data: Quote[] | null;
     error:  any | null;
-    totalCount: number;
-    isLast:boolean;
+    // totalCount: number;
+    // isLast:boolean;
   }
 };
 
 const initialState:QuotesgState = { 
-  quotesData :{
+  quotesData_ :{
     loading: false,
     data: [] ,
     error:  false,
-    totalCount: 0,
-    isLast:false
+    // totalCount: 0,
+    // isLast:false
   }
 } 
 
+
 const reducer = createReducer<QuotesgState, QuotesAction>(initialState, {
-  // [UPDATE_QUOTES_REQUEST]: state => ({
-  //   ...state,
-  //   quotesData: asyncState.load()
-  // }),
-  [UPDATE_QUOTES_SUCCESS]: (state, action) => ({
+  [UPDATE_QUOTES_REQUEST]: state => ({
     ...state,
-    quotesData: asyncState.success(action.payload).data
+    quotesData_: asyncState.load()
   }),
-  [UPDATE_QUOTES_FAILURE]: (state, action) => ({
-    ...state,
-    ...state.quotesData.error =action.payload
-  })
+  // [UPDATE_QUOTES_SUCCESS]: (state, action) => ({
+  //   ...state,
+  //   quotesData_: asyncState.success(action.payload.quotes_array)
+  // }),
+    //draft 사용 
+  [UPDATE_QUOTES_SUCCESS]: (state, action) => (
+      produce(state, draft => {
+      draft.quotesData_.loading = false;
+      draft.quotesData_.data = action.payload.quotes_array;
+      //draft.quotesData_.totalCount = action.payload.total_count;
+      draft.quotesData_.error = false
+    })
+  ),
+    
+
+  
+
+  // [UPDATE_QUOTES_FAILURE]: (state, action) => ({
+  //   ...state,
+  //   ...state.quotesData.error = action.payload
+  // })
 });
 
 

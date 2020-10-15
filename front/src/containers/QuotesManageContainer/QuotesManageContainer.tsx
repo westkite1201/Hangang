@@ -6,6 +6,7 @@ import {   DragDropContext,
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
+import { UPDATE_QUOTES_REQUEST } from '../../modules/quotes_ts/reducer';
 // const initial = Array.from({ length: 10 }, (v, k) => k).map((k) => {
 //   const custom = {
 //     id: `id-${k}`,
@@ -91,14 +92,18 @@ function addId(quotes : originQuote[]) {
   }, []);
 }
 function QuotesManageContainer() {
+  const [quote, setQuote] = useState<IQuote>()
   const [word, setWord] = useState('');
   const [name, setName] = useState('');
+  const [id, setId] = useState('');
   const [state, setState] = useState<IQuote[]>([]);
   const { quotesData } = useSelector((state) => state.quotes);
-
+  const { quotesData_ } = useSelector((state) => state.quotes_);
   const setting = ( quote:IQuote) => {
     setWord(quote.word);
     setName(quote.name);
+    setId(quote.id)
+    setQuote(quote)
   };
 
   // const onWindowClick = (event:MouseEvent) => {
@@ -154,8 +159,12 @@ function QuotesManageContainer() {
     setWord(e.target.value);
   };
   const handleUpdate = () => {
-    dispatch({})
+    let newQuote = {...quote,name:name,word:word, _id : id}
+    console.log("HELLO NEWquotes" , newQuote)
+    dispatch({type : UPDATE_QUOTES_REQUEST, payload :newQuote})
   };
+  
+  console.log('quotesData_', quotesData_)
   return (
     <div>
       <input onChange={handleName} value={name} />
