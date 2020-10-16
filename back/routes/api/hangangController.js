@@ -184,16 +184,22 @@ router.post('/insert_quotes', async (req, res) => {
     //   thumbnail_background_image,
     //   accepted
     // });
+    
+    let count = await Quotes.countDocuments({});
+
     const data = {
       NAME: name,
       WORD: word,
       THUMBNAIL_USER_IMAGE: thumbnailUserImage,
       THUMBNAIL_BACKGROUND_IMAGE: backgroundImagePath,
       CARD_EXPS_TYP_CD: card_exps_typ_cd,
-      ACCEPTED: accepted
+      ACCEPTED: accepted,
+      CARD_ORDER: count + 1
     };
+    
     console.log(data);
     const quotes = new Quotes(data);
+
     quotes.save((error) => {
       if (error) {
         return res.json(makeReturnData('999', error));
