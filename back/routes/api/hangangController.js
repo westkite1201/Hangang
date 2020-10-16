@@ -95,6 +95,10 @@ router.post('/word_data', async (req, res) => {
       ACCEPTED: accepted,
       STATUS: '0'
     };
+    const sort = {
+      CARD_ORDER: 1
+    }
+
     Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -115,6 +119,7 @@ router.post('/word_data', async (req, res) => {
       }
     })
       .skip(parseInt(pageNum - 1) * parseInt(pageCount))
+      .sort(sort)
       .limit(parseInt(pageCount));
   } catch (error) {
     console.error(error);
@@ -135,6 +140,11 @@ router.post('/word_data_admin', async (req, res) => {
       ACCEPTED: '1',
       STATUS: '0'
     };
+    
+    const sort = {
+      CARD_ORDER: 1
+    }
+
     Quotes.find(filter, (error, submit_quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -153,7 +163,9 @@ router.post('/word_data_admin', async (req, res) => {
             );
             return res.json(makeReturnData('100', returnArray));
           }
-        });
+        })
+        .sort(sort)
+        
       }
     });
   } catch (error) {
