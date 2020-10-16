@@ -38,3 +38,11 @@ export async function updateQuote(quote:Quote) {
   console.log("updateQuote updateQuote  ", response.data.data)
   return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+
+export async function getQuotes(params) {
+  const response = await axios.post<QuotseRes>(
+    `${cilentConfig.endpoint.api}/hangang/word_data`,
+    params
+  );
+  return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
+}

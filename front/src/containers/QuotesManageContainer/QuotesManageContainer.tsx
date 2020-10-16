@@ -5,8 +5,8 @@ import {   DragDropContext,
   DroppableProvided, } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
-import { UPDATE_QUOTES_REQUEST } from '../../modules/quotes_ts/reducer';
+//import { GET_QUOTES_REQUEST } from '../../modules/quotes_te/reducer';
+import { GET_QUOTES_REQUEST,UPDATE_QUOTES_REQUEST } from '../../modules/quotes_ts/reducer';
 // const initial = Array.from({ length: 10 }, (v, k) => k).map((k) => {
 //   const custom = {
 //     id: `id-${k}`,
@@ -97,7 +97,7 @@ function QuotesManageContainer() {
   const [name, setName] = useState('');
   const [id, setId] = useState('');
   const [state, setState] = useState<IQuote[]>([]);
-  const { quotesData } = useSelector((state) => state.quotes);
+  //const { quotesData } = useSelector((state) => state.quotes);
   const { quotesData_ } = useSelector((state) => state.quotes_);
   const setting = ( quote:IQuote) => {
     setWord(quote.word);
@@ -106,15 +106,6 @@ function QuotesManageContainer() {
     setQuote(quote)
   };
 
-  // const onWindowClick = (event:MouseEvent) => {
-  //   if (event.defaultPrevented) {
-  //     return;
-  //   }
-  //   console.log('hello')
-  // };
-  // useEffect(()=>{
-  //   window.addEventListener('click', onWindowClick);
-  // },[])
   const dispatch = useDispatch();
   useEffect(() => {
     //전부다 받아오기
@@ -128,11 +119,11 @@ function QuotesManageContainer() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (quotesData.data && quotesData.data.length !== 0) {
-      console.log("addId(quotesData.data) ",addId(quotesData.data))
-      setState(addId(quotesData.data)) 
+    if (quotesData_.data && quotesData_.data.length !== 0) {
+      console.log("addId(quotesData.data) ",addId(quotesData_.data))
+      setState(addId(quotesData_.data)) 
     }
-  }, [quotesData.data]);
+  }, [quotesData_.data]);
 
   function onDragEnd(result) {
     if (!result.destination) {
