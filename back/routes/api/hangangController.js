@@ -95,6 +95,10 @@ router.post('/word_data', async (req, res) => {
       ACCEPTED: accepted,
       STATUS: '0'
     };
+    const sort = {
+      CARD_ORDER: 1
+    }
+
     Quotes.find(filter, (error, quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -115,6 +119,7 @@ router.post('/word_data', async (req, res) => {
       }
     })
       .skip(parseInt(pageNum - 1) * parseInt(pageCount))
+      .sort(sort)
       .limit(parseInt(pageCount));
   } catch (error) {
     console.error(error);
@@ -135,6 +140,11 @@ router.post('/word_data_admin', async (req, res) => {
       ACCEPTED: '1',
       STATUS: '0'
     };
+    
+    const sort = {
+      CARD_ORDER: 1
+    }
+
     Quotes.find(filter, (error, submit_quotes) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -153,7 +163,9 @@ router.post('/word_data_admin', async (req, res) => {
             );
             return res.json(makeReturnData('100', returnArray));
           }
-        });
+        })
+        .sort(sort)
+        
       }
     });
   } catch (error) {
@@ -184,16 +196,22 @@ router.post('/insert_quotes', async (req, res) => {
     //   thumbnail_background_image,
     //   accepted
     // });
+    
+    let count = await Quotes.countDocuments({});
+
     const data = {
       NAME: name,
       WORD: word,
       THUMBNAIL_USER_IMAGE: thumbnailUserImage,
       THUMBNAIL_BACKGROUND_IMAGE: backgroundImagePath,
       CARD_EXPS_TYP_CD: card_exps_typ_cd,
-      ACCEPTED: accepted
+      ACCEPTED: accepted,
+      CARD_ORDER: count + 1
     };
+    
     console.log(data);
     const quotes = new Quotes(data);
+
     quotes.save((error) => {
       if (error) {
         return res.json(makeReturnData('999', error));
@@ -297,6 +315,56 @@ router.post('/update_quotes_accepted', async (req, res) => {
   }
 });
 
+/**
+ * QUOTES 값 변경
+ */
+
+router.post('/update_quotes_name_word', async (req, res) => {
+  try {
+    console.log(req.body);
+    const { _id, name, word } = req.body;
+    console.log('ids, name ', word);
+    const set = {
+      NAME: name,
+      WORD: word
+    };
+    let updateRow = await Quotes.update(
+      { _id: _id },
+      { $set: set },
+      { multi: true }
+    );
+
+    let filter = {
+      ACCEPTED: '0',
+      STATUS: '0'
+    };
+    console.log('updateRow ', updateRow);
+    let quotesRaw = await Quotes.find(filter);
+    //console.log('quotesRaw', quotesRaw);
+    if (quotesRaw.length === 0) {
+      console.log('empty');
+      return res.json(makeReturnData('404'));
+    } else {
+      console.log('hello');
+      let count = await Quotes.countDocuments(filter);
+      console.log(count);
+      const jsonObj = helpers.makeJsonKeyLower(quotesRaw);
+
+      return res.json(
+        makeReturnData('200', {
+          quotes_array: jsonObj,
+          total_count: count
+        })
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      api: 'update_qoutes_accepted',
+      message: error
+    });
+  }
+});
 function makeReturnData(code, data) {
   return {
     result: code,
