@@ -7,18 +7,19 @@ import HangangSubmitQoutesContainer from './containers/HangangSubmitQoutesContai
 import QuotesGridViewComponent from './containers/QuotesGridViewComponent';
 import QuotesMakerContainer from './containers/QuotesMakerContainer';
 import AboutContainer from './containers/AboutContainer';
-import QuotesManageContainer from './containers/QuotesManageContainer';
+import QuotesManageContainer from './containers//QuotesManageContainer/QuotesManageContainer.tsx';
 import PreviewContainer from './containers/PreviewContainer';
 import LoginContainer from './containers/LoginContainer';
 import WaveContainer from './containers/WaveContainer';
 import TestContainer from './containers/TestContainer/TestContainer.tsx';
+import Admin from './containers/Admin/Admin.tsx';
 export default (props) => {
   return (
     <div>
       <Route exact path="/" component={HangangContainer} />
       <Route exact path="/wave" component={WaveContainer} />
       {/*<Route exact path="/todo" component={TodoContainer} />*/}
-      <Route exact path="/admin" component={HangangAdminContainer} />
+      <Route exact path="/admin" component={Admin} />
       <Route
         exact
         path="/submit-qoutes"
