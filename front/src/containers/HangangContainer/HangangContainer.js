@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { GET_HANGANG_TEMP_REQUEST } from '../../modules/hangang/reducer';
+import { getHangangTempertureAsync } from '../../modules/hangang/reducer';
 import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
 import QuotesContainer from '../QuotesContainer';
 import ButtonContainer from '../ButtonContainer';
@@ -9,6 +9,7 @@ import { getNearbyStaionArray, getBackgroundImage } from '../../lib/helper';
 import moment from 'moment';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
+//import useHangangTemp from '../../hooks/useHangangTemp';
 function StationInfo({ tempertureData, station }) {
   return (
     <div>
@@ -71,11 +72,13 @@ function HangangContainer(props) {
   const [station, setStation] = useState();
   const [stations, setStations] = useState();
   const [isInfoGrow, setIsInfoGrow] = useState();
+  //const { hangangState, getHangangTemp } = useHangangTemp()
   const { riverTempData } = useSelector((state) => state.hangang);
   const dispatch = useDispatch();
 
   //function
   function getTempData(stationArray, riverTempData) {
+    console.log('riverTempData ', riverTempData);
     let stationNum = 0;
     stationArray.some((item, key) => {
       //console.log('item', item);
@@ -89,11 +92,18 @@ function HangangContainer(props) {
     };
   }
   useEffect(() => {
-    if (stations && riverTempData && riverTempData.data) {
+    console.log('riverTempData ', riverTempData);
+    if (
+      stations &&
+      riverTempData &&
+      riverTempData.data &&
+      riverTempData.data.length !== 0
+    ) {
       const { tempertureData, station } = getTempData(
         stations,
         riverTempData.data
       );
+      console.log('tempertureData', tempertureData);
       setTempertureData(tempertureData);
       setStation(station);
     }
@@ -121,10 +131,8 @@ function HangangContainer(props) {
         alert('GPS를 지원하지 않습니다');
       }
     };
-    dispatch({
-      type: GET_HANGANG_TEMP_REQUEST,
-      payload: {}
-    });
+
+    dispatch(getHangangTempertureAsync.request());
     //현재 위치 확인
     nowGeolocation();
     //backGroundTimer 세팅
@@ -188,7 +196,7 @@ function HangangContainer(props) {
         <QuetesWrapper>
           <QuotesContainer actionType={GET_QUOTES_REQUEST} />
         </QuetesWrapper>
-        <ButtonContainer history={props.history}/>
+        <ButtonContainer history={props.history} />
       </TitleWrapper>
     </Wrapper>
   );
