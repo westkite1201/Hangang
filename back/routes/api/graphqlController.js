@@ -1,19 +1,32 @@
+const { buildSchema } = require('graphql');
+
+let Quotes = require('../../mongo/models/quotes');
+
 // Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+const schema = buildSchema(`
   type Query {
-    hello: String
+    hello: String,
+    bye: String,
+    quotes: Quotes
+  }
+
+  type Quotes {
+      name: String,
+      word: String
   }
 `);
 
 // The root provides a resolver function for each API endpoint
-var root = {
+const root = {
   hello: () => {
     return 'Hello world!';
   },
+  bye: () => {
+      return 'Bye World!';
+  }
 };
 
-// Run the GraphQL query '{ hello }' and print out the response
-graphql(schema, '{ hello }', root).then((response) => {
-  console.log(response);
-});
-
+module.exports = {
+    resolver: root,
+    schema: schema
+}
