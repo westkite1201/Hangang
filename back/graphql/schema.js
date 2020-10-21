@@ -15,6 +15,15 @@ var schema = buildSchema(`
   type Quote{
     NAME: String
     WORD: String
+    FONT_COLOR: String
+    THUMBNAIL_USER_IMAGE: String
+    THUMBNAIL_BACKGROUND_IMAGE: String
+    ACCEPTED: String
+    INSERT_TIME: String
+    UPDATE_TIME: String
+    STATUS: String
+    CARD_EXPS_TYP_CD: String
+    CARD_ORDER: Int
   }
 `);
 
