@@ -7,13 +7,11 @@ var moment = require('moment');
 require('moment-timezone');
 let bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
-let hangangRouter = require('./routes/api/hangangController');
-let fileRouter = require('./routes/api/fileController');
-let authRouter = require('./routes/api/authController');
+// let hangangRouter = require('./routes/api/hangangController');
+// let fileRouter = require('./routes/api/fileController');
+// let authRouter = require('./routes/api/authController');
 
 var { graphqlHTTP } = require('express-graphql');
-var { buildSchema } = require('graphql');
-
 var cors = require('cors')();
 var app = express();
 require('dotenv').config();
@@ -39,56 +37,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/hangang', hangangRouter);
-app.use('/api/file', fileRouter);
-app.use('/api/auth', authRouter);
+// app.use('/api/hangang', hangangRouter);
+// app.use('/api/file', fileRouter);
+// app.use('/api/auth', authRouter);
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
+const {schema, root} = require('./graphql/schema');
 
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-};
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true,
 }));
 
-// 테스트 localhost:3031/graphql 들어가서 
-/*
-
-{
-  hello
-}
-
-다음과 같이 입력하면 data 출력됨.
-*/
-
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
-var mongoose = require('mongoose');
-var db = mongoose
-  .connect(`${process.env.MONGODB_URI}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    var date = moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
-    console.log('mongodb connection success ', date);
-  })
-  .catch((e) => console.error(e));
 
 // error handler
 app.use(function (err, req, res, next) {
