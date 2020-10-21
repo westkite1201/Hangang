@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {AccountBookOutlined } from '@ant-design/icons';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag'
+//import { GET_QUOTES_STATUS} from '../../lib/graphql/admin'
 // import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 //import './App.css';
+const GET_CONTINENTS = gql`
+  query {
+    quotes(){
+        NAME,
+        WORD
+    }
+  }
+`
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
 
-
 function Admin() {
     const [collapsed, setCollapsed] = useState(false)
-
-  const onCollapse = (collapsed) => {
-    setCollapsed(collapsed)
-  }
+    const { loading, data, error } = useQuery(GET_CONTINENTS);
+    console.log('[seo] data', data)
+    const onCollapse = (collapsed) => {
+      setCollapsed(collapsed)
+    }
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
