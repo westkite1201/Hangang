@@ -1,11 +1,11 @@
 module.exports = (function(){
     const model = require('../mongoose/model');
     
-    async function getAllUsers(){
-      return await model.Member.find();
+    async function getAllQuotes(){
+      return await model.Quote.find();
     }
 
     return {
-      getAllUsers: getAllUsers
+        getAllQuotes: getAllQuotes
     };
 })();
