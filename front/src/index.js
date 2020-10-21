@@ -8,6 +8,8 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개발자 도구
+import client from './lib/graphql/client';
+import { ApolloProvider } from '@apollo/react-hooks';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'antd/dist/antd.css';
@@ -25,7 +27,9 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </Provider>,
   document.getElementById('root')
 );
