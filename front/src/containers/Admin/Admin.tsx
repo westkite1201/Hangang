@@ -23,7 +23,9 @@ interface Quotes{
 }
 function Admin() {
     const [collapsed, setCollapsed] = useState(false)
-    const { loading, data, error } = useQuery<Quotes>(GET_QUOTES);
+    const { loading, data, error } = useQuery<Quotes>(GET_QUOTES, {
+      variables: { status: '0'},  // useQuery 사용할 때 변수 넘기는 방법
+    });
     console.log('[seo] data', data, error)
     const onCollapse = (collapsed) => {
       setCollapsed(collapsed)

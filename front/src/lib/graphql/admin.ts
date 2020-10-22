@@ -36,11 +36,12 @@ export const GET_POST_LIST = gql`
     }
   }
 `;
+// 넘겨받은 변수 사용시에 $variable 사용
 export const GET_QUOTES = gql`
-  query quotes{
-      quotes{
-          NAME,
-          WORD
-      }
+  query Quotes($status: String!){
+    quotes(status: $status) {
+        NAME,
+        WORD
     }
+  }
 `
