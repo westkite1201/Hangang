@@ -4,7 +4,7 @@ var { buildSchema } = require('graphql');
 var schema = buildSchema(`
   type Query {
     members: [Member]
-    quotes: [Quote]
+    quotes(status: String): [Quote]
   }
 
   type Member{
@@ -33,7 +33,10 @@ var resolver = {
     return await dao.member.getAllUsers();
   },
   quotes: async (args, context, info) => {
-    return await dao.quote.getAllQuotes();
+    console.log('[masonms] args: ', args)
+    // console.log('[masonms] context: ', context.body)
+    // console.log('[masonms] info: ', info)
+    return await dao.quote.getAllQuotes(args);
   },
 };
 
