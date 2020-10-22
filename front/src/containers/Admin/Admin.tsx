@@ -3,25 +3,28 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import {AccountBookOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
-//import { GET_QUOTES_STATUS} from '../../lib/graphql/admin'
+import { GET_QUOTES} from '../../lib/graphql/admin'
+import StatusCard  from  '../../component/StatusCard/StatusCard'
 // import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 //import './App.css';
-const GET_CONTINENTS = gql`
-  query {
-    quotes(){
-        NAME,
-        WORD
-    }
-  }
-`
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
 
+
+
+interface Quote{
+  NAME : String,
+  WORD : String 
+}
+interface Quotes{
+  quotes:Quote[]
+  
+}
 function Admin() {
     const [collapsed, setCollapsed] = useState(false)
-    const { loading, data, error } = useQuery(GET_CONTINENTS);
-    console.log('[seo] data', data)
+    const { loading, data, error } = useQuery<Quotes>(GET_QUOTES);
+    console.log('[seo] data', data, error)
     const onCollapse = (collapsed) => {
       setCollapsed(collapsed)
     }
@@ -73,6 +76,7 @@ function Admin() {
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               Bill is a cat.
             </div>
+            <StatusCard count = {data && data.quotes.length !==0 ?  data.quotes.length : 0}  info ={'테스트입니다'} />
           </Content>
           <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2018 Created by Ant UED

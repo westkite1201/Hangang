@@ -10,6 +10,8 @@ import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개발자 도구
 import client from './lib/graphql/client';
 import { ApolloProvider } from '@apollo/react-hooks';
+//import ApolloClient from 'apollo-boost';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'antd/dist/antd.css';
@@ -22,6 +24,10 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+// const client = new ApolloClient({
+//   uri: 'http://localhost:3031/graphql'
+// });
 
 sagaMiddleware.run(rootSaga);
 
