@@ -36,12 +36,11 @@ export const GET_POST_LIST = gql`
     }
   }
 `;
-export const GET_QUOTES_STATUS = gql`
-  query QuotesStatue(  limit: Int,) {
-    posts(
-      limit: $limit
-    ) {
-        count 
+export const GET_QUOTES = gql`
+  query quotes{
+      quotes{
+          NAME,
+          WORD
+      }
     }
-  }
-`;
+`
