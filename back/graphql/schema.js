@@ -6,6 +6,9 @@ var schema = buildSchema(`
     members: [Member]
     quotes(status: String): [Quote]
   }
+  type Mutation {
+    editQuotes(id : String, name : String, word : String) : [Quote]
+  }
 
   type Member{
     MEM_EMAIL: String
@@ -39,11 +42,11 @@ let resolver = {
     console.log('[masonms] info: ', info);
     return await dao.quote.getAllQuotes(args);
   },
-  EditQuotes: async (args, context, info) => {
+  editQuotes: async (args, context, info) => {
     console.log('[masonms] args: ', args);
     // console.log('[masonms] context: ', context.body)
     // console.log('[masonms] info: ', info)
-    return await dao.quote.EditQuotes(args);
+    return await dao.quote.editQuotes(args);
   }
 };
 
