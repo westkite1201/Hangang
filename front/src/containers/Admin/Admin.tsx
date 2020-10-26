@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {AccountBookOutlined } from '@ant-design/icons';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag'
 import { GET_QUOTES} from '../../lib/graphql/admin'
 import StatusCard  from  '../../component/StatusCard/StatusCard'
 // import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'

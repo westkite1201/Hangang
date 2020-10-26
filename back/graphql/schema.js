@@ -13,6 +13,7 @@ var schema = buildSchema(`
   }
 
   type Quote{
+    _id : String
     NAME: String
     WORD: String
     FONT_COLOR: String
@@ -28,16 +29,22 @@ var schema = buildSchema(`
 `);
 
 // 맞춤 스칼라 타입 지정은 어떻게?
-var resolver = {
+let resolver = {
   members: async (args, context, info) => {
     return await dao.member.getAllUsers();
   },
   quotes: async (args, context, info) => {
-    console.log('[masonms] args: ', args)
-    // console.log('[masonms] context: ', context.body)
-    // console.log('[masonms] info: ', info)
+    console.log('[masonms] args: ', args);
+    console.log('[masonms] context: ', context.body);
+    console.log('[masonms] info: ', info);
     return await dao.quote.getAllQuotes(args);
   },
+  EditQuotes: async (args, context, info) => {
+    console.log('[masonms] args: ', args);
+    // console.log('[masonms] context: ', context.body)
+    // console.log('[masonms] info: ', info)
+    return await dao.quote.EditQuotes(args);
+  }
 };
 
-module.exports = {schema: schema, root: resolver};
+module.exports = { schema: schema, root: resolver };
