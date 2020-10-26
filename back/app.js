@@ -16,7 +16,7 @@ var { graphqlHTTP } = require('express-graphql');
 var corsOption = {
   origin: 'http://localhost:3030',
   credentials: true
-}
+};
 var cors = require('cors')(corsOption);
 var app = express();
 require('dotenv').config();
@@ -45,13 +45,17 @@ app.use('/', indexRouter);
 // app.use('/api/file', fileRouter);
 // app.use('/api/auth', authRouter);
 
-var {schema, root} = require('./graphql/schema');
+var { schema, root } = require('./graphql/schema');
 
-app.use('/graphql', cors, graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
+app.use(
+  '/graphql',
+  cors,
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+  })
+);
 
 app.use(cors);
 

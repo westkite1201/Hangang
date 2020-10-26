@@ -12,6 +12,7 @@ import PreviewContainer from './containers/PreviewContainer';
 import LoginContainer from './containers/LoginContainer';
 import WaveContainer from './containers/WaveContainer';
 import TestContainer from './containers/TestContainer/TestContainer.tsx';
+import QuotesEditContainer from './containers/QuotesEditContainer/QuotesEditContainer.tsx';
 import Admin from './containers/Admin/Admin.tsx';
 export default (props) => {
   return (
@@ -25,7 +26,6 @@ export default (props) => {
         path="/submit-qoutes"
         component={HangangSubmitQoutesContainer}
       />
-
       <Route exact path="/about" component={AboutContainer} />
       <Route exact path="/quotes" component={QuotesGridViewComponent}></Route>
       <Route exact path="/quotesmaker" component={QuotesMakerContainer}></Route>
@@ -37,6 +37,7 @@ export default (props) => {
       <Route exact path="/preview" component={PreviewContainer}></Route>
       <Route exact path="/login" component={LoginContainer}></Route>
       <Route exact path="/test" component={TestContainer}></Route>
+      <Route exact path="/edit" component={QuotesEditContainer}></Route>
     </div>
   );
 };
