@@ -49,7 +49,7 @@ const QuotesGridViewComponent = () => {
     variables: { status: '0'},  // useQuery 사용할 때 변수 넘기는 방법
   });
   console.log(error)
-  const [editQuotes] = useMutation<Quotes>(EDIT_QUOTES);
+  const [editQuotes] = useMutation(EDIT_QUOTES);
 
   const setQuote = (quote: Quote)  => {
     setQuoteInfo({
@@ -73,6 +73,7 @@ const QuotesGridViewComponent = () => {
     }
   }
   const handleEdit = async() => {
+    console.log(quoteInfo)
       await editQuotes({
         variables: {
           id: quoteInfo.id,

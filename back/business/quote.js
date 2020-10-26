@@ -17,11 +17,7 @@ module.exports = (function () {
       NAME: name,
       WORD: word
     };
-    let updateRow = await Quotes.update(
-      { _id: id },
-      { $set: set },
-      { multi: true }
-    );
+    await model.Quote.update({ _id: id }, { $set: set }, { multi: true });
     let filter = {
       ACCEPTED: '0',
       STATUS: '0'
