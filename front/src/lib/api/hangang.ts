@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 //import axios from './apiClient';
 import axios from 'axios';
 import cilentConfig from '../../configuration/clientConfig';
@@ -20,16 +21,12 @@ export interface HangangTempRes {
   data: HangangTemp[];
 }
 
-export interface IRequest {}
-export interface IError {
-  message: string;
-}
 export async function getHangangTemp() {
   //   const data = {
   const response = await axios.get<HangangTempRes>(
     `${cilentConfig.endpoint.api}/hangang/hangang_data`
   );
-  console.log("getHangangTemp response  ", response)
+  console.log('getHangangTemp response  ', response);
   return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 

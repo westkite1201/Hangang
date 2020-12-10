@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import { useDispatch, useSelector } from 'react-redux';

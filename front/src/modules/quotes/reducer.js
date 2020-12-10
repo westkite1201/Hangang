@@ -84,7 +84,8 @@ export default (state = initialState, action) => {
         draft.quotesData.error = error;
         draft.quotesData.totalCount = parseInt(data.total_count);
         draft.pageNum += 1;
-        let maxPageNum = Math.ceil(parseInt(data.total_count) / PAGE_COUNT) + 1;
+        const maxPageNum =
+          Math.ceil(parseInt(data.total_count) / PAGE_COUNT) + 1;
         if (maxPageNum === draft.pageNum) {
           draft.quotesData.isLast = true;
           draft.quotesData.loading = false;

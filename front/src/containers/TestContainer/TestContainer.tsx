@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
 import Checks from './Checks';
 const labels = ['check 1', 'check 2', 'check 3'];

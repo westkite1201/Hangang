@@ -26,14 +26,14 @@ export async function snsLoginHangang(payload) {
   const response = await axios.post(
     `${cilentConfig.endpoint.api}/auth/sns-login`,
     payload
-  )
-  return response.data
+  );
+  return response.data;
 }
-export async function logoutHangang(payload) {  // 로그아웃 시 SNS 로그아웃까지 가능하도록? 아니면 현재 페이지에 대해서만 로그아웃하도록?
-  const { type } = payload
+export async function logoutHangang(payload) {
+  // 로그아웃 시 SNS 로그아웃까지 가능하도록? 아니면 현재 페이지에 대해서만 로그아웃하도록?
+  const { type } = payload;
   switch (type) {
     case 'GOOGLE':
-      
       break;
     case 'KAKAO':
       break;
