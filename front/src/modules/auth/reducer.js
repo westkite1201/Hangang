@@ -61,14 +61,14 @@ export default (state = initialState, action) => {
         console.log('action.payload ', action.payload);
         localStorage.setItem('access_token', action.payload.data.token);
         toast('SNS로그인에 성공하였습니다!', TOAST_OPTION);
-        break; 
+        break;
       }
       case SNS_LOGIN_FAILURE: {
-        console.log('SNS_LOGIN_FAIL: ', action.payload)
+        console.log('SNS_LOGIN_FAIL: ', action.payload);
         break;
       }
       case SNS_LOGIN_REQUEST: {
-        console.log('SNS_LOGIN REQUEST', action.payload)
+        console.log('SNS_LOGIN REQUEST', action.payload);
         break;
       }
       case LOGOUT_REQUEST: {

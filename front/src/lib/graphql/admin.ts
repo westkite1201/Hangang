@@ -37,43 +37,42 @@ export const GET_POST_LIST = gql`
   }
 `;
 
-export interface Quote{
-   _id : string,
-  NAME : string,
-  WORD : string,
-  THUMBNAIL_USER_IMAGE : string ,
-  THUMBNAIL_BACKGROUND_IMAGE : string,
-  ACCEPTED : string,
+export interface Quote {
+  _id: string;
+  NAME: string;
+  WORD: string;
+  THUMBNAIL_USER_IMAGE: string;
+  THUMBNAIL_BACKGROUND_IMAGE: string;
+  ACCEPTED: string;
 }
-export interface Quotes{
-  quotes:Quote[]
+export interface Quotes {
+  quotes: Quote[];
 }
-
 
 // 넘겨받은 변수 사용시에 $variable 사용
 export const GET_QUOTES = gql`
-  query Quotes($status: String!){
+  query Quotes($status: String!) {
     quotes(status: $status) {
-        _id,
-        NAME,
-        WORD,
-        THUMBNAIL_USER_IMAGE,
-        THUMBNAIL_BACKGROUND_IMAGE,
-        CARD_EXPS_TYP_CD,
-        ACCEPTED,
+      _id
+      NAME
+      WORD
+      THUMBNAIL_USER_IMAGE
+      THUMBNAIL_BACKGROUND_IMAGE
+      CARD_EXPS_TYP_CD
+      ACCEPTED
     }
   }
-`
+`;
 
 // 넘겨받은 변수 사용시에 $variable 사용
 export const EDIT_QUOTES = gql`
-  mutation EditQuotes($id: String! , $name: String!,$word : String!){
-    editQuotes(id : $id, name: $name, word : $word) {
-        NAME,
-        WORD,
-        THUMBNAIL_USER_IMAGE,
-        THUMBNAIL_BACKGROUND_IMAGE,
-        ACCEPTED,
+  mutation EditQuotes($id: String!, $name: String!, $word: String!) {
+    editQuotes(id: $id, name: $name, word: $word) {
+      NAME
+      WORD
+      THUMBNAIL_USER_IMAGE
+      THUMBNAIL_BACKGROUND_IMAGE
+      ACCEPTED
     }
   }
-`
+`;

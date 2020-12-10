@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -119,9 +120,9 @@ function HangangContainer(props) {
       if (navigator.geolocation) {
         // GPS를 지원하면
         try {
-          let position = await getPosition();
-          let notLng = position.coords.longitude;
-          let notLat = position.coords.latitude;
+          const position = await getPosition();
+          const notLng = position.coords.longitude;
+          const notLat = position.coords.latitude;
           //console.log(getNearbyStaionArray(notLat, notLng));
           setStations(getNearbyStaionArray(notLat, notLng));
         } catch (e) {

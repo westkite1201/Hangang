@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
@@ -49,9 +50,9 @@ const SideBar = (props) => {
       <br />
 
       <StyledLink id="login" className="menu-item" to="/login">
-        <ButtonContainer/>
+        <ButtonContainer />
       </StyledLink>
-      
+
       <br />
     </Menu>
   );

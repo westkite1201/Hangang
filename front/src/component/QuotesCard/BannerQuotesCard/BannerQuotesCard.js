@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState, useRef } from 'react';
 import './BannerQuotesCard.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const BannerQuotesCard = ({ quotes }) => {
   const cardReferenece = useRef();
   const classes = useStyles();
-  let defaultImg = quotes.backgroundImagePath
+  const defaultImg = quotes.backgroundImagePath
     ? quotes.backgroundImagePath
     : '/images/river.jpeg';
 

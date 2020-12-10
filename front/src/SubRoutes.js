@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Route } from 'react-router-dom';
 import React, { useEffect } from 'react';
 //import TodoContainer from './containers/TodoContainer';

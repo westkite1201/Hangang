@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState, useEffect } from 'react';
 import { Input, Button } from 'antd';
 import QuotesCard from '../../component/QuotesCard';
@@ -67,14 +69,13 @@ const PreviewContainer = () => {
     });
   };
   const setSelectedBackgroundUrl = (image) => {
-    let array = image.split('/');
-    let imagePathName = array[array.length - 1];
+    const array = image.split('/');
+    const imagePathName = array[array.length - 1];
     dispatch({
       type: SET_BACKGROUND_IMAGE,
       payload: { url: imagePathName, isUnsplash: false }
     });
   };
-  const callback = () => {};
   return (
     <PreviewWrapper>
       <Container>

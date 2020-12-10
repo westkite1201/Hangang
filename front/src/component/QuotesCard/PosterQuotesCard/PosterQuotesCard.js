@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { getImageFileFullPath } from '../../../lib/helper';

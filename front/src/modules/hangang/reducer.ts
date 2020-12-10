@@ -1,9 +1,6 @@
 import { HangangTemp } from '../../lib/api/hangang';
-import {
-  AsyncState,
-  asyncState,
-} from '../../lib/utils/reducerUtils';
-import {createReducer,createAsyncAction,  ActionType} from 'typesafe-actions';
+import { AsyncState, asyncState } from '../../lib/utils/reducerUtils';
+import { createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
 import { AxiosError } from 'axios';
 
 export const GET_HANGANG_TEMP_REQUEST = 'HANGANG/GET_HANGANG_TEMP_REQUEST';
@@ -16,7 +13,7 @@ export const getHangangTempertureAsync = createAsyncAction(
   GET_HANGANG_TEMP_FAILURE
 )<string, HangangTemp[], AxiosError>();
 
-const actions = { getHangangTempertureAsync }
+const actions = { getHangangTempertureAsync };
 
 // interface IResponse {
 //   hangangTemp: HangangTemp[];
@@ -28,17 +25,16 @@ const actions = { getHangangTempertureAsync }
 //   GET_HANGANG_TEMP.FAILURE
 // )<IRequest, IResponse, IError>();
 
-
 export type HangangAction = ActionType<typeof actions>;
 
 export type HangangState = {
   riverTempData: AsyncState<HangangTemp[], Error>;
 };
 
-const initialState:HangangState = { riverTempData:asyncState.initial() };
+const initialState: HangangState = { riverTempData: asyncState.initial() };
 
 const reducer = createReducer<HangangState, HangangAction>(initialState, {
-  [GET_HANGANG_TEMP_REQUEST]: state => ({
+  [GET_HANGANG_TEMP_REQUEST]: (state) => ({
     ...state,
     riverTempData: asyncState.load()
   }),
@@ -51,8 +47,6 @@ const reducer = createReducer<HangangState, HangangAction>(initialState, {
     userProfile: asyncState.error(action.payload)
   })
 });
-
-
 
 /* handle action 사용  메서드 체이닝 방식 */
 
@@ -72,6 +66,5 @@ const reducer = createReducer<HangangState, HangangAction>(initialState, {
 //   .handleAction(getHangangTemp.failure, (state, action) => {
 //     return { ...state, message: action.payload.message };
 //   });
-
 
 export default reducer;
