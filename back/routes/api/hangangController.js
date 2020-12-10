@@ -97,7 +97,7 @@ router.post('/word_data', async (req, res) => {
     };
     const sort = {
       CARD_ORDER: 1
-    }
+    };
 
     Quotes.find(filter, (error, quotes) => {
       if (error) {
@@ -140,10 +140,10 @@ router.post('/word_data_admin', async (req, res) => {
       ACCEPTED: '1',
       STATUS: '0'
     };
-    
+
     const sort = {
       CARD_ORDER: 1
-    }
+    };
 
     Quotes.find(filter, (error, submit_quotes) => {
       if (error) {
@@ -163,9 +163,7 @@ router.post('/word_data_admin', async (req, res) => {
             );
             return res.json(makeReturnData('100', returnArray));
           }
-        })
-        .sort(sort)
-        
+        }).sort(sort);
       }
     });
   } catch (error) {
@@ -196,7 +194,7 @@ router.post('/insert_quotes', async (req, res) => {
     //   thumbnail_background_image,
     //   accepted
     // });
-    
+
     let count = await Quotes.countDocuments({});
 
     const data = {
@@ -208,7 +206,7 @@ router.post('/insert_quotes', async (req, res) => {
       ACCEPTED: accepted,
       CARD_ORDER: count + 1
     };
-    
+
     console.log(data);
     const quotes = new Quotes(data);
 
