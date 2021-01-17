@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useStore } from "react-redux";
 import Link from "next/link";
-import { fetchSubject, selectSubject, wrapper } from "../store/store";
+import { fetchSubject, selectSubject, wrapper } from "../../store/store";
 
 const Page = (props) => {
   console.log("State on render", useStore().getState(), { props });
@@ -27,26 +27,20 @@ const Page = (props) => {
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-   store.dispatch(fetchSubject(id));
-});
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async ({ params }) => {
+    const { id } = params;
 
-export default Index;
+    await store.dispatch(fetchSubject(id));
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async ({ params }) => {
-//     const { id } = params;
+    console.log("State on server", store.getState());
 
-//     await store.dispatch(fetchSubject(id));
+    return {
+      props: {
+        id,
+      },
+    };
+  }
+);
 
-//     console.log("State on server", store.getState());
-
-//     return {
-//       props: {
-//         id,
-//       },
-//     };
-//   }
-// );
-
-// export default Page;
+export default Page;

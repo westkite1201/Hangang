@@ -1,6 +1,5 @@
-import { createSlice, createAction, PayloadAction } from "@reduxjs/toolkit";
-import { IQuoteResData, IQuotseRes } from "../../lib/api/quotes";
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IQuoteResData, IQuotseRes } from "../lib/api/quotes";
 import _ from "lodash";
 
 type CurrentDisplayState = {
@@ -20,10 +19,13 @@ const initialState: CurrentDisplayState = {
   },
 };
 
-const quotesSlice = createSlice({
+export const quotesSlice = createSlice({
   name: "quotes",
   initialState,
   reducers: {
+    HYDREATE(state) {
+      console.log("hiderate");
+    },
     getQuotesRequest(state) {
       console.log("qetQuotes");
       state.loading = true;

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GET_QUOTES_REQUEST } from '../../modules/quotes/reducer';
-import QuotesCard from '../../component/QuotesCard';
-import Loading from '../../component/common/Loading/Loading.tsx';
-import styled from 'styled-components';
-import InfoCard from '../../component/common/InfoCard/InfoCard.tsx';
-import { useInfinteScroll } from '../../hooks';
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import QuotesCard from "./QuotesCard/QuotesCard";
+import Loading from "../../component/common/Loading/Loading.tsx";
+import InfoCard from "../../component/common/InfoCard/InfoCard.tsx";
+import styled from "styled-components";
+import { useInfinteScroll } from "../../hooks";
 
 const PAGE_COUNT = 5;
 const QuotesCardList = ({ quotesList }) => {
@@ -28,7 +27,7 @@ const QuotesGridViewComponent = () => {
       if (isIntersecting && !quotesData.isLoading && !quotesData.isLast) {
         dispatch({
           type: GET_QUOTES_REQUEST,
-          payload: { accepted: '0', pageNum: pageNum, pageCount: PAGE_COUNT },
+          payload: { accepted: "0", pageNum: pageNum, pageCount: PAGE_COUNT },
         });
       }
     },
@@ -47,7 +46,7 @@ const QuotesGridViewComponent = () => {
       )}
       {loading && (
         <LoadingWrapper>
-          <Loading size={50} color={'#b197fc'} />
+          <Loading size={50} color={"#b197fc"} />
         </LoadingWrapper>
       )}
       {isLast && <InfoCard info="마지막 카드 입니다.." />}

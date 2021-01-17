@@ -1,20 +1,77 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import { createWrapper } from "next-redux-wrapper";
-import createReducer from "./rootReducer";
-import { createLogger } from "redux-logger";
-import { composeWithDevTools } from "redux-devtools-extension";
+import {
+  configureStore,
+  createAction,
+  createSlice,
+  ThunkAction,
+} from "@reduxjs/toolkit";
+import { Action } from "redux";
+import { createWrapper, HYDRATE } from "next-redux-wrapper";
 
-const configureStore = () => {
-  const logger = createLogger();
-  const enhancer = compose(
-    process.env.NODE_ENV !== "production"
-      ? applyMiddleware(logger)
-      : composeWithDevTools(applyMiddleware(logger))
+const hydrate = createAction<AppState>(HYDRATE);
+
+export const subjectSlice = createSlice({
+  name: "subject",
+
+  initialState: {} as any,
+
+  reducers: {
+    setEnt(state, action) {
+      return action.payload;
+    },
+  },
+
+  extraReducers(builder) {
+    builder.addCase(hydrate, (state, action) => {
+      console.log("HYDRATE", state, action.payload);
+      return {
+        ...state,
+        ...action.payload[subjectSlice.name],
+      };
+    });
+  },
+});
+
+const makeStore = () =>
+  configureStore({
+    reducer: {
+      [subjectSlice.name]: subjectSlice.reducer,
+    },
+    devTools: true,
+  });
+
+export type AppStore = ReturnType<typeof makeStore>;
+export type AppState = ReturnType<AppStore["getState"]>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppState,
+  unknown,
+  Action
+>;
+export function tickClock(isServer: boolean): TickClock {
+  return {
+    type: actionTypesExample.TICK_CLOCK,
+    light: !isServer,
+    ts: Date.now(),
+  };
+}
+
+export const fetchSubject = (id: any): AppThunk => async (dispatch) => {
+  const timeoutPromise = (timeout: number) =>
+    new Promise((resolve) => setTimeout(resolve, timeout));
+
+  await timeoutPromise(200);
+
+  dispatch(
+    subjectSlice.actions.setEnt({
+      [id]: {
+        id,
+        name: `Subject ${id}`,
+      },
+    })
   );
-  const store = createStore(createReducer(), enhancer);
-  return store;
 };
 
-const wrapper = createWrapper(configureStore, { debug: true });
+export const wrapper = createWrapper(makeStore);
 
-export default wrapper;
+export const selectSubject = (id: any) => (state: AppState) =>
+  state?.[subjectSlice.name]?.[id];
