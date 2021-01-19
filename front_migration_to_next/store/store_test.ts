@@ -3,14 +3,14 @@ import {
   createAction,
   createSlice,
   ThunkAction,
-} from "@reduxjs/toolkit";
-import { Action } from "redux";
-import { createWrapper, HYDRATE } from "next-redux-wrapper";
+} from '@reduxjs/toolkit';
+import { Action } from 'redux';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 
 const hydrate = createAction<AppState>(HYDRATE);
 
 export const subjectSlice = createSlice({
-  name: "subject",
+  name: 'subject',
 
   initialState: {} as any,
 
@@ -22,7 +22,7 @@ export const subjectSlice = createSlice({
 
   extraReducers(builder) {
     builder.addCase(hydrate, (state, action) => {
-      console.log("HYDRATE", state, action.payload);
+      console.log('HYDRATE', state, action.payload);
       return {
         ...state,
         ...action.payload[subjectSlice.name],
@@ -40,34 +40,34 @@ const makeStore = () =>
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
-export type AppState = ReturnType<AppStore["getState"]>;
+export type AppState = ReturnType<AppStore['getState']>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   AppState,
   unknown,
   Action
 >;
-export function tickClock(isServer: boolean): TickClock {
-  return {
-    type: actionTypesExample.TICK_CLOCK,
-    light: !isServer,
-    ts: Date.now(),
-  };
-}
+
+// export function tickClock(isServer: boolean): TickClock {
+//   return {
+//     type: actionTypesExample.TICK_CLOCK,
+//     light: !isServer,
+//     ts: Date.now(),
+//   };
+// }
 
 export const fetchSubject = (id: any): AppThunk => async (dispatch) => {
   const timeoutPromise = (timeout: number) =>
     new Promise((resolve) => setTimeout(resolve, timeout));
 
   await timeoutPromise(200);
-
   dispatch(
     subjectSlice.actions.setEnt({
       [id]: {
         id,
         name: `Subject ${id}`,
       },
-    })
+    }),
   );
 };
 

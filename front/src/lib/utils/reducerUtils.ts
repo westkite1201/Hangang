@@ -1,4 +1,4 @@
-import {
+'import {
   createReducer,
   createAsyncAction as asyncActionCreator,
   ActionType
