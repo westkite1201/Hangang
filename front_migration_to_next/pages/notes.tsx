@@ -4,19 +4,20 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import AddNoteForm from "../components/add-note";
-import { deleteNote, loadNotes, selectNotes } from "../lib/slices/notesSlice";
+import { deleteNote, loadNotes } from "../lib/slices/notesSlice";
+import { RootState, RootStore } from "../store";
 import { wrapper } from "../store";
 const EditNoteForm = Dynamic(import("../components/edit-note"), { ssr: false });
 const Notes = () => {
   const [selectedNote, setSelectedNote] = useState();
   const dispatch = useDispatch();
-  const { notes, error } = useSelector(selectNotes);
-  console.log(notes);
+  const { notes } = useSelector((state: RootState) => state.notes);
+
   useEffect(() => {
-    async function dispatchLoadNotes() {
-      dispatch(loadNotes());
-    }
-    dispatchLoadNotes();
+    // async function dispatchLoadNotes() {
+    //   await dispatch(loadNotes());
+    // }
+    // dispatchLoadNotes();
   }, [dispatch]);
 
   const renderNote = (note) => (
@@ -48,7 +49,7 @@ const Notes = () => {
       <AddNoteForm />
       <hr />
       <h3>All Notes</h3>
-      <ul>{notes.map(renderNote)}</ul>
+      <ul>{notes && notes.map(renderNote)}</ul>
       <EditNoteForm note={selectedNote} />
     </>
   );
@@ -56,8 +57,9 @@ const Notes = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store }) => {
-    // console.log("hello");
-    //await store.dispatch(loadNotes());
+    //console.log(store.dispatch);
+    //store.dispatch(loadNotes(3));
+    await store.dispatch(loadNotes());
   }
 );
 export default Notes;

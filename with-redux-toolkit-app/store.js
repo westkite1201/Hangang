@@ -1,9 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { createWrapper } from 'next-redux-wrapper';
+import { configureStore } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper";
 
-import clockReducer from './lib/slices/clockSlice';
-import counterReducer from './lib/slices/counterSlice';
-import notesReducer from './lib/slices/notesSlice';
+import clockReducer from "./lib/slices/clockSlice";
+import counterReducer from "./lib/slices/counterSlice";
+import notesReducer from "./lib/slices/notesSlice";
 
 export const makeStore = () =>
   configureStore({
@@ -12,7 +12,7 @@ export const makeStore = () =>
       clock: clockReducer,
       notes: notesReducer,
     },
-    devTools: process.env.NODE_ENV === 'development',
+    devTools: process.env.NODE_ENV === "development",
   });
 
-export const wrapper = createWrapper(makeStore);
+export const wrapper = createWrapper(makeStore, { debug: true });

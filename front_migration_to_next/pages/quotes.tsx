@@ -3,7 +3,7 @@ import { useSelector, useStore } from "react-redux";
 import Link from "next/link";
 import { fetchSubject, selectSubject, wrapper } from "../store/store";
 
-const Page = (props) => {
+const Quotes = (props) => {
   console.log("State on render", useStore().getState(), { props });
   const content = useSelector(selectSubject(props.id));
 
@@ -28,10 +28,10 @@ const Page = (props) => {
 };
 
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-   store.dispatch(fetchSubject(id));
+  store.dispatch();
 });
 
-export default Index;
+export default Quotes;
 
 // export const getServerSideProps = wrapper.getServerSideProps(
 //   (store) => async ({ params }) => {

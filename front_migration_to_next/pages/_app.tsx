@@ -1,6 +1,6 @@
 // pages/_app.js
-import Link from 'next/link';
-import { wrapper } from '../store';
+import Link from "next/link";
+import { wrapper } from "../store";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
