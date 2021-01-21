@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 type InfoCardProps = {
-  icon: string;
+  icon?: string;
   info: string;
 };
 

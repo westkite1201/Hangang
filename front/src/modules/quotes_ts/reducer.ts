@@ -42,8 +42,6 @@ const initialState: QuotesgState = {
     loading: false,
     data: [],
     error: false
-    // totalCount: 0,
-    // isLast:false
   }
 };
 

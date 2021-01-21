@@ -1,5 +1,5 @@
 import React from 'react';
-//import BannerQuotesCard from './BannerQuotesCard';
+import BannerQuotesCard from './BannerQuotesCard';
 import PosterQuotesCard from './PosterQuotesCard';
 //import ThumbQuotesCard from './ThumbQuotesCard';
 import { getContentCardType } from '../../lib/helper';
@@ -14,25 +14,33 @@ function CardComponent({ quotes }) {
   switch (cardType) {
     case 'poster':
       return <PosterQuotesCard quotes={quotes} />;
-    // case 'banner':
-    //   return <BannerQuotesCard quotes={quotes} />;
+    case 'banner':
+      return <BannerQuotesCard quotes={quotes} />;
     default:
       return <div />;
   }
 }
 const QuotesCard = ({ quotes, index }) => {
   const { card_exps_typ_cd, usePreview } = quotes;
-  return (
-    <Grid
-      item
-      xs={12}
-      md={usePreview ? 12 : 6}
-      lg={usePreview ? 12 : 4}
-      key={index}
-    >
-      <CardComponent quotes={quotes} />
-    </Grid>
-  );
+  if (card_exps_typ_cd === BANNER) {
+    return (
+      <Grid item xs={12} md={12} lg={12} key={index}>
+        <CardComponent quotes={quotes} />
+      </Grid>
+    );
+  } else {
+    return (
+      <Grid
+        item
+        xs={12}
+        md={usePreview ? 12 : 6}
+        lg={usePreview ? 12 : 4}
+        key={index}
+      >
+        <CardComponent quotes={quotes} />
+      </Grid>
+    );
+  }
 };
 
 export default QuotesCard;

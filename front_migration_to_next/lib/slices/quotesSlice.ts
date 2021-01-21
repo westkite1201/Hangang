@@ -6,7 +6,7 @@ import { getQuotes } from '../api/quotes';
 import { IQuote, IGetQuotesParam } from '../../interfaces';
 
 const hydrate = createAction<RootState>(HYDRATE);
-
+const PAGE_COUNT = 5;
 export const getQuotesThunk = createAsyncThunk(
   'quotes/getQuotes',
   async (params: IGetQuotesParam, thunkAPI) => {
@@ -21,23 +21,27 @@ export const getQuotesThunk = createAsyncThunk(
 );
 
 export interface IQuotesData {
+  loading: boolean;
   quotesArray: IQuote[];
   totalCount: number;
+  isLast: boolean;
+  pageNum: number;
+  error: string | null;
 }
 
 interface InitialState {
-  loading: boolean;
   quotesData: IQuotesData;
-  error: '';
 }
 
 const initialState: InitialState = {
-  loading: false,
   quotesData: {
+    loading: false,
     quotesArray: [],
     totalCount: 0,
+    isLast: false,
+    pageNum: 1,
+    error: '',
   },
-  error: '',
 };
 
 const notesSlice = createSlice({
@@ -50,18 +54,25 @@ const notesSlice = createSlice({
     builder.addCase(getQuotesThunk.pending, (state, action) => {
       console.log('loadNotes pending');
       //state.quotesData = [];
-      state.loading = true;
+      state.quotesData.loading = true;
     });
 
     builder.addCase(getQuotesThunk.fulfilled, (state, action) => {
+      const { quotes_array, total_count } = action.payload;
       console.log('loadNotes.fulfiled', state, action.payload);
-      state.quotesData.quotesArray.push(...action.payload.quotes_array);
-      state.quotesData.totalCount = action.payload.total_count;
-      state.loading = false;
+      state.quotesData.quotesArray.push(...quotes_array);
+      state.quotesData.totalCount = total_count;
+      state.quotesData.loading = false;
+      state.quotesData.pageNum += 1;
+      const maxPageNum = Math.ceil(total_count / PAGE_COUNT) + 1;
+      if (maxPageNum === state.quotesData.pageNum) {
+        state.quotesData.isLast = true;
+        state.quotesData.loading = false;
+      }
     });
 
     builder.addCase(getQuotesThunk.rejected, (state, action) => {
-      state.loading = false;
+      state.quotesData.loading = false;
       //state.error = action.payload;
     });
   },
