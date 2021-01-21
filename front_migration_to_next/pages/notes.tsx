@@ -1,23 +1,21 @@
-import Dynamic from "next/dynamic";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Dynamic from 'next/dynamic';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AddNoteForm from "../components/add-note";
-import { deleteNote, loadNotes } from "../lib/slices/notesSlice";
-import { RootState, RootStore } from "../store";
-import { wrapper } from "../store";
-const EditNoteForm = Dynamic(import("../components/edit-note"), { ssr: false });
+import AddNoteForm from '../components/add-note';
+import { deleteNote, loadNotes } from '../lib/slices/notesSlice';
+import { RootState, RootStore } from '../store';
+import { wrapper } from '../store';
+const EditNoteForm = Dynamic(import('../components/edit-note'), { ssr: false });
 const Notes = () => {
   const [selectedNote, setSelectedNote] = useState();
   const dispatch = useDispatch();
   const { notes } = useSelector((state: RootState) => state.notes);
 
   useEffect(() => {
-    // async function dispatchLoadNotes() {
-    //   await dispatch(loadNotes());
-    // }
-    // dispatchLoadNotes();
+    async function dispatchLoadNotes() {}
+    dispatchLoadNotes();
   }, [dispatch]);
 
   const renderNote = (note) => (
@@ -57,9 +55,9 @@ const Notes = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store }) => {
+    await store.dispatch<any>(loadNotes());
     //console.log(store.dispatch);
     //store.dispatch(loadNotes(3));
-    await store.dispatch(loadNotes());
-  }
+  },
 );
 export default Notes;

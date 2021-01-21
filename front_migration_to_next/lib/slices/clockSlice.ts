@@ -1,8 +1,8 @@
 // lib/slices/clockSlice.js
-import { createSlice } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+import { createSlice } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 const clockSlice = createSlice({
-  name: "clock",
+  name: 'clock',
   initialState: {
     lastUpdate: 0,
     light: true,

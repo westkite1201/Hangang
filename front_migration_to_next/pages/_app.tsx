@@ -1,20 +1,17 @@
 // pages/_app.js
-import Link from "next/link";
-import { wrapper } from "../store";
+import Link from 'next/link';
+import { wrapper } from '../store';
+import GlobalStyles from '../styles/global-styles';
+import { ThemeProvider } from '../styles/themed-components';
+import theme from '../styles/theme';
 
 const MyApp = ({ Component, pageProps }) => {
   return (
     <div>
-      <div>
-        <Link href="/">
-          <a>Index</a>
-        </Link>
-        |
-        <Link href="/notes">
-          <a>Notes</a>
-        </Link>
-      </div>
-      <Component {...pageProps} />
+      <GlobalStyles />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </div>
   );
 };

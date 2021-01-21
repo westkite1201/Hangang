@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import Clock from "../components/clock";
+import Clock from '../components/clock';
+import StyleSample from '../components/StyleSample';
 //import Counter from '../components/counter';
-import { tick, selectClock } from "../lib/slices/clockSlice";
+import { tick, selectClock } from '../lib/slices/clockSlice';
 //import useInterval from '../lib/useInterval';
-import { wrapper } from "../store";
+import { wrapper } from '../store';
 const IndexPage = () => {
   const dispatch = useDispatch();
   //const { light } = useSelector(selectClock);
@@ -16,6 +17,7 @@ const IndexPage = () => {
 
   return (
     <>
+      <StyleSample />
       <Clock />
     </>
   );
@@ -25,7 +27,7 @@ const IndexPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store }) => {
     //store.dispatch(tick({ light: false, lastUpdate: Date.now() }));
-  }
+  },
 );
 
 export default IndexPage;

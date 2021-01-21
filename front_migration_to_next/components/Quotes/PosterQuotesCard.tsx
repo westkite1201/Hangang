@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { getImageFileFullPath } from '../../../lib/helper';
+import { getImageFileFullPath } from '../../lib/helper';
 
 const PosterQuotesCard = ({ quotes }) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -17,7 +17,7 @@ const PosterQuotesCard = ({ quotes }) => {
   let cardHoverStyle = {
     transition: 'all 0.5s ease',
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
-    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)'
+    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)',
   };
   const makePosterText = (str) => {
     return str.split('\n').map((item) => {
