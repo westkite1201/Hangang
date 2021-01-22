@@ -1,6 +1,6 @@
-import moment from 'moment';
-import { stationLocationArray } from './CommonData';
-import { clientConfig } from '../configuration/clientConfig';
+import moment from "moment";
+import { stationLocationArray } from "./CommonData";
+import { clientConfig } from "../configuration/clientConfig";
 
 /* 좌표 거리 계산 */
 export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
@@ -26,7 +26,7 @@ export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
   return Math.round(d * 1000);
 }
 
-export function getNearbyStaionArray(nowLat, nowLng) {
+export function getNearbyStaionArray(nowLat: number, nowLng: number) {
   // sort
   for (let i = 0; i < stationLocationArray.length; i++) {
     const { lat, lng } = stationLocationArray[i];
@@ -52,17 +52,17 @@ function getRandomInt(min, max) {
 //일출05:44일몰19:30
 //아침, 저녁 , 밤 ,새벽,
 export function getBackgroundImage() {
-  let time = parseInt(moment().format('HHmm'));
-  console.log('time', time);
+  let time = parseInt(moment().format("HHmm"));
+  console.log("time", time);
   if (600 < time && time <= 1730) {
-    console.log('아침');
+    console.log("아침");
     return `/images/hangang/morning_${getRandomInt(0, 2)}.jpg`;
   } else if (1730 < time && time <= 2000) {
-    console.log('저녁', getRandomInt(0, 0));
+    console.log("저녁", getRandomInt(0, 0));
     //일단 새벽이미지 사용
     return `/images/hangang/dawn_${getRandomInt(0, 0)}.jpg`;
   } else if ((2000 < time && time <= 2400) || time <= 600) {
-    console.log('밤');
+    console.log("밤");
     return `/images/hangang/night_${getRandomInt(0, 2)}.jpg`;
   }
 }
@@ -72,15 +72,15 @@ export function getWaterTempertureColor() {}
 
 export function getContentCardType(pst_exps_typ_cd) {
   switch (pst_exps_typ_cd) {
-    case '10':
-      return 'poster';
-    case '20':
-      return 'banner';
-    case '30':
-      return 'thumb';
+    case "10":
+      return "poster";
+    case "20":
+      return "banner";
+    case "30":
+      return "thumb";
 
     default:
-      return 'default';
+      return "default";
   }
 }
 
@@ -89,7 +89,7 @@ export const getContrastYIQ = (color) => {
   const g = parseInt(color.substr(2, 2), 16);
   const b = parseInt(color.substr(4, 2), 16);
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-  return yiq >= 220 ? '#000000' : '#ffffff';
+  return yiq >= 220 ? "#000000" : "#ffffff";
 };
 
 // eslint-disable-next-line
@@ -109,16 +109,16 @@ export const getImageFileFullPath = (quotes) => {
       if (isUnsplash) {
         return backgroundImagePath;
       }
-      return clientConfig.endpoint.api + '/file/image/' + backgroundImagePath;
+      return clientConfig.endpoint.api + "/file/image/" + backgroundImagePath;
     }
-    return '/images/temp.jpeg';
+    return "/images/temp.jpeg";
   } else {
     if (thumbnail_background_image) {
       return (
-        clientConfig.endpoint.api + '/file/image/' + thumbnail_background_image
+        clientConfig.endpoint.api + "/file/image/" + thumbnail_background_image
       );
     }
-    return '/images/temp.jpeg';
+    return "/images/temp.jpeg";
   }
 };
 //insert_quotes 하기전 이미지 이름 추출
@@ -126,7 +126,7 @@ export const extractImageFileName = (quotes) => {
   const { backgroundImagePath, isUnsplash, id } = quotes;
   //qutoes id
   if (isUnsplash) {
-    return id + '.jpg';
+    return id + ".jpg";
   } else {
     return backgroundImagePath;
   }

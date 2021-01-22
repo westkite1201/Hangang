@@ -1,33 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
-
-import Clock from '../components/clock';
-import StyleSample from '../components/StyleSample';
-//import Counter from '../components/counter';
-import { tick, selectClock } from '../lib/slices/clockSlice';
-//import useInterval from '../lib/useInterval';
-import { wrapper } from '../store';
+import { useSelector } from "react-redux";
+import HangangMain from "../components/Hangang/HangangMain";
+import { wrapper } from "../store";
+import { getHangangTempThunk } from "../lib/slices/hangangSlice";
+import { RootState } from "../store";
 const IndexPage = () => {
-  const dispatch = useDispatch();
-  //const { light } = useSelector(selectClock);
-  //console.log(light);
-  // Tick the time every second
-  // useInterval(() => {
-  //   //dispatch(tick({ light: true, lastUpdate: Date.now() }));
-  // }, 1000);
-
+  const { riverTempData } = useSelector((state: RootState) => state.hangang);
+  console.log(riverTempData);
   return (
     <>
-      <StyleSample />
-      <Clock />
+      <HangangMain riverTempData={riverTempData} />
     </>
   );
 };
 
-// Read manual about `getServerSideProps` or `getStaticProps` usage. Choose what fits you better
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ store }) => {
-    //store.dispatch(tick({ light: false, lastUpdate: Date.now() }));
-  },
-);
+export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+  await store.dispatch<any>(getHangangTempThunk());
+});
 
 export default IndexPage;

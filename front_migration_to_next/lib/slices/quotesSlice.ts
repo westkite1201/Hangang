@@ -1,23 +1,22 @@
-import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { HYDRATE } from 'next-redux-wrapper';
-import { RootState } from '../../store';
-import { getQuotes } from '../api/quotes';
-import { IQuote, IGetQuotesParam } from '../../interfaces';
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
+import { RootState } from "../../store";
+import { getQuotes } from "../api/quotes";
+import { IQuote, IGetQuotesParam } from "../../interfaces";
 
 const hydrate = createAction<RootState>(HYDRATE);
 const PAGE_COUNT = 5;
 export const getQuotesThunk = createAsyncThunk(
-  'quotes/getQuotes',
+  "quotes/getQuotes",
   async (params: IGetQuotesParam, thunkAPI) => {
     try {
       const response = await getQuotes(params);
-      console.log('response ', response);
+      console.log("response ", response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  },
+  }
 );
 
 export interface IQuotesData {
@@ -40,26 +39,26 @@ const initialState: InitialState = {
     totalCount: 0,
     isLast: false,
     pageNum: 1,
-    error: '',
+    error: "",
   },
 };
 
-const notesSlice = createSlice({
-  name: 'quotes',
+const quotesSlice = createSlice({
+  name: "quotes",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(hydrate, (state, action) => action.payload['quotes']);
+    builder.addCase(hydrate, (state, action) => action.payload["quotes"]);
 
     builder.addCase(getQuotesThunk.pending, (state, action) => {
-      console.log('loadNotes pending');
+      console.log("loadNotes pending");
       //state.quotesData = [];
       state.quotesData.loading = true;
     });
 
     builder.addCase(getQuotesThunk.fulfilled, (state, action) => {
       const { quotes_array, total_count } = action.payload;
-      console.log('loadNotes.fulfiled', state, action.payload);
+      console.log("loadNotes.fulfiled", state, action.payload);
       state.quotesData.quotesArray.push(...quotes_array);
       state.quotesData.totalCount = total_count;
       state.quotesData.loading = false;
@@ -78,4 +77,4 @@ const notesSlice = createSlice({
   },
 });
 
-export default notesSlice.reducer;
+export default quotesSlice.reducer;

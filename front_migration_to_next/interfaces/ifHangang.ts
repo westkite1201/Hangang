@@ -16,3 +16,15 @@ export interface IHangangTempRes {
   result: string;
   data: IHangangTemp[];
 }
+
+export interface IHangangStation {
+  index: number;
+  name: string;
+  lat: number;
+  lng: number;
+  distance: number;
+}
+export interface ICoordinates {
+  latitude: number;
+  longitude: number;
+}

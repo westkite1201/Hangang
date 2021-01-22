@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import QuotesCard from './QuotesCard';
-import { Grid } from '@material-ui/core';
-import Loading from '../common/Loading/Loading';
-import InfoCard from '../common/InfoCard/InfoCard';
-import styled from 'styled-components';
-import { IQuote } from '../../interfaces';
-import { IQuotesData, getQuotesThunk } from '../../lib/slices/quotesSlice';
-import { useInfinteScroll } from '../../hooks/useInfinteScroll';
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import QuotesCard from "./QuotesCard";
+import { Grid } from "@material-ui/core";
+import Loading from "../common/Loading/Loading";
+import InfoCard from "../common/InfoCard/InfoCard";
+import styled from "styled-components";
+import { IQuote } from "../../interfaces";
+import { IQuotesData, getQuotesThunk } from "../../lib/slices/quotesSlice";
+import { useInfinteScroll } from "../../hooks/useInfinteScroll";
 const PAGE_COUNT = 5;
 /* 명언 그리드  */
 type QuotesGridviewProps = {
@@ -29,7 +29,7 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
     onIntersect: ([{ isIntersecting }]) => {
       if (isIntersecting && !isLast && !loading) {
         const params = {
-          accepted: '0',
+          accepted: "0",
           pageNum: pageNum,
           pageCount: PAGE_COUNT,
         };
@@ -50,7 +50,7 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
                 return (
                   <QuotesCard
                     quotes={quotes}
-                    index={quotes._id + ' ' + index}
+                    index={quotes._id + " " + index}
                     key={quotes._id}
                   />
                 );
