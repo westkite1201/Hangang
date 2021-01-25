@@ -1,34 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createWrapper, MakeStore } from "next-redux-wrapper";
-
-import clockReducer from "./lib/slices/clockSlice";
-import counterReducer from "./lib/slices/counterSlice";
-import notesReducer from "./lib/slices/notesSlice";
-import quotesReducer from "./lib/slices/quotesSlice";
-import hangangReducer from "./lib/slices/hangangSlice";
-//export const makeStore = () => {
-// let store = configureStore({
-//   reducer: {
-//     counter: counterReducer,
-//     clock: clockReducer,
-//     notes: notesReducer,
-//   },
-//   devTools: process.env.NODE_ENV === "development",
-// });
-// return store;
+import { configureStore } from '@reduxjs/toolkit';
+import { createWrapper, MakeStore } from 'next-redux-wrapper';
+import quotesReducer from './lib/slices/quotesSlice';
+import hangangReducer from './lib/slices/hangangSlice';
 export const makeStore = () =>
   configureStore({
     reducer: {
-      counter: counterReducer,
-      clock: clockReducer,
-      notes: notesReducer,
       quotes: quotesReducer,
       hangang: hangangReducer,
     },
-    devTools: process.env.NODE_ENV === "development",
+    devTools: process.env.NODE_ENV === 'development',
   });
 
 export type RootStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<RootStore["getState"]>;
+export type RootState = ReturnType<RootStore['getState']>;
 
 export const wrapper = createWrapper(makeStore, { debug: true });

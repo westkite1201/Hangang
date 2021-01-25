@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React from 'react';
-// import { Spin } from 'antd';
-// import { LoadingOutlined } from '@ant-design/icons';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Loading = ({ size, color }) => {
-  // const antIcon = (
-  //   <LoadingOutlined style={{ fontSize: size, color: color }} spin />
-  // );
-  // return <Spin indicator={antIcon} />;
-  return <div>loading</div>;
+  return <CircularProgress color="secondary" />;
 };
 
 export default Loading;

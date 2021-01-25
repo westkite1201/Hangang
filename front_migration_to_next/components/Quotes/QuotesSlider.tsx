@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useRef } from "react";
-import Slider from "react-slick";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import React, { useRef } from 'react';
+import Slider from 'react-slick';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 //swiper
 const QuotesItem = ({ quotes }) => {
   return (
@@ -47,10 +47,10 @@ const QuotesSlider = (props) => {
     speed: 1000,
     autoplaySpeed: 7000,
     beforeChange: function (currentSlide, nextSlide) {
-      console.log("before change", currentSlide, nextSlide);
+      console.log('before change', currentSlide, nextSlide);
     },
     afterChange: function (currentSlide) {
-      console.log("after change", currentSlide);
+      console.log('after change', currentSlide);
     },
   };
   const { data } = quotesData;
@@ -79,8 +79,8 @@ const QuotesSlider = (props) => {
         <span onClick={previous}>
           <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M15.5 5.5l-6 6.5 6 6.5L14 20l-7.5-8L14 4l1.5 1.5z"
               fill="#1b1c1d"
             ></path>
@@ -89,8 +89,8 @@ const QuotesSlider = (props) => {
         <span onClick={next}>
           <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M8.5 18.5l6-6.5-6-6.5L10 4l7.5 8-7.5 8-1.5-1.5z"
               fill="#1b1c1d"
             ></path>

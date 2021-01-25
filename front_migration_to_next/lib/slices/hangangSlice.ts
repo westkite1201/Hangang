@@ -1,21 +1,21 @@
-import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
-import { RootState } from "../../store";
-import { getHangangTemp } from "../api/hangang";
-import { IHangangTemp } from "../../interfaces";
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
+import { RootState } from '../../store';
+import { getHangangTemp } from '../api/hangang';
+import { IHangangTemp } from '../../interfaces';
 
 const hydrate = createAction<RootState>(HYDRATE);
 export const getHangangTempThunk = createAsyncThunk(
-  "hangang/getHangangTemp",
+  'hangang/getHangangTemp',
   async (_, thunkAPI) => {
     try {
       const response = await getHangangTemp();
-      console.log("response ", response);
+      console.log('response ', response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
 
 interface InitialState {
@@ -27,15 +27,15 @@ interface InitialState {
 const initialState: InitialState = {
   riverTempData: [],
   loading: false,
-  error: "",
+  error: '',
 };
 
 const hanngangSlice = createSlice({
-  name: "hangang",
+  name: 'hangang',
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(hydrate, (state, action) => action.payload["hangang"]);
+    builder.addCase(hydrate, (state, action) => action.payload['hangang']);
 
     builder.addCase(getHangangTempThunk.pending, (state, action) => {
       state.loading = true;
