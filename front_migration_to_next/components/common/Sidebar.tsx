@@ -69,6 +69,7 @@ const St = {
 
   SidebarWrapper: styled.div`
     position: fixed;
+    display: ${(props) => !props.sideMenu && 'none'};
     z-index: ${(props) => (props.sideMenu ? 100 : 0)};
     width: 100%;
     height: 100%;
@@ -88,7 +89,7 @@ const St = {
     width: 300px;
     height: 100%;
     transition: all 0.5s ease 0s;
-    transform: ${(props) => props.sideMenu == null && 'translate(-100%, 0)'};
+    transform: ${(props) => props.sideMenu === null && 'translate(-100%, 0)'};
     ${(props) =>
       props.sideMenu !== null &&
       css`
