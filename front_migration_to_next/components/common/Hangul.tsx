@@ -128,11 +128,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
     // 'ㅌ', '테', '테ㅅ', '테스', '테스ㅌ', '테스트', '테스틋';
   }
 
-  return (
-    <St.Hangul id={id}>
-      <p></p>
-    </St.Hangul>
-  );
+  return <St.Hangul id={id} />;
 };
 const St = {
   Hangul: styled.div`

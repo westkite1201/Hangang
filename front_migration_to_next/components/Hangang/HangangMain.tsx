@@ -8,6 +8,7 @@ import { getNearbyStaionArray, getBackgroundImage } from '../../lib/helper';
 import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import { IHangangStation, ICoordinates, IHangangTemp } from '../../interfaces';
+import Hr from '../common/Hr';
 
 //import useHangangTemp from '../../hooks/useHangangTemp';
 
@@ -121,7 +122,7 @@ function HangangContainer({ riverTempData }) {
       <BackGround backgroundImagePath={backgroundImagePath} />
       <TitleWrapper>
         <Title>
-          <hr></hr>
+          <Hr></Hr>
           <animated.div
             className={'station-info'}
             style={infoStyle}
@@ -144,7 +145,7 @@ function HangangContainer({ riverTempData }) {
             </animated.div>
           </div>
 
-          <hr></hr>
+          <Hr></Hr>
         </Title>
         <QuetesWrapper>
           <QuotesSlider />
