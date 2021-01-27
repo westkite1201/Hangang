@@ -26,7 +26,7 @@ const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
                 loginButton: {
                     color: 'green',
                     type: 1,
-                    height: 20
+                    height: 100
                 }
             }
         )
