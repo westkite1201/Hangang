@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState, useRef } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import { isNil } from 'lodash';
+import React, { useState } from 'react';
 import { getImageFileFullPath } from '../../lib/helper';
+import Hangul from '../common/Hangul';
 import styled from 'styled-components';
-
+import { IQuote } from '../../interfaces';
+const MAX = 200;
+const MIN = 50;
 const St = {
   card: styled.div`
     margin-top: 20px;
@@ -67,15 +66,16 @@ const St = {
     padding: 10px;
   `,
 };
-
-const BannerQuotesCard = ({ quotes }) => {
+interface IBannerQuotesCard {
+  quotes: IQuote;
+}
+const BannerQuotesCard = ({ quotes }: IBannerQuotesCard) => {
   let cardHoverStyle = {
     transition: 'all 0.5s ease',
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
     boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)',
   };
 
-  console.log('BannerQuotesCard ', quotes);
   const [mouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = () => {
@@ -92,7 +92,13 @@ const BannerQuotesCard = ({ quotes }) => {
     >
       <St.cardWrapper backgroundImagePath={getImageFileFullPath(quotes)}>
         <St.cardHeaderCenter>
-          <St.cardWord>{quotes.word}</St.cardWord>
+          <St.cardWord>
+            <Hangul
+              str={quotes.word}
+              id={quotes._id}
+              intervalTime={Math.floor(Math.random() * (MAX - MIN) + MIN)}
+            />
+          </St.cardWord>
           <St.cardName>{quotes.name}</St.cardName>
         </St.cardHeaderCenter>
       </St.cardWrapper>

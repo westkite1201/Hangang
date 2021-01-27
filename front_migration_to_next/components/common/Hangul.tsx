@@ -57,6 +57,9 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       typingIndex.current = 0;
       typingTimer.current = setInterval(renderTyping, intervalTime);
     }
+    return () => {
+      clearInterval(typingTimer.current);
+    };
   }, [typingArray]);
 
   function renderTyping() {
@@ -125,13 +128,15 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
     // 'ㅌ', '테', '테ㅅ', '테스', '테스ㅌ', '테스트', '테스틋';
   }
 
-  return <St.Hangul id={id}></St.Hangul>;
+  return (
+    <St.Hangul id={id}>
+      <p></p>
+    </St.Hangul>
+  );
 };
 const St = {
   Hangul: styled.div`
     display: inline-block;
-    // font-size: 30px;
-    // line-height: 28px;
     border-right: 1px solid #000;
     padding-right: 2px;
     box-sizing: border-box;
