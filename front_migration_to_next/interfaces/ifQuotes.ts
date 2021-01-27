@@ -11,6 +11,9 @@ export interface IQuote {
   name: string;
   word: string;
   __v: number;
+  backgroundImagePath?: string;
+  isUnsplash: string;
+  id?: string;
 }
 
 export interface IQuoteResData {

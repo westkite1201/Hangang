@@ -5,14 +5,14 @@ const ScrollContainer = ({
   vertical,
   horizontal,
   children,
-  forwardedRef
+  forwardedRef,
 }) => (
   <div
     ref={forwardedRef}
     style={{
       height,
       overflowY: vertical ? 'scroll' : 'hidden',
-      overflowX: horizontal ? 'scroll' : 'hidden'
+      overflowX: horizontal ? 'scroll' : 'hidden',
     }}
   >
     {children}
@@ -22,7 +22,7 @@ const ScrollContainer = ({
 ScrollContainer.defaultProps = {
   height: 300,
   vertical: false,
-  horizontal: false
+  horizontal: false,
 };
 
 export default React.forwardRef((props, ref) => {
