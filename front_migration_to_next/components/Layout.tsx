@@ -18,6 +18,10 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => (
         type="text/javascript"
         src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2-nopolyfill.js"
       ></script>
+      <script
+        type="text/javascript"
+        src="https://developers.kakao.com/sdk/js/kakao.min.js"
+      ></script>
     </Head>
     <ToastContainer />
     <Sidebar />

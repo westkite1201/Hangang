@@ -53,6 +53,9 @@ function SideNav({ sideMenu, hideSideMenu }) {
             <li>
               <Link href="/quote">QUOTES</Link>
             </li>
+            <li>
+              <Link href="/login">Login Page</Link>
+            </li>
           </ul>
         </St.MenuContents>
       </St.SideMenuContainer>
