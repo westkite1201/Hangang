@@ -9,6 +9,10 @@ import { Grid, Input, Button } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 //import { IQuote } from '../interfaces';
 import { RootState } from '../store';
+import {
+  submitQuotesThunk,
+  setSelectedBackgroundUrl,
+} from '../lib/slices/quotesSlice';
 // import {
 //   SUBMIT_QUOTES_REQUEST,
 //   SET_BACKGROUND_IMAGE,
@@ -66,42 +70,45 @@ const PreviewContainer = () => {
 
   const submitQuotes = () => {
     console.log('buttonClick');
-    // dispatch({
-    //   type: SUBMIT_QUOTES_REQUEST,
-    //   payload: quotes,
-    // });
+    dispatch(submitQuotesThunk(quotes));
   };
   const setSelectedBackgroundUrl = (image) => {
     const array = image.split('/');
     const imagePathName = array[array.length - 1];
-    // dispatch({
-    //   type: SET_BACKGROUND_IMAGE,
-    //   payload: { url: imagePathName, isUnsplash: false },
-    // });
+    dispatch(
+      setSelectedBackgroundUrl({ url: imagePathName, isUnsplash: false }),
+    );
   };
+
   return (
-    <PreviewWrapper>
+    <>
       <Container>
         <QuotesCardContainer>
           <Grid container spacing={3}>
             <QuotesCard quotes={quotes} index={0}></QuotesCard>
+            <EditerContainer>
+              <div>
+                <Button onClick={() => handleCardType('10')}>
+                  카드 타입 1
+                </Button>
+                <Button onClick={() => handleCardType('20')}>
+                  카드 타입 2
+                </Button>
+                <Button onClick={() => handleCardType('30')}>
+                  카드 타입 3
+                </Button>
+              </div>
+              <InputContainer>
+                <Input placeholder="내용" onChange={handleContentChange} />
+                <Input placeholder="저자" onChange={handleAuthorChange} />
+              </InputContainer>
+            </EditerContainer>
+            <button onClick={submitQuotes}> 업 로 드</button>
           </Grid>
         </QuotesCardContainer>
         <TabContainer>{<UnsplashContainer />}</TabContainer>
       </Container>
-      <EditerContainer>
-        <div>
-          <Button onClick={() => handleCardType('10')}>카드 타입 1</Button>
-          <Button onClick={() => handleCardType('20')}>카드 타입 2</Button>
-          <Button onClick={() => handleCardType('30')}>카드 타입 3</Button>
-        </div>
-        <InputContainer>
-          <Input placeholder="내용" onChange={handleContentChange} />
-          <Input placeholder="저자" onChange={handleAuthorChange} />
-        </InputContainer>
-      </EditerContainer>
-      <button onClick={submitQuotes}> 업 로 드</button>
-    </PreviewWrapper>
+    </>
   );
 };
 

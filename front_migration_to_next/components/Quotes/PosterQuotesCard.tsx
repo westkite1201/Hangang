@@ -38,7 +38,7 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
       );
     });
   };
-
+  console.log('quotes.word', quotes.word);
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}
@@ -46,7 +46,11 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
       style={mouseOver ? cardHoverStyle : {}}
     >
       <BackGround backgroundImagePath={getImageFileFullPath(quotes)} />
-      <QuotesContent>{makePosterText(quotes.word, quotes._id)}</QuotesContent>
+      <QuotesContent>
+        {quotes.usePreview
+          ? quotes.word
+          : makePosterText(quotes.word, quotes._id)}
+      </QuotesContent>
       <QuotesAuthor>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
   );

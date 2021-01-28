@@ -20,6 +20,7 @@ export async function getQuotes(params: IGetQuotesParam) {
   );
   return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
+
 export async function submitQuotes(param: IQuote) {
   const body = param;
   const response = await axios.post(

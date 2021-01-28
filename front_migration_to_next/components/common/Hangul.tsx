@@ -15,7 +15,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
   function makeDecompositionArray() {
     let cho, jung, jong;
     let sTest = str;
-    console.log('sTest', sTest, sTest.split(''));
+    //console.log('sTest', sTest, sTest.split(''));
     const hangulTrans = sTest.split('').map((item) => {
       const cCode = item.charCodeAt(0);
       if (cCode == 32) {
@@ -40,11 +40,13 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
     });
     setDecompositionArray(hangulTrans);
   }
+
   useEffect(() => {
     if (str && id) {
       makeDecompositionArray();
     }
   }, [str, id]);
+
   useEffect(() => {
     if (decompositionArray && decompositionArray.length !== 0) {
       renderHan();
@@ -70,6 +72,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       typingIndex.current = 0;
     }
   }
+
   function isRight(cho: number, jung: number, jong: number, isSpace, other) {
     if (isSpace || other) {
       return 1;
@@ -85,6 +88,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       return 1;
     }
   }
+
   function renderHan() {
     let temp = [];
     let typingArray = [];
@@ -96,9 +100,9 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       let first = String.fromCharCode(0x1100 + cho);
       let second = String.fromCharCode(0xac00 + cho * 588 + jung * 28);
       let third = String.fromCharCode(0xac00 + cho * 588 + jung * 28 + jong);
-      console.log(first, second, third);
+      //console.log(first, second, third);
       const complex = isRight(cho, jung, jong, isSpace, other);
-      console.log('complex ', complex);
+      //console.log('complex ', complex);
       if (other) {
         temp.push(other);
       } else if (isSpace) {
@@ -122,20 +126,28 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
         text += third;
       }
     }
-    console.log(typingArray);
+    //console.log(typingArray);
     setTypingArray(typingArray);
     // ('테스틋');
     // 'ㅌ', '테', '테ㅅ', '테스', '테스ㅌ', '테스트', '테스틋';
   }
 
-  return <St.Hangul id={id} />;
+  return (
+    <St.Hangul>
+      <span id={id}></span>
+      <St.Cursor></St.Cursor>
+    </St.Hangul>
+  );
 };
 const St = {
   Hangul: styled.div`
     display: inline-block;
+    span {
+      padding-right: 2px;
+    }
+  `,
+  Cursor: styled.span`
     border-right: 1px solid #000;
-    padding-right: 2px;
-    box-sizing: border-box;
     animation: cursor 1s infinite;
     @keyframes cursor {
       0% {

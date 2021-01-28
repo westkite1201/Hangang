@@ -98,7 +98,7 @@ function HangangContainer({ riverTempData }) {
     return () => {
       clearInterval(backGroundtimer);
     };
-  }, [dispatch]);
+  }, []);
 
   function handleMouseOver() {
     setIsInfoGrow(true);

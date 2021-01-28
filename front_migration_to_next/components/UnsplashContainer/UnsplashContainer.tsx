@@ -8,12 +8,11 @@ import ScrollContainer from '../common/ScrollContainer';
 import Loading from '../common/Loading';
 //import FileUploadForm from './FileUploadForm';
 import { useDispatch } from 'react-redux';
-//import { SUCCESS_TOAST, FAILURE_TOAST } from '../../modules/toast/reducer';
-// import {
-//   SET_BACKGROUND_IMAGE,
-//   UPLOAD_IMAGE_TO_UNSPLASH_REQUEST,
-// } from '../../modules/quotes/reducer';
-
+import {
+  uploadImageThunk,
+  setSelectedBackgroundUrl,
+} from '../../lib/slices/quotesSlice';
+import { lnfoToast } from '../../lib/toast';
 const PER_PAGE = 30;
 
 const UnsplashContainer = () => {
@@ -21,10 +20,8 @@ const UnsplashContainer = () => {
   const currentQuery = useRef('');
   const currentPage = useRef(1);
   const totalPage = useRef(0);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const [images, setImages] = useState([]);
   const [selected, setSelected] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -51,10 +48,12 @@ const UnsplashContainer = () => {
     },
     [setError],
   );
+
   async function loadRandomImage() {
     try {
       setLoading(true);
       const data = await UnsplashAPI.getRandomPhotos({ count: 30 });
+      console.log('loadRandomImage ', data);
       currentQuery.current = '';
       setImages((images) => [...images, ...data]);
     } catch (e) {
@@ -63,6 +62,7 @@ const UnsplashContainer = () => {
       setLoading(false);
     }
   }
+
   const searchImage = useCallback(
     async (query) => {
       if (!query) {
@@ -82,31 +82,31 @@ const UnsplashContainer = () => {
     [loadImage],
   );
 
-  const loadMoreImage = useCallback(async () => {
-    console.log('loadMoreImage ', images);
-    if (images.length > 0) {
-      currentPage.current++;
-      const data = await loadImage({
-        query: currentQuery.current,
-        page: currentPage.current,
-      });
-      console.log('data ', data);
-      setImages([...images, ...data.results]);
-    }
-  }, [images, loadImage]);
+  // const loadMoreImage = useCallback(async () => {
+  //   console.log('loadMoreImage ', images);
+  //   if (images.length > 0) {
+  //     currentPage.current++;
+  //     const data = await loadImage({
+  //       query: currentQuery.current,
+  //       page: currentPage.current,
+  //     });
+  //     console.log('data ', data);
+  //     setImages([...images, ...data.results]);
+  //   }
+  // }, [images, loadImage]);
 
-  async function loadMoreImage_() {
-    console.log('loadMoreImage ', images);
-    if (images.length > 0) {
-      currentPage.current++;
-      const data = await loadImage({
-        query: currentQuery.current,
-        page: currentPage.current,
-      });
-      console.log('data ', data);
-      setImages([...images, ...data.results]);
-    }
-  }
+  // async function loadMoreImage_() {
+  //   console.log('loadMoreImage ', images);
+  //   if (images.length > 0) {
+  //     currentPage.current++;
+  //     const data = await loadImage({
+  //       query: currentQuery.current,
+  //       page: currentPage.current,
+  //     });
+  //     console.log('data ', data);
+  //     setImages([...images, ...data.results]);
+  //   }
+  // }
 
   const downloadImage = useCallback(async () => {
     try {
@@ -143,13 +143,15 @@ const UnsplashContainer = () => {
   // });
 
   const handleSelect = (photo) => {
-    console.log(photo);
     setPhoto(photo);
     setSelected(photo.id);
-    // dispatch({
-    //   type: SET_BACKGROUND_IMAGE,
-    //   payload: { url: photo.urls.regular, isUnsplash: true, id: photo.id },
-    // });
+    dispatch(
+      setSelectedBackgroundUrl({
+        url: photo.urls.regular,
+        isUnsplash: true,
+        id: photo.id,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -169,25 +171,21 @@ const UnsplashContainer = () => {
     }
   };
 
+  //upload 서버
   const uploadSelectedImage = async () => {
-    console.log('photo', photo.urls.regular);
     try {
       if (photo) {
         let params = {
           url: photo.urls.regular,
           id: photo.id,
+          backgroundImagePath: '',
         };
-        // dispatch({
-        //   type: UPLOAD_IMAGE_TO_UNSPLASH_REQUEST,
-        //   payload: params,
-        // });
+        dispatch(uploadImageThunk(params));
+      } else {
+        lnfoToast('사진을 선택해주세요!');
       }
     } catch (e) {
       console.error(e);
-      // dispatch({
-      //   type: FAILURE_TOAST,
-      //   payload: {},
-      // });
     }
   };
   return (
@@ -199,13 +197,14 @@ const UnsplashContainer = () => {
         downloadImage={downloadImage}
         uploadSelectedImage={uploadSelectedImage}
       />
+
       <div ref={rootRef}>
         <ThumbnailList
           onClick={handleSelect}
           selected={selected}
           thumbnails={images}
         />
-        <Loading />
+        {loading && <Loading />}
         <div ref={targetRef} />
       </div>
     </div>

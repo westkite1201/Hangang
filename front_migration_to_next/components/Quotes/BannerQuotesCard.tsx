@@ -93,11 +93,15 @@ const BannerQuotesCard = ({ quotes }: IBannerQuotesCard) => {
       <St.cardWrapper backgroundImagePath={getImageFileFullPath(quotes)}>
         <St.cardHeaderCenter>
           <St.cardWord>
-            <Hangul
-              str={quotes.word}
-              id={quotes._id}
-              intervalTime={Math.floor(Math.random() * (MAX - MIN) + MIN)}
-            />
+            {quotes.usePreview ? (
+              quotes.word
+            ) : (
+              <Hangul
+                str={quotes.word}
+                id={quotes._id}
+                intervalTime={Math.floor(Math.random() * (MAX - MIN) + MIN)}
+              />
+            )}
           </St.cardWord>
           <St.cardName>{quotes.name}</St.cardName>
         </St.cardHeaderCenter>

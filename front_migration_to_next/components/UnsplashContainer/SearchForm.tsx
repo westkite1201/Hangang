@@ -9,7 +9,6 @@ const SearchForm = ({
   uploadSelectedImage,
 }) => {
   const [query, setQuery] = useState(null);
-
   return (
     <div className={'searchForm'}>
       <input
@@ -19,9 +18,9 @@ const SearchForm = ({
         onChange={(e) => setQuery(e.target.value)}
         //onSearch={() => onSearch(query)}
       />
-      <button onClick={downloadImage}>로컬 다운로드</button>
-      <button onClick={uploadSelectedImage}>서버에 이미지 추가</button>
-      <button onClick={onRandom}>Random</button>
+      <Button onClick={downloadImage}>로컬 다운로드</Button>
+      <Button onClick={uploadSelectedImage}>서버에 이미지 추가</Button>
+      <Button onClick={onRandom}>Random</Button>
     </div>
   );
 };
