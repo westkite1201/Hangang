@@ -65,11 +65,13 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
   }, [typingArray]);
 
   function renderTyping() {
-    document.getElementById(id).innerHTML = typingArray[typingIndex.current];
-    typingIndex.current += 1;
-    if (typingArray.length === typingIndex.current) {
-      clearInterval(typingTimer.current);
-      typingIndex.current = 0;
+    if (document.getElementById(id)) {
+      document.getElementById(id).innerHTML = typingArray[typingIndex.current];
+      typingIndex.current += 1;
+      if (typingArray.length === typingIndex.current) {
+        clearInterval(typingTimer.current);
+        typingIndex.current = 0;
+      }
     }
   }
 
