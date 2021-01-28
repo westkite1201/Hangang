@@ -1,17 +1,16 @@
-import React from "react";
-import Link from "next/link";
+import { useSelector } from 'react-redux';
+import HangangMain from '../components/Hangang/HangangMain';
+import { wrapper } from '../store';
+import { getHangangTempThunk } from '../lib/slices/hangangSlice';
+import { RootState } from '../store';
+const IndexPage = () => {
+  const { riverTempData } = useSelector((state: RootState) => state.hangang);
+  console.log(riverTempData);
+  return <>{<HangangMain riverTempData={riverTempData} />}</>;
+};
 
-export default function IndexPage() {
-  return (
-    <div>
-      <h3>Rendering without state</h3>
-      You can see &quot;Rendered content: undefined&quot; in browser console
-      after navigating between these pages:
-      <br />
-      <br />
-      <Link href="/subject/1">
-        <a>Go to problem pages</a>
-      </Link>
-    </div>
-  );
-}
+export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+  await store.dispatch<any>(getHangangTempThunk());
+});
+
+export default IndexPage;

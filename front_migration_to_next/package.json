@@ -3,21 +3,51 @@
   "version": "7.0.0",
   "private": true,
   "scripts": {
-    "start": "next --port=6060",
+    "dev": "next dev",
+    "start": "next --port=3030",
     "build": "next build",
-    "serve": "next start --port=6060"
+    "serve": "next start --port=6060",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "4.11.2",
+    "@nano-sql/core": "^2.3.7",
     "@reduxjs/toolkit": "1.5.0",
+    "@storybook/addon-knobs": "^6.1.15",
+    "@types/moment": "2.13.0",
     "@types/node": "^14.14.21",
     "@types/react": "^17.0.0",
+    "@types/react-sizes": "2.0.0",
+    "axios": "0.21.1",
+    "babel-plugin-styled-components": "1.12.0",
+    "d3-ease": "^2.0.0",
+    "file-saver": "2.0.5",
+    "moment": "2.29.1",
     "next": "10.0.3",
-    "next-redux-wrapper": "^7.0.0",
+    "next-redux-wrapper": "^6.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-kakao-login": "^2.0.3",
     "react-redux": "7.2.2",
+    "react-sizes": "2.0.0",
+    "react-slick": "^0.27.14",
+    "react-spring": "^8.0.27",
+    "react-toastify": "7.0.1",
     "redux": "4.0.5",
+    "styled-components": "5.2.1",
+    "styled-reset": "4.3.4",
+    "types": "^0.1.1",
     "typescript": "^4.1.3"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@storybook/addon-actions": "^6.1.15",
+    "@storybook/addon-essentials": "^6.1.15",
+    "@storybook/addon-links": "^6.1.15",
+    "@storybook/react": "^6.1.15",
+    "babel-loader": "^8.2.2"
+  }
 }
