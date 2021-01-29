@@ -11,7 +11,7 @@ const ThumbQuotesCard = ({ quotes }) => {
     setMouseOver(false);
   };
 
-  let cardHoverStyle = {
+  const cardHoverStyle = {
     transition: 'all 0.5s ease',
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
     boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)'

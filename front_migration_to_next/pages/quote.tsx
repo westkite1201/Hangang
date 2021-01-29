@@ -7,9 +7,9 @@ import { getQuotesThunk } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
 const Quotes = (props) => {
   const { loading, quotesData } = useSelector(
-    (state: RootState) => state.quotes,
+    (state: RootState) => state.quotes
   );
-  console.log('quotesData', loading, quotesData);
+
   return (
     <div>
       <QuotesGridView quotesData={quotesData} />
@@ -21,7 +21,7 @@ export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
   const params = {
     accepted: '0',
     pageNum: 1,
-    pageCount: 5,
+    pageCount: 5
   };
   await store.dispatch<any>(getQuotesThunk(params));
 });

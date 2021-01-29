@@ -9,7 +9,7 @@ import { BANNER, POSTER } from '../../lib/CommonString';
 //=20 //
 function CardComponent({ quotes }) {
   const { card_exps_typ_cd } = quotes;
-  let cardType = getContentCardType(card_exps_typ_cd);
+  const cardType = getContentCardType(card_exps_typ_cd);
   console.log('cardType ', cardType);
   switch (cardType) {
     case 'poster':
@@ -22,7 +22,13 @@ function CardComponent({ quotes }) {
 }
 const QuotesCard = ({ quotes, index }) => {
   const { card_exps_typ_cd, usePreview } = quotes;
-  if (card_exps_typ_cd === BANNER) {
+  if (usePreview) {
+    return (
+      <div>
+        <CardComponent quotes={quotes} />
+      </div>
+    );
+  } else if (card_exps_typ_cd === BANNER) {
     return (
       <Grid item xs={12} md={12} lg={12} key={index}>
         <CardComponent quotes={quotes} />

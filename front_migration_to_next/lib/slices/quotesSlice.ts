@@ -16,9 +16,10 @@ export const getQuotesThunk = createAsyncThunk(
       console.log('response ', response);
       return response;
     } catch (error) {
+      console.log('error ', error);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  },
+  }
 );
 
 export const uploadImageThunk = createAsyncThunk(
@@ -31,7 +32,7 @@ export const uploadImageThunk = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  },
+  }
 );
 
 // 제출
@@ -44,7 +45,7 @@ export const submitQuotesThunk = createAsyncThunk(
       if (isUnsplash) {
         const imageUploadParams = { backgroundImagePath, url, id };
         const imageUploadResponse = await getImageDownloadToUrl(
-          imageUploadParams,
+          imageUploadParams
         );
         const { message, status } = imageUploadResponse;
         //console.log('[seo] imageUploadResponse', imageUploadResponse);
@@ -58,7 +59,7 @@ export const submitQuotesThunk = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  },
+  }
 );
 
 export interface IQuotesData {
@@ -86,13 +87,13 @@ const initialState: InitialState = {
     totalCount: 0,
     isLast: false,
     pageNum: 1,
-    error: '',
+    error: ''
   },
   selectedBackgroundUrl: {
     url: '',
     isUnsplash: '',
-    id: '',
-  },
+    id: ''
+  }
 };
 
 const quotesSlice = createSlice({
@@ -101,7 +102,7 @@ const quotesSlice = createSlice({
   reducers: {
     setSelectedBackgroundUrl(state, action) {
       state.selectedBackgroundUrl = action.payload;
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(hydrate, (state, action) => action.payload['quotes']);
@@ -126,8 +127,8 @@ const quotesSlice = createSlice({
       }
     });
     builder.addCase(getQuotesThunk.rejected, (state, action) => {
-      state.quotesData.loading = false;
-      errorToast('카드를 가져오는데 실패하였습니다.');
+      //state.quotesData.loading = false;
+      errorToast('카드를 가져오는데 실패하였습니다.', action);
       //state.error = action.payload;
     });
     builder.addCase(uploadImageThunk.pending, (state, action) => {
@@ -149,7 +150,7 @@ const quotesSlice = createSlice({
     builder.addCase(submitQuotesThunk.rejected, (state, action) => {
       errorToast('카드 업로드에 실패하였습니다.');
     });
-  },
+  }
 });
 export const { setSelectedBackgroundUrl } = quotesSlice.actions;
 

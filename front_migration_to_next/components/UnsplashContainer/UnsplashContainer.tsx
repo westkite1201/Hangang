@@ -3,18 +3,26 @@ import ThumbnailList from './ThumbnailList';
 import * as UnsplashAPI from '../../lib/api/unsplash';
 //import { downloadPhoto } from '../../lib/downloadPhoto';
 import SearchForm from './SearchForm';
-import ScrollContainer from '../common/ScrollContainer';
-//import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useIntersectionObserver from './useIntersectionObserver';
 import Loading from '../common/Loading';
 //import FileUploadForm from './FileUploadForm';
 import { useDispatch } from 'react-redux';
 import {
   uploadImageThunk,
-  setSelectedBackgroundUrl,
+  setSelectedBackgroundUrl
 } from '../../lib/slices/quotesSlice';
+import styled from 'styled-components';
 import { lnfoToast } from '../../lib/toast';
 const PER_PAGE = 30;
-
+const St = {
+  Wrapper: styled.div`
+    word-break: break-word;
+    padding: 1rem;
+    flex: 1 1 0%;
+    overflow-y: auto;
+    color: rgb(33, 37, 41);
+  `
+};
 const UnsplashContainer = () => {
   const dispatch = useDispatch();
   const currentQuery = useRef('');
@@ -36,7 +44,7 @@ const UnsplashContainer = () => {
         const data = await UnsplashAPI.searchPhotos({
           query,
           page,
-          per_page: PER_PAGE,
+          per_page: PER_PAGE
         });
         totalPage.current = data.total_pages;
         return data;
@@ -46,22 +54,8 @@ const UnsplashContainer = () => {
         setLoading(false);
       }
     },
-    [setError],
+    [setError]
   );
-
-  async function loadRandomImage() {
-    try {
-      setLoading(true);
-      const data = await UnsplashAPI.getRandomPhotos({ count: 30 });
-      console.log('loadRandomImage ', data);
-      currentQuery.current = '';
-      setImages((images) => [...images, ...data]);
-    } catch (e) {
-      setError(e);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   const searchImage = useCallback(
     async (query) => {
@@ -74,49 +68,66 @@ const UnsplashContainer = () => {
       try {
         const data = await loadImage({ query, page: 1, per_page: PER_PAGE });
         console.log('searchImage data ', data);
-        setImages(data.results);
+        setImages([...data.results]);
       } catch (e) {
         console.error(e);
       }
     },
-    [loadImage],
+    [loadImage]
   );
 
-  // const loadMoreImage = useCallback(async () => {
-  //   console.log('loadMoreImage ', images);
-  //   if (images.length > 0) {
-  //     currentPage.current++;
-  //     const data = await loadImage({
-  //       query: currentQuery.current,
-  //       page: currentPage.current,
-  //     });
-  //     console.log('data ', data);
-  //     setImages([...images, ...data.results]);
+  // const searchImage = async (query) => {
+  //   if (!query) {
+  //     await loadRandomImage();
+  //     return;
   //   }
-  // }, [images, loadImage]);
+  //   currentQuery.current = query;
+  //   currentPage.current = 1;
+  //   try {
+  //     const data = await loadImage({ query, page: 1, per_page: PER_PAGE });
+  //     console.log('searchImage data ', data);
+  //     setImages((images) => [...images, ...data.results]);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
-  // async function loadMoreImage_() {
-  //   console.log('loadMoreImage ', images);
-  //   if (images.length > 0) {
-  //     currentPage.current++;
-  //     const data = await loadImage({
-  //       query: currentQuery.current,
-  //       page: currentPage.current,
-  //     });
-  //     console.log('data ', data);
-  //     setImages([...images, ...data.results]);
-  //   }
-  // }
+  async function loadRandomImage() {
+    try {
+      setLoading(true);
+      const data = await UnsplashAPI.getRandomPhotos({ count: 30 });
+      console.log('loadRandomImage ', data);
+      totalPage.current = 5;
+      currentQuery.current = '';
+      setImages((images) => [...images, ...data]);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+  const loadMoreImage = useCallback(async () => {
+    console.log('loadMoreImage ', images);
+    if (images.length > 0) {
+      currentPage.current++;
+      const data = await loadImage({
+        query: currentQuery.current,
+        page: currentPage.current
+      });
+      console.log('data ', data);
+      setImages([...images, ...data.results]);
+    }
+  }, [images, loadImage, targetRef]);
 
   const downloadImage = useCallback(async () => {
     try {
-      alert('downloadImage');
+      //alert('downloadImage');
       console.log(photo);
       setLoading(true);
       //const blob = await downloadPhoto(photo.urls.regular);
       const blob = await UnsplashAPI.getImage(
         photo.urls.regular,
-        photo.alt_description,
+        photo.alt_description
       );
       setPhoto(blob);
       setSelected(photo.id);
@@ -127,11 +138,43 @@ const UnsplashContainer = () => {
     }
   }, [setError, setPhoto, photo]);
 
+  useEffect(() => {
+    const _onIntersect = ([entry]) => {
+      // console.log(
+      //   'entry ',
+      //   entry.isIntersecting,
+      //   'images ',
+      //   images,
+      //   'currentPage ',
+      //   currentPage,
+      //   ' totalPage ',
+      //   totalPage
+      // );
+      if (
+        !loading &&
+        entry.isIntersecting &&
+        currentPage.current < totalPage.current
+      ) {
+        if (currentQuery.current !== '') {
+          loadMoreImage();
+        } else {
+          loadRandomImage();
+        }
+      }
+    };
+    let observer;
+    if (targetRef.current) {
+      observer = new IntersectionObserver(_onIntersect, { threshold: 1 });
+      observer.observe(targetRef.current);
+    }
+    return () => observer && observer.disconnect();
+  }, [targetRef, targetRef.current, images]);
+
   // useIntersectionObserver({
   //   root: rootRef.current,
   //   target: targetRef.current,
   //   onIntersect: ([{ isIntersecting }]) => {
-  //     console.log(isIntersecting)
+  //     console.log('isIntersecting', isIntersecting);
   //     if (
   //       isIntersecting &&
   //       !!currentQuery.current &&
@@ -139,7 +182,7 @@ const UnsplashContainer = () => {
   //     ) {
   //       loadMoreImage();
   //     }
-  //   },
+  //   }
   // });
 
   const handleSelect = (photo) => {
@@ -149,36 +192,19 @@ const UnsplashContainer = () => {
       setSelectedBackgroundUrl({
         url: photo.urls.regular,
         isUnsplash: true,
-        id: photo.id,
-      }),
+        id: photo.id
+      })
     );
-  };
-
-  useEffect(() => {
-    let observer;
-    if (targetRef.current) {
-      observer = new IntersectionObserver(_onIntersect, { threshold: 1 });
-      observer.observe(targetRef.current);
-    }
-    //loadRandomImage();
-    return () => observer && observer.disconnect();
-  }, [targetRef.current]);
-
-  const _onIntersect = ([entry]) => {
-    console.log('entry ', entry.isIntersecting);
-    if (entry.isIntersecting) {
-      loadRandomImage();
-    }
   };
 
   //upload 서버
   const uploadSelectedImage = async () => {
     try {
       if (photo) {
-        let params = {
+        const params = {
           url: photo.urls.regular,
           id: photo.id,
-          backgroundImagePath: '',
+          backgroundImagePath: ''
         };
         dispatch(uploadImageThunk(params));
       } else {
@@ -189,8 +215,7 @@ const UnsplashContainer = () => {
     }
   };
   return (
-    <div>
-      {/*<FileUploadForm />*/}
+    <St.Wrapper>
       <SearchForm
         onSearch={searchImage}
         onRandom={loadRandomImage}
@@ -207,7 +232,7 @@ const UnsplashContainer = () => {
         {loading && <Loading />}
         <div ref={targetRef} />
       </div>
-    </div>
+    </St.Wrapper>
   );
 };
 

@@ -9,9 +9,12 @@ const brakePoints = [350, 500, 750];
 //   const ih = 200 + Math.floor(Math.random() * 10) * 15;
 //   images.push('https://unsplash.it/250/' + ih + '?image=' + imgId[i]);
 // }
+interface ITileStyleProps {
+  isSelected: boolean;
+}
 const St = {
   MasonryContainer: styled.div`
-    width: 80%;
+    width: 95%;
     margin: auto;
     margin-top: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -29,9 +32,10 @@ const St = {
       box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.15);
       border-radius: 10px;
       width: 100%;
-      border: ${(props) => (props.isSelected ? '3px solid #5a6dff' : 'none')};
+      border: ${({ isSelected }: ITileStyleProps) =>
+        isSelected ? '3px solid #5a6dff' : 'none'};
     }
-  `,
+  `
 };
 
 const Tile = ({ src, onClick, selected, thumbnail }) => {

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
-import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 import { clientConfig } from '../../configuration/clientConfig';
 import './FileUploadForm.scss';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 //import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
@@ -13,15 +12,15 @@ const PATH = clientConfig.endpoint.api + '/file/';
 function ImageList({
   filesPathList,
   setSelectedBackgroundUrl,
-  selectedBackgroundUrl,
+  selectedBackgroundUrl
 }) {
   if (_.isEmpty(filesPathList)) {
     console.log('isEmpty ');
     return <div></div>;
   } else {
-    let imageList = filesPathList.map((item, index) => {
-      let url = PATH + 'image/' + item;
-      let className =
+    const imageList = filesPathList.map((item, index) => {
+      const url = PATH + 'image/' + item;
+      const className =
         url ===
         clientConfig.endpoint.api + '/file/image/' + selectedBackgroundUrl.url
           ? 'selected'
@@ -51,7 +50,7 @@ const ImgDiv = styled.div`
 const FileUploadForm = ({
   setSelectedBackgroundUrl,
   selectedBackgroundUrl,
-  backGroundChangeToUrl,
+  backGroundChangeToUrl
 }) => {
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
@@ -62,10 +61,10 @@ const FileUploadForm = ({
   }, []);
 
   async function getFileList() {
-    let data = {
-      user_id: USER_ID,
+    const data = {
+      user_id: USER_ID
     };
-    let res = await axios.post(PATH + 'getImageFilePath', data);
+    const res = await axios.post(PATH + 'getImageFilePath', data);
     setFilesPathList(res.data.data.files);
   }
 
@@ -73,13 +72,13 @@ const FileUploadForm = ({
   async function onSubmitForm(e) {
     e.preventDefault();
     //console.log("onSubmitForm ", e.target.files);
-    let fileInput = document.getElementById('fileAdd');
+    const fileInput = document.getElementById('fileAdd');
     if (_.isNil(fileInput)) {
       return;
     }
-    let formData = new FormData();
-    let userId = 'testUser';
-    let userName = 'testUserName';
+    const formData = new FormData();
+    const userId = 'testUser';
+    const userName = 'testUserName';
     formData.append('user_id', userId);
     formData.append('user_name', userName);
     for (const key of Object.keys(files)) {
@@ -92,7 +91,7 @@ const FileUploadForm = ({
     try {
       const res = await axios.post(
         clientConfig.endpoint.api + '/file/uploadFiles',
-        formData,
+        formData
       );
       console.log(res);
       if (res.data.code !== 200) {
@@ -109,27 +108,27 @@ const FileUploadForm = ({
   /* fileUpload  */
   const fileUpload = (event) => {
     console.log(event.target.files);
-    let fileInput = document.getElementById('fileAdd');
+    const fileInput = document.getElementById('fileAdd');
     if (_.isNil(fileInput)) {
       return;
     }
-    let files = fileInput.files;
-    if (files.length >= 10) {
-      alert('한번에 10개 이상은 저장하실수 없습니다. ');
-      return;
-    }
+    // let files = fileInput.files;
+    // if (files.length >= 10) {
+    //   alert('한번에 10개 이상은 저장하실수 없습니다. ');
+    //   return;
+    // }
     setFiles(event.target.files);
   };
 
   const fileDelete = async (e) => {
     e.preventDefault();
     try {
-      let data = {
-        imageUrlPath: selectedBackgroundUrl,
+      const data = {
+        imageUrlPath: selectedBackgroundUrl
       };
       const res = await axios.post(
         clientConfig.endpoint.api + '/file/delete_file_image',
-        data,
+        data
       );
       if (res.status === 200) {
         // dispatch({
@@ -155,7 +154,7 @@ const FileUploadForm = ({
         <Button onClick={getFileList}>refresh</Button>
         <form encType="multipart/form-data" onSubmit={onSubmitForm}>
           <div className="filebox">
-            <label id="labelFileAdd" for="fileAdd">
+            <label id="labelFileAdd" htmlFor="fileAdd">
               File Add
             </label>
             <input
@@ -165,7 +164,7 @@ const FileUploadForm = ({
               onChange={fileUpload}
               multiple
             />
-            <label id="labelSubmit" for="submit">
+            <label id="labelSubmit" htmlFor="submit">
               save
             </label>
             <input id="submit" type="submit" />

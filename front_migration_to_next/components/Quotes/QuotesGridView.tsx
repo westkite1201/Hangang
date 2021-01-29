@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import QuotesCard from "./QuotesCard";
-import { Grid } from "@material-ui/core";
-import Loading from "../common/Loading";
-import InfoCard from "../common/InfoCard";
-import styled from "styled-components";
-import { IQuote } from "../../interfaces";
-import { IQuotesData, getQuotesThunk } from "../../lib/slices/quotesSlice";
-import { useInfinteScroll } from "../../hooks/useInfinteScroll";
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import QuotesCard from './QuotesCard';
+import { Grid } from '@material-ui/core';
+import Loading from '../common/Loading';
+import InfoCard from '../common/InfoCard';
+import styled from 'styled-components';
+import { IQuote } from '../../interfaces';
+import { IQuotesData, getQuotesThunk } from '../../lib/slices/quotesSlice';
+import { useInfinteScroll } from '../../hooks/useInfinteScroll';
 const PAGE_COUNT = 5;
 /* 명언 그리드  */
 type QuotesGridviewProps = {
@@ -29,13 +29,13 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
     onIntersect: ([{ isIntersecting }]) => {
       if (isIntersecting && !isLast && !loading) {
         const params = {
-          accepted: "0",
+          accepted: '0',
           pageNum: pageNum,
-          pageCount: PAGE_COUNT,
+          pageCount: PAGE_COUNT
         };
         dispatch(getQuotesThunk(params));
       }
-    },
+    }
   });
 
   return (
@@ -50,16 +50,16 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
                 return (
                   <QuotesCard
                     quotes={quotes}
-                    index={quotes._id + " " + index}
+                    index={quotes._id + ' ' + index}
                     key={quotes._id}
                   />
                 );
               })}
-            {/*loading && (
-            <LoadingWrapper>
-              <Loading size={50} color={'#b197fc'} />
-            </LoadingWrapper>
-          )*/}
+            {loading && (
+              <LoadingWrapper>
+                <Loading />
+              </LoadingWrapper>
+            )}
             {isLast && <InfoCard info="마지막 카드 입니다.." />}
             <div ref={setTarget} className="last-item" />
           </Grid>

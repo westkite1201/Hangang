@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
+
 export default ({
   root,
   target,
   onIntersect,
   threshold = 1.0,
-  rootMargin = '0px',
+  rootMargin = '0px'
 }) => {
   useEffect(() => {
     if (!root) {
       return;
     }
-
     const observer = new IntersectionObserver(onIntersect, {
       root,
       rootMargin,
-      threshold,
+      threshold
     });
 
     if (!target) {
