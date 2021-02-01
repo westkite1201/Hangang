@@ -5,7 +5,7 @@ import * as UnsplashAPI from '../../lib/api/unsplash';
 import SearchForm from './SearchForm';
 //import useIntersectionObserver from './useIntersectionObserver';
 import Loading from '../common/Loading';
-//import FileUploadForm from './FileUploadForm';
+import FileUploadForm from './FileUploadForm';
 import { useDispatch } from 'react-redux';
 import {
   uploadImageThunk,
@@ -13,6 +13,7 @@ import {
 } from '../../lib/slices/quotesSlice';
 import styled from 'styled-components';
 import { lnfoToast } from '../../lib/toast';
+import VerticalTab from '../common/VerticalTab';
 const PER_PAGE = 30;
 const St = {
   Wrapper: styled.div`
@@ -159,16 +160,26 @@ const UnsplashContainer = () => {
   //   }
   // });
 
-  const handleSelect = (photo) => {
-    setPhoto(photo);
-    setSelected(photo.id);
-    dispatch(
-      setSelectedBackgroundUrl({
-        url: photo.urls.regular,
-        isUnsplash: true,
-        id: photo.id
-      })
-    );
+  const handleSelect = (photo, isUnsplash: boolean, url: string) => {
+    if (isUnsplash) {
+      setPhoto(photo);
+      setSelected(photo.id);
+      dispatch(
+        setSelectedBackgroundUrl({
+          url: photo.urls.regular,
+          isUnsplash: true,
+          id: photo.id
+        })
+      );
+    } else {
+      dispatch(
+        setSelectedBackgroundUrl({
+          url: url,
+          isUnsplash: false,
+          id: url
+        })
+      );
+    }
   };
 
   //upload 서버
@@ -188,15 +199,18 @@ const UnsplashContainer = () => {
       console.error(e);
     }
   };
+
   return (
     <St.Wrapper>
+      <FileUploadForm handleSelect={handleSelect} />
+      {/*
       <SearchForm
         onSearch={searchImage}
         onRandom={loadRandomImage}
         downloadImage={downloadImage}
         uploadSelectedImage={uploadSelectedImage}
       />
-
+   
       <div ref={rootRef}>
         <ThumbnailList
           onClick={handleSelect}
@@ -206,6 +220,7 @@ const UnsplashContainer = () => {
         {loading && <Loading />}
         <div ref={targetRef} />
       </div>
+      */}
     </St.Wrapper>
   );
 };

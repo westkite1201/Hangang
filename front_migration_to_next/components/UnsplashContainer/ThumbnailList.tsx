@@ -44,7 +44,7 @@ const Tile = ({ src, onClick, selected, thumbnail }) => {
     isSelected = true;
   }
   return (
-    <St.Tile onClick={() => onClick(thumbnail)} isSelected={isSelected}>
+    <St.Tile onClick={() => onClick(thumbnail, true)} isSelected={isSelected}>
       <img src={src} />
     </St.Tile>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-
+/* masonary useColumn */
 const St = {
   Masonry: styled.div`
     display: flex;
@@ -40,7 +40,7 @@ const Masonry_ = ({ brakePoints, children }) => {
   };
 
   const mapChildren = () => {
-    let col = [];
+    const col = [];
     const numColumns = columns;
     for (let i = 0; i < numColumns; i++) {
       col.push([]);

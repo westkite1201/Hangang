@@ -9,11 +9,14 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    // disable the rule for all files
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+
     "prettier/prettier": [
-        "error",
-        {
-            "endOfLine": "auto"
-        }
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ]
- }
+  }
 }

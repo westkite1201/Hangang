@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { css } from '../../styles/themed-components';
 import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
 import Link from 'next/link';
 const Sidebar = () => {
   //Nav컴포넌트
@@ -23,7 +22,7 @@ const Sidebar = () => {
             position: 'absolute',
             zIndex: 120,
             padding: '10px',
-            cursor: 'pointer',
+            cursor: 'pointer'
           }}
           onClick={showSideMenu}
         >
@@ -64,6 +63,9 @@ function SideNav({ sideMenu, hideSideMenu }) {
 }
 export default Sidebar;
 
+interface ISidebarProps {
+  sideMenu: boolean | null;
+}
 const St = {
   AppbarWrapper: styled.div`
     color: black;
@@ -72,11 +74,12 @@ const St = {
 
   SidebarWrapper: styled.div`
     position: fixed;
-    display: ${(props) => !props.sideMenu && 'none'};
-    z-index: ${(props) => (props.sideMenu ? 100 : 0)};
+    display: ${({ sideMenu }: ISidebarProps) => !sideMenu && 'none'};
+    z-index: ${({ sideMenu }: ISidebarProps) => (sideMenu ? 100 : 0)};
     width: 100%;
     height: 100%;
-    background: ${(props) => (props.sideMenu ? 'rgba(0, 0, 0, 0.3)' : 'none')};
+    background: ${({ sideMenu }: ISidebarProps) =>
+      sideMenu ? 'rgba(0, 0, 0, 0.3)' : 'none'};
     opacity: 1;
     transition: opacity 0.3s ease 0s;
   `,
@@ -92,11 +95,13 @@ const St = {
     width: 300px;
     height: 100%;
     transition: all 0.5s ease 0s;
-    transform: ${(props) => props.sideMenu === null && 'translate(-100%, 0)'};
-    ${(props) =>
-      props.sideMenu !== null &&
+    transform: ${({ sideMenu }: ISidebarProps) =>
+      sideMenu === null && 'translate(-100%, 0)'};
+    ${({ sideMenu }: ISidebarProps) =>
+      sideMenu !== null &&
       css`
-        animation: 0.7s ${(props) => (props.sideMenu ? 'showUp' : 'showOut')}
+        animation: 0.7s
+          ${({ sideMenu }: ISidebarProps) => (sideMenu ? 'showUp' : 'showOut')}
           forwards;
       `};
     @keyframes showUp {
@@ -124,5 +129,5 @@ const St = {
     color: white;
     padding: 50px;
     font-size: 1.5rem;
-  `,
+  `
 };

@@ -14,18 +14,18 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
 
   function makeDecompositionArray() {
     let cho, jung, jong;
-    let sTest = str;
+    const sTest = str;
     //console.log('sTest', sTest, sTest.split(''));
     const hangulTrans = sTest.split('').map((item) => {
       const cCode = item.charCodeAt(0);
       if (cCode == 32) {
         return {
-          isSpace: true,
+          isSpace: true
         };
       } // 한글이 아닌 경우
       if (cCode < 0xac00 || cCode > 0xd7a3) {
         return {
-          other: item,
+          other: item
         };
       }
       const nTmp = cCode - 0xac00;
@@ -35,7 +35,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       return {
         jong: jong,
         jung: jung,
-        cho: cho,
+        cho: cho
       };
     });
     setDecompositionArray(hangulTrans);
@@ -92,16 +92,16 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
   }
 
   function renderHan() {
-    let temp = [];
-    let typingArray = [];
+    const temp = [];
+    const typingArray = [];
     let text = '';
     let cnt = 0;
     for (let i = 0; i < decompositionArray.length; i++) {
       const { cho, jung, jong, isSpace, other } = decompositionArray[i];
       //korean
-      let first = String.fromCharCode(0x1100 + cho);
-      let second = String.fromCharCode(0xac00 + cho * 588 + jung * 28);
-      let third = String.fromCharCode(0xac00 + cho * 588 + jung * 28 + jong);
+      const first = String.fromCharCode(0x1100 + cho);
+      const second = String.fromCharCode(0xac00 + cho * 588 + jung * 28);
+      const third = String.fromCharCode(0xac00 + cho * 588 + jung * 28 + jong);
       //console.log(first, second, third);
       const complex = isRight(cho, jung, jong, isSpace, other);
       //console.log('complex ', complex);
@@ -162,6 +162,6 @@ const St = {
         border-right: 1px solid #fff;
       }
     }
-  `,
+  `
 };
 export default Hangul;

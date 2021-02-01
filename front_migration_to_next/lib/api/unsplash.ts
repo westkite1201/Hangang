@@ -30,14 +30,15 @@ export const getImage = async (url: string, name: string) => {
     })
     .then((response) => {
       if (response) {
-        var FileSaver = require('file-saver');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const FileSaver = require('file-saver');
         FileSaver.saveAs(new Blob([response.data]), `${name}.png`);
       }
     });
 };
 
 export const getImageDownloadToUrl = async (params: IUploadImageParams) => {
-  let imagePath = params.url ? params.url : params.backgroundImagePath;
+  const imagePath = params.url ? params.url : params.backgroundImagePath;
   return axios
     .get(
       `${

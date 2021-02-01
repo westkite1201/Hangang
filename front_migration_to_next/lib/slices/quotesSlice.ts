@@ -42,6 +42,8 @@ export const submitQuotesThunk = createAsyncThunk(
   'quotes/submitQuotesThunk',
   async (params: IQuote, thunkAPI) => {
     const { isUnsplash, backgroundImagePath, url, id } = params;
+    console.log('params', params);
+    console.log('isUnsp;ashj ', isUnsplash, url);
     try {
       if (isUnsplash) {
         const imageUploadParams = { backgroundImagePath, url, id };
@@ -56,6 +58,11 @@ export const submitQuotesThunk = createAsyncThunk(
           console.log('response ', submitQuotesResponse);
           return submitQuotesResponse;
         }
+      } else {
+        console.log('ISNOT unsplash ', params);
+        const submitQuotesResponse = await submitQuotes(params);
+        //console.log('response ', submitQuotesResponse);
+        return submitQuotesResponse;
       }
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
