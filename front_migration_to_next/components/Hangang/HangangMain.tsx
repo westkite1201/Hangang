@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+//import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import StationInfo from './StationInfo';
 import QuotesSlider from '../Quotes/QuotesSlider';
@@ -23,13 +23,13 @@ function HangangContainer({ riverTempData }) {
     name: '',
     lat: 0,
     lng: 0,
-    distance: 0,
+    distance: 0
   });
   const [stations, setStations] = useState<IHangangStation[]>();
   const [isInfoGrow, setIsInfoGrow] = useState(false);
   //const { hangangState, getHangangTemp } = useHangangTemp()
   //const { riverTempData } = useSelector((state) => state.hangang);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   //function
   function getTempData(stations, riverTempData) {
@@ -41,7 +41,7 @@ function HangangContainer({ riverTempData }) {
     });
     return {
       tempertureData: riverTempData[stationNum],
-      station: stations[stationNum],
+      station: stations[stationNum]
     };
   }
   useEffect(() => {
@@ -64,7 +64,7 @@ function HangangContainer({ riverTempData }) {
           },
           (err) => {
             reject(err);
-          },
+          }
         );
       });
     };
@@ -109,12 +109,12 @@ function HangangContainer({ riverTempData }) {
   const titleStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
     transform: isInfoGrow ? 'translate3d(0, 100%, 0)' : 'translate3d(0, 0, 0) ',
-    opacity: isInfoGrow ? '0' : '1',
+    opacity: isInfoGrow ? '0' : '1'
   });
   const infoStyle = useSpring({
     config: { duration: 1000, easing: easings.easeExpOut },
     transform: isInfoGrow ? 'translate3d(0, 0, 0)' : 'translate3d(0, -150%, 0)',
-    opacity: isInfoGrow ? '1' : '0',
+    opacity: isInfoGrow ? '1' : '0'
   });
 
   return (
@@ -187,6 +187,9 @@ const TitleTemperture = styled.div`
   text-align: center;
   font-size: 4rem;
 `;
+interface IBackground {
+  backgroundImagePath: string;
+}
 const BackGround = styled.div`
   overflow-y: hidden;
   z-index: -1;
@@ -195,7 +198,7 @@ const BackGround = styled.div`
   background-size: cover;
   background-color: transparent;
 
-  background-image: url(${(props) => props.backgroundImagePath});
+  background-image: url(${(props: IBackground) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;

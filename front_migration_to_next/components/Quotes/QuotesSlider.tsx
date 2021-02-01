@@ -51,9 +51,10 @@ const QuotesSlider = (props) => {
     },
     afterChange: function (currentSlide) {
       console.log('after change', currentSlide);
-    },
+    }
   };
-  const { data } = quotesData;
+  const { quotesArray } = quotesData;
+
   //console.log(data);
 
   const next = () => {
@@ -70,8 +71,8 @@ const QuotesSlider = (props) => {
   return (
     <div>
       <Slider {...settings} ref={(slider) => (slider1.current = slider)}>
-        {data &&
-          data.map((quotes, index) => {
+        {quotesArray &&
+          quotesArray.map((quotes, index) => {
             return <QuotesItem key={index} quotes={quotes} />;
           })}
       </Slider>

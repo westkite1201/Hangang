@@ -16,13 +16,13 @@ const St = {
     justify-content: flex-start;
     align-content: stretch;
     flex-grow: 1;
-  `,
+  `
 };
 
 const Masonry_ = ({ brakePoints, children }) => {
   const [columns, setColumns] = useState(1);
   const masonryRef = useRef(null);
-  const getColumns = (offsetWidth) => {
+  const getColumns = (offsetWidth: number) => {
     return (
       brakePoints.reduceRight((prev, current, index) => {
         return current < offsetWidth ? prev : index;
@@ -62,7 +62,7 @@ const Masonry_ = ({ brakePoints, children }) => {
   //console.log('children ', children);
   return (
     <St.Masonry ref={masonryRef}>
-      {mapChildren().map((col, index) => {
+      {mapChildren().map((col, index: number) => {
         return (
           <St.Column key={index}>
             {col.map((child, i) => {

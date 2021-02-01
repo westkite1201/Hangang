@@ -13,7 +13,7 @@ const helpers = require('../../common/helpers');
 const STATUS_CODE = {
   200: 'success',
   404: 'data not found',
-  999: 'etc'
+  999: 'etc',
 };
 
 /* 한강 물 데이터 저장 */
@@ -22,7 +22,7 @@ router.get('/insert_hangang_data', async function (req, res, next) {
     const { data } = await axios.get(
       `${process.env.SEOUL_OPENAPI_URL}` +
         `/${process.env.API_KEY}` +
-        '/json/WPOSInformationTime/1/5/'
+        '/json/WPOSInformationTime/1/5/',
     );
     let hangangTempData = data.WPOSInformationTime.row;
 
@@ -30,7 +30,7 @@ router.get('/insert_hangang_data', async function (req, res, next) {
 
     hangangTemp.collection.createIndex(
       { MSR_DATE: 1, MSR_TIME: 1, SITE_ID: 1 },
-      { unique: true }
+      { unique: true },
     );
 
     // const result = await hangangTemp.save();
@@ -40,7 +40,7 @@ router.get('/insert_hangang_data', async function (req, res, next) {
         {
           MSR_DATE: value.MSR_DATE,
           MSR_TIME: value.MSR_TIME,
-          SITE_ID: value.SITE_ID
+          SITE_ID: value.SITE_ID,
         },
         {
           $set: {
@@ -52,15 +52,17 @@ router.get('/insert_hangang_data', async function (req, res, next) {
             W_TOC: value.W_TOC,
             W_PHEN: value.W_PHEN,
             W_CN: value.W_CN,
-            UPDATE_TIME: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
-          }
+            UPDATE_TIME: moment()
+              .tz('Asia/Seoul')
+              .format('YYYY-MM-DD HH:mm:ss'),
+          },
         },
-        { upsert: true }
+        { upsert: true },
       );
     });
     return res.json({
       result: '0000',
-      data: hangangTempData
+      data: hangangTempData,
     });
   } catch (error) {
     console.error(error);
@@ -73,11 +75,11 @@ router.get('/hangang_data', async function (req, res, next) {
     const { data } = await axios.get(
       `${process.env.SEOUL_OPENAPI_URL}` +
         `/${process.env.API_KEY}` +
-        '/json/WPOSInformationTime/1/5/'
+        '/json/WPOSInformationTime/1/5/',
     );
     return res.json({
       result: '0000',
-      data: data.WPOSInformationTime.row
+      data: data.WPOSInformationTime.row,
     });
   } catch (error) {
     console.error(error);
@@ -93,11 +95,13 @@ router.post('/word_data', async (req, res) => {
     const { accepted, pageNum, pageCount } = req.body;
     const filter = {
       ACCEPTED: accepted,
-      STATUS: '0'
+      STATUS: '0',
     };
     const sort = {
-      CARD_ORDER: 1
+      CARD_ORDER: 1,
     };
+
+    console.log(accepted, pageNum, pageCount);
 
     Quotes.find(filter, (error, quotes) => {
       if (error) {
@@ -108,11 +112,12 @@ router.post('/word_data', async (req, res) => {
         } else {
           Quotes.countDocuments(filter, (error, count) => {
             const jsonObj = helpers.makeJsonKeyLower(quotes);
+            console.log('json obj', jsonObj);
             return res.json(
               makeReturnData('200', {
                 quotes_array: jsonObj,
-                total_count: count
-              })
+                total_count: count,
+              }),
             );
           });
         }
@@ -122,10 +127,10 @@ router.post('/word_data', async (req, res) => {
       .sort(sort)
       .limit(parseInt(pageCount));
   } catch (error) {
-    console.error(error);
+    console.log('errorr', error);
     return res.json({
       api: 'word_data',
-      message: error
+      message: error,
     });
   }
 });
@@ -138,11 +143,11 @@ router.post('/word_data_admin', async (req, res) => {
     const returnArray = {};
     let filter = {
       ACCEPTED: '1',
-      STATUS: '0'
+      STATUS: '0',
     };
 
     const sort = {
-      CARD_ORDER: 1
+      CARD_ORDER: 1,
     };
 
     Quotes.find(filter, (error, submit_quotes) => {
@@ -152,14 +157,14 @@ router.post('/word_data_admin', async (req, res) => {
         returnArray.submit_quotes = helpers.makeJsonKeyLower(submit_quotes);
         filter = {
           ACCEPTED: '0',
-          STATUS: '0'
+          STATUS: '0',
         };
         Quotes.find(filter, (error, accepted_quotes) => {
           if (error) {
             return res.json(makeReturnData('999', error));
           } else {
             returnArray.accepted_quotes = helpers.makeJsonKeyLower(
-              accepted_quotes
+              accepted_quotes,
             );
             return res.json(makeReturnData('100', returnArray));
           }
@@ -170,7 +175,7 @@ router.post('/word_data_admin', async (req, res) => {
     console.error(error);
     return res.json({
       api: 'word_data_admin',
-      message: error
+      message: error,
     });
   }
 });
@@ -185,7 +190,7 @@ router.post('/insert_quotes', async (req, res) => {
       thumbnailUserImage,
       backgroundImagePath,
       accepted,
-      card_exps_typ_cd
+      card_exps_typ_cd,
     } = req.body;
     // const data = helpers.makeJsonKeyUpper({
     //   name,
@@ -204,7 +209,7 @@ router.post('/insert_quotes', async (req, res) => {
       THUMBNAIL_BACKGROUND_IMAGE: backgroundImagePath,
       CARD_EXPS_TYP_CD: card_exps_typ_cd,
       ACCEPTED: accepted,
-      CARD_ORDER: count + 1
+      CARD_ORDER: count + 1,
     };
 
     console.log(data);
@@ -221,7 +226,7 @@ router.post('/insert_quotes', async (req, res) => {
     console.error(error);
     return res.json({
       api: 'insert_quotes',
-      message: error
+      message: error,
     });
   }
 });
@@ -235,7 +240,7 @@ router.post('/delete_quotes', async (req, res) => {
     const { id } = req.body;
     const set = {
       STATUS: '1',
-      UPDATE_TIME: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
+      UPDATE_TIME: moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'),
     };
     Quotes.update({ _id: id }, { $set: set }, (error, output) => {
       if (error) {
@@ -248,7 +253,7 @@ router.post('/delete_quotes', async (req, res) => {
     console.error(error);
     return res.json({
       api: 'delete_qoutes',
-      message: error
+      message: error,
     });
   }
 });
@@ -263,7 +268,7 @@ router.post('/update_quotes_accepted', async (req, res) => {
     const { ids, accepted } = req.body;
     const returnArray = {};
     const set = {
-      ACCEPTED: accepted
+      ACCEPTED: accepted,
     };
     Quotes.update(
       { _id: ids },
@@ -275,25 +280,25 @@ router.post('/update_quotes_accepted', async (req, res) => {
         } else {
           let filter = {
             ACCEPTED: '1',
-            STATUS: '0'
+            STATUS: '0',
           };
           Quotes.find(filter, (error, submit_quotes) => {
             if (error) {
               return res.json(makeReturnData('999', error));
             } else {
               returnArray.submit_quotes = helpers.makeJsonKeyLower(
-                submit_quotes
+                submit_quotes,
               );
               filter = {
                 ACCEPTED: '0',
-                STATUS: '0'
+                STATUS: '0',
               };
               Quotes.find(filter, (error, accepted_quotes) => {
                 if (error) {
                   return res.json(makeReturnData('999', error));
                 } else {
                   returnArray.accepted_quotes = helpers.makeJsonKeyLower(
-                    accepted_quotes
+                    accepted_quotes,
                   );
                   return res.json(makeReturnData('100', returnArray));
                 }
@@ -302,13 +307,13 @@ router.post('/update_quotes_accepted', async (req, res) => {
           });
           // return res.json(makeReturnData("100", output));
         }
-      }
+      },
     );
   } catch (error) {
     console.error(error);
     return res.json({
       api: 'update_qoutes_accepted',
-      message: error
+      message: error,
     });
   }
 });
@@ -324,17 +329,17 @@ router.post('/update_quotes_name_word', async (req, res) => {
     console.log('ids, name ', word);
     const set = {
       NAME: name,
-      WORD: word
+      WORD: word,
     };
     let updateRow = await Quotes.update(
       { _id: _id },
       { $set: set },
-      { multi: true }
+      { multi: true },
     );
 
     let filter = {
       ACCEPTED: '0',
-      STATUS: '0'
+      STATUS: '0',
     };
     console.log('updateRow ', updateRow);
     let quotesRaw = await Quotes.find(filter);
@@ -351,15 +356,15 @@ router.post('/update_quotes_name_word', async (req, res) => {
       return res.json(
         makeReturnData('200', {
           quotes_array: jsonObj,
-          total_count: count
-        })
+          total_count: count,
+        }),
       );
     }
   } catch (error) {
     console.error(error);
     return res.json({
       api: 'update_qoutes_accepted',
-      message: error
+      message: error,
     });
   }
 });
@@ -367,7 +372,7 @@ function makeReturnData(code, data) {
   return {
     result: code,
     message: STATUS_CODE[code],
-    data: data
+    data: data,
   };
 }
 

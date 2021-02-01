@@ -23,7 +23,7 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
   let cardHoverStyle = {
     transition: 'all 0.5s ease',
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
-    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)',
+    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)'
   };
   const makePosterText = (str: string, id: string) => {
     return str.split('\n').map((item) => {
@@ -55,6 +55,10 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
     </QuotesWrapper>
   );
 };
+// interface를 이용한 방법
+interface IBackground {
+  backgroundImagePath: string;
+}
 const BackGround = styled.div`
   overflow-y: hidden;
   z-index: -1;
@@ -63,8 +67,8 @@ const BackGround = styled.div`
   border-radius: 4px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: transparent;
-  background-image: url(${(props) => props.backgroundImagePath});
+  background-color: black;
+  background-image: url(${(props: IBackground) => props.backgroundImagePath});
   position: absolute;
   top: 0;
   left: 0;

@@ -1,29 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var moment = require('moment');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 require('moment-timezone');
 let bodyParser = require('body-parser');
-var indexRouter = require('./routes/index');
-// let hangangRouter = require('./routes/api/hangangController');
-// let fileRouter = require('./routes/api/fileController');
-// let authRouter = require('./routes/api/authController');
+let indexRouter = require('./routes/index');
+let hangangRouter = require('./routes/api/hangangController');
+let fileRouter = require('./routes/api/fileController');
+//let authRouter = require('./routes/api/authController');
 
-var { graphqlHTTP } = require('express-graphql');
+let { graphqlHTTP } = require('express-graphql');
 
-var corsOption = {
+let corsOption = {
   origin: 'http://localhost:3030',
-  credentials: true
+  credentials: true,
 };
-var cors = require('cors')(corsOption);
-var app = express();
+let cors = require('cors')(corsOption);
+
+let app = express();
 require('dotenv').config();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
+app.use(cors);
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
@@ -34,16 +35,16 @@ app.use(
   bodyParser.urlencoded({
     limit: '50mb',
     extended: true,
-    parameterLimit: 50000
-  })
+    parameterLimit: 50000,
+  }),
 );
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-// app.use('/api/hangang', hangangRouter);
-// app.use('/api/file', fileRouter);
-// app.use('/api/auth', authRouter);
+app.use('/api/hangang', hangangRouter);
+app.use('/api/file', fileRouter);
+//app.use('/api/auth', authRouter);
 
 var { schema, root } = require('./graphql/schema');
 
@@ -53,11 +54,9 @@ app.use(
   graphqlHTTP({
     schema: schema,
     rootValue: root,
-    graphiql: true
-  })
+    graphiql: true,
+  }),
 );
-
-app.use(cors);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

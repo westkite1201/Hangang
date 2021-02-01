@@ -7,11 +7,12 @@ import { getImageDownloadToUrl } from '..//api/unsplash';
 import { extractImageFileName } from '../helper';
 import { successToast, errorToast, loadingToast } from '../toast';
 const hydrate = createAction<RootState>(HYDRATE);
-const PAGE_COUNT = 5;
+export const PAGE_COUNT = 5;
 export const getQuotesThunk = createAsyncThunk(
   'quotes/getQuotes',
   async (params: IGetQuotesParam, thunkAPI) => {
     try {
+      //console.log('getQuotesThunk ', params);
       const response = await getQuotes(params);
       console.log('response ', response);
       return response;
@@ -121,6 +122,7 @@ const quotesSlice = createSlice({
       state.quotesData.loading = false;
       state.quotesData.pageNum += 1;
       const maxPageNum = Math.ceil(total_count / PAGE_COUNT) + 1;
+      console.log('maxPageNum ', maxPageNum);
       if (maxPageNum === state.quotesData.pageNum) {
         state.quotesData.isLast = true;
         state.quotesData.loading = false;
@@ -128,7 +130,7 @@ const quotesSlice = createSlice({
     });
     builder.addCase(getQuotesThunk.rejected, (state, action) => {
       //state.quotesData.loading = false;
-      errorToast('카드를 가져오는데 실패하였습니다.', action);
+      errorToast('카드를 가져오는데 실패하였습니다.');
       //state.error = action.payload;
     });
     builder.addCase(uploadImageThunk.pending, (state, action) => {

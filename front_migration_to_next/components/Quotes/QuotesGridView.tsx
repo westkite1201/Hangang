@@ -7,9 +7,13 @@ import Loading from '../common/Loading';
 import InfoCard from '../common/InfoCard';
 import styled from 'styled-components';
 import { IQuote } from '../../interfaces';
-import { IQuotesData, getQuotesThunk } from '../../lib/slices/quotesSlice';
+import {
+  IQuotesData,
+  getQuotesThunk,
+  PAGE_COUNT
+} from '../../lib/slices/quotesSlice';
 import { useInfinteScroll } from '../../hooks/useInfinteScroll';
-const PAGE_COUNT = 5;
+
 /* 명언 그리드  */
 type QuotesGridviewProps = {
   quotesData: IQuotesData;
@@ -23,7 +27,7 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
     maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT);
   }, [totalCount]);
   const [target, setTarget] = useState(null);
-
+  console.log(quotesArray, totalCount, isLast, pageNum, loading);
   useInfinteScroll({
     target,
     onIntersect: ([{ isIntersecting }]) => {
@@ -33,40 +37,43 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
           pageNum: pageNum,
           pageCount: PAGE_COUNT
         };
+
         dispatch(getQuotesThunk(params));
       }
     }
   });
 
   return (
-    <QuotesWrapper>
-      <Grid container spacing={3}>
-        <Grid item xs={1} md={1} lg={1}></Grid>
-        <Grid item xs={10} md={10} lg={10}>
-          <Grid container spacing={3}>
-            {quotesArray &&
-              quotesArray.length !== 0 &&
-              quotesArray.map((quotes: IQuote, index: number) => {
-                return (
-                  <QuotesCard
-                    quotes={quotes}
-                    index={quotes._id + ' ' + index}
-                    key={quotes._id}
-                  />
-                );
-              })}
-            {loading && (
-              <LoadingWrapper>
-                <Loading />
-              </LoadingWrapper>
-            )}
-            {isLast && <InfoCard info="마지막 카드 입니다.." />}
-            <div ref={setTarget} className="last-item" />
+    <>
+      <QuotesWrapper>
+        <Grid container spacing={3}>
+          <Grid item xs={1} md={1} lg={1}></Grid>
+          <Grid item xs={10} md={10} lg={10}>
+            <Grid container spacing={3}>
+              {quotesArray &&
+                quotesArray.length !== 0 &&
+                quotesArray.map((quotes: IQuote, index: number) => {
+                  return (
+                    <QuotesCard
+                      quotes={quotes}
+                      index={quotes._id + ' ' + index}
+                      key={quotes._id}
+                    />
+                  );
+                })}
+              {loading && (
+                <LoadingWrapper>
+                  <Loading />
+                </LoadingWrapper>
+              )}
+              {isLast && <InfoCard info="마지막 카드 입니다.." />}
+              <div ref={setTarget} className="last-item" />
+            </Grid>
           </Grid>
+          <Grid item xs={1} md={1} lg={1}></Grid>
         </Grid>
-        <Grid item xs={1} md={1} lg={1}></Grid>
-      </Grid>
-    </QuotesWrapper>
+      </QuotesWrapper>
+    </>
   );
 };
 const QuotesWrapper = styled.div`

@@ -3,7 +3,7 @@ import ThumbnailList from './ThumbnailList';
 import * as UnsplashAPI from '../../lib/api/unsplash';
 //import { downloadPhoto } from '../../lib/downloadPhoto';
 import SearchForm from './SearchForm';
-import useIntersectionObserver from './useIntersectionObserver';
+//import useIntersectionObserver from './useIntersectionObserver';
 import Loading from '../common/Loading';
 //import FileUploadForm from './FileUploadForm';
 import { useDispatch } from 'react-redux';
@@ -76,22 +76,6 @@ const UnsplashContainer = () => {
     [loadImage]
   );
 
-  // const searchImage = async (query) => {
-  //   if (!query) {
-  //     await loadRandomImage();
-  //     return;
-  //   }
-  //   currentQuery.current = query;
-  //   currentPage.current = 1;
-  //   try {
-  //     const data = await loadImage({ query, page: 1, per_page: PER_PAGE });
-  //     console.log('searchImage data ', data);
-  //     setImages((images) => [...images, ...data.results]);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
   async function loadRandomImage() {
     try {
       setLoading(true);
@@ -140,16 +124,6 @@ const UnsplashContainer = () => {
 
   useEffect(() => {
     const _onIntersect = ([entry]) => {
-      // console.log(
-      //   'entry ',
-      //   entry.isIntersecting,
-      //   'images ',
-      //   images,
-      //   'currentPage ',
-      //   currentPage,
-      //   ' totalPage ',
-      //   totalPage
-      // );
       if (
         !loading &&
         entry.isIntersecting &&

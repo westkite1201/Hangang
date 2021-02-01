@@ -6,8 +6,8 @@ import { IUploadImageParams } from '../../interfaces';
 const instance = axios.create({
   baseURL: 'https://api.unsplash.com',
   headers: {
-    Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
-  },
+    Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`
+  }
 });
 
 export const getRandomPhotos = (params) => {
@@ -26,7 +26,7 @@ export const searchPhotos = async (params) => {
 export const getImage = async (url: string, name: string) => {
   return axios
     .get(url, {
-      responseType: 'blob',
+      responseType: 'blob'
     })
     .then((response) => {
       if (response) {
@@ -44,7 +44,7 @@ export const getImageDownloadToUrl = async (params: IUploadImageParams) => {
         clientConfig.endpoint.api
       }/file/getImageDownloadToUrl/${encodeURIComponent(imagePath)}/${
         params.id
-      }/testUser`,
+      }/testUser`
     )
     .then((res) => res.data);
 };

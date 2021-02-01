@@ -1,15 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
 import { wrapper } from '../store';
 import QuotesGridView from '../components/Quotes/QuotesGridView';
 import { useSelector } from 'react-redux';
-import { getQuotesThunk } from '../lib/slices/quotesSlice';
+import { getQuotesThunk, PAGE_COUNT } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
 const Quotes = (props) => {
-  const { loading, quotesData } = useSelector(
-    (state: RootState) => state.quotes
-  );
-
+  const { quotesData } = useSelector((state: RootState) => state.quotes);
+  console.log('quotesData', quotesData);
   return (
     <div>
       <QuotesGridView quotesData={quotesData} />
@@ -21,7 +18,7 @@ export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
   const params = {
     accepted: '0',
     pageNum: 1,
-    pageCount: 5
+    pageCount: PAGE_COUNT
   };
   await store.dispatch<any>(getQuotesThunk(params));
 });

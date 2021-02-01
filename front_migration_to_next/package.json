@@ -6,7 +6,7 @@
     "dev": "next dev",
     "start": "next --port=3030",
     "build": "next build",
-    "serve": "next start --port=6060",
+    "serve": "next start --port=5000",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -44,6 +44,7 @@
     "react-spring": "^8.0.27",
     "react-toastify": "7.0.1",
     "redux": "4.0.5",
+    "slick-carousel": "1.8.1",
     "styled-components": "5.2.1",
     "styled-reset": "4.3.4",
     "types": "^0.1.1",
