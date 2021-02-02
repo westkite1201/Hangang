@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import QuotesCard from '../components/Quotes/QuotesCard';
 import UnsplashContainer from '../components/UnsplashContainer/UnsplashContainer';
-//import FileUploadForm from '../components/UnsplashContainer/FileUploadForm';
 import styled from 'styled-components';
-import { Grid, Input, Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-//import { IQuote } from '../interfaces';
 import { RootState } from '../store';
 import {
   submitQuotesThunk,
   setSelectedBackgroundUrl
 } from '../lib/slices/quotesSlice';
-// import {
-//   SUBMIT_QUOTES_REQUEST,
-//   SET_BACKGROUND_IMAGE,
-// } from '../../modules/quotes/reducer';
-//import { Tabs, Input, Button } from 'antd';
-//const { TabPane } = Tabs;
 const PreviewContainer = () => {
   const { selectedBackgroundUrl } = useSelector(
     (state: RootState) => state.quotes

@@ -13,7 +13,7 @@ import {
 } from '../../lib/slices/quotesSlice';
 import styled from 'styled-components';
 import { lnfoToast } from '../../lib/toast';
-import VerticalTab from '../common/VerticalTab';
+import StyledTab from '../common/StyledTab';
 const PER_PAGE = 30;
 const St = {
   Wrapper: styled.div`
@@ -22,6 +22,9 @@ const St = {
     flex: 1 1 0%;
     overflow-y: auto;
     color: rgb(33, 37, 41);
+  `,
+  LoadingWrapper: styled.div`
+    margin: auto;
   `
 };
 const UnsplashContainer = () => {
@@ -202,25 +205,32 @@ const UnsplashContainer = () => {
 
   return (
     <St.Wrapper>
-      <FileUploadForm handleSelect={handleSelect} />
-      {/*
-      <SearchForm
-        onSearch={searchImage}
-        onRandom={loadRandomImage}
-        downloadImage={downloadImage}
-        uploadSelectedImage={uploadSelectedImage}
+      <StyledTab
+        tabContentFirst={<FileUploadForm handleSelect={handleSelect} />}
+        tabContentSecond={
+          <>
+            <SearchForm
+              onSearch={searchImage}
+              onRandom={loadRandomImage}
+              downloadImage={downloadImage}
+              uploadSelectedImage={uploadSelectedImage}
+            />
+            <div ref={rootRef}>
+              <ThumbnailList
+                onClick={handleSelect}
+                selected={selected}
+                thumbnails={images}
+              />
+              {loading && (
+                <St.LoadingWrapper>
+                  <Loading />
+                </St.LoadingWrapper>
+              )}
+              <div ref={targetRef} />
+            </div>
+          </>
+        }
       />
-   
-      <div ref={rootRef}>
-        <ThumbnailList
-          onClick={handleSelect}
-          selected={selected}
-          thumbnails={images}
-        />
-        {loading && <Loading />}
-        <div ref={targetRef} />
-      </div>
-      */}
     </St.Wrapper>
   );
 };

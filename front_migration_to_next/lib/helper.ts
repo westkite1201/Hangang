@@ -2,6 +2,13 @@ import moment from 'moment';
 import { stationLocationArray } from './CommonData';
 import { clientConfig } from '../configuration/clientConfig';
 import { IQuote } from '../interfaces';
+
+export function getRandomNumber(minValue: number, maxValue: number) {
+  const min = Math.ceil(minValue);
+  const max = Math.floor(maxValue);
+  const number = Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  return number;
+}
 /* 좌표 거리 계산 */
 export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
   // var lat1 = array[0].getLat();
@@ -68,7 +75,9 @@ export function getBackgroundImage() {
 }
 
 //수온 별로  온도 분기
-export function getWaterTempertureColor() {}
+export function getWaterTempertureColor() {
+  return;
+}
 
 export function getContentCardType(pst_exps_typ_cd) {
   switch (pst_exps_typ_cd) {

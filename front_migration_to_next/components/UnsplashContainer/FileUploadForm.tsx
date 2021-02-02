@@ -5,12 +5,77 @@ import styled from 'styled-components';
 import { clientConfig } from '../../configuration/clientConfig';
 //import './FileUploadForm.scss';
 import { Button, Grid } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { successToast, errorToast } from '../../lib/toast';
-import { setSelectedBackgroundUrl } from '../../lib/slices/quotesSlice';
+import { RootState } from '../../store';
+import MasonryUseGrid from '../common/MasonryUseGrid';
 //import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
 const PATH = clientConfig.endpoint.api + '/file/';
+const St = {
+  Grid: styled.div`
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 20px;
+  `,
+  Item: styled.div`
+    background-color: #ffffff;
+    margin: 10px;
+    width: 300px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  `,
+
+  InputContainer: styled.div`
+    display: flex;
+    justify-content: center;
+  `,
+  Selected: styled.div`
+    border: 5px solid rebeccapurple;
+  `,
+
+  FileBox: styled.div`
+    label {
+      display: inline-block;
+      padding: 0.5em 0.75em;
+      color: #999;
+      font-size: inherit;
+      line-height: normal;
+      vertical-align: middle;
+      background-color: #fdfdfd;
+      cursor: pointer;
+      border: 1px solid #ebebeb;
+      border-bottom-color: #e2e2e2;
+      border-radius: 0.25em;
+    }
+    input[type='file'] {
+      /* 파일 필드 숨기기 */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    // ,
+    #submit {
+      /* 파일 필드 숨기기 */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  `
+};
 
 function ImageList({
   filesPathList,
@@ -28,15 +93,15 @@ function ImageList({
       //     ? 'selected'
       //     : '';
       return (
-        <Grid item xs={4} key={fileName + ' ' + index}>
-          <ImgDiv>
+        <St.Grid key={fileName + ' ' + index}>
+          <St.Item>
             <img
               alt="background"
               src={url}
               onClick={() => handleSelect('', false, fileName)}
             ></img>
-          </ImgDiv>
-        </Grid>
+          </St.Item>
+        </St.Grid>
       );
     });
     return imageList;
@@ -48,13 +113,12 @@ const ImgDiv = styled.div`
     height: 100%;
   }
 `;
-const FileUploadForm = ({
-  handleSelect
-  // setSelectedBackgroundUrl,
-  // selectedBackgroundUrl,
-  // backGroundChangeToUrl
-}) => {
+const FileUploadForm = ({ handleSelect }) => {
   const dispatch = useDispatch();
+  const { selectedBackgroundUrl } = useSelector(
+    (state: RootState) => state.quotes
+  );
+
   const [files, setFiles] = useState([]);
   const [filesPathList, setFilesPathList] = useState([]);
 
@@ -126,17 +190,14 @@ const FileUploadForm = ({
     e.preventDefault();
     try {
       const data = {
-        //imageUrlPath: selectedBackgroundUrl
+        imageUrlPath: selectedBackgroundUrl
       };
       const res = await axios.post(
         clientConfig.endpoint.api + '/file/delete_file_image',
         data
       );
       if (res.status === 200) {
-        // dispatch({
-        //   type: SUCCESS_TOAST,
-        //   payload: {},
-        // });
+        successToast('삭제에 성공하였습니다.');
         getFileList();
       } else {
         errorToast('삭제에 실패하였습니다.');
@@ -148,8 +209,8 @@ const FileUploadForm = ({
 
   return (
     <div>
-      <InputContainer>
-        <Button onClick={getFileList}>refresh</Button>
+      <St.InputContainer>
+        <Button onClick={getFileList}>새로고침</Button>
         <form encType="multipart/form-data" onSubmit={onSubmitForm}>
           <St.FileBox>
             <label id="labelFileAdd" htmlFor="fileAdd">
@@ -169,71 +230,12 @@ const FileUploadForm = ({
             <Button onClick={fileDelete}>해당 이미지 파일삭제 </Button>
           </St.FileBox>
         </form>
-      </InputContainer>
-
-      <div style={{ height: '400px', overflow: 'auto' }}>
-        <Grid container spacing={3}>
-          {
-            <ImageList
-              filesPathList={filesPathList}
-              handleSelect={handleSelect}
-              //selectedBackgroundUrl={selectedBackgroundUrl}
-            />
-          }
-        </Grid>
+      </St.InputContainer>
+      <div style={{ height: '100vh', overflow: 'auto' }}>
+        <MasonryUseGrid imageList={filesPathList} handleSelect={handleSelect} />
       </div>
-      {/*<Button onClick={backGroundChangeToUrl}>확인</Button>*/}
     </div>
   );
 };
 
-const InputContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 export default FileUploadForm;
-
-const St = {
-  Selected: styled.div`
-    border: 5px solid rebeccapurple;
-  `,
-
-  FileBox: styled.div`
-    label {
-      display: inline-block;
-      padding: 0.5em 0.75em;
-      color: #999;
-      font-size: inherit;
-      line-height: normal;
-      vertical-align: middle;
-      background-color: #fdfdfd;
-      cursor: pointer;
-      border: 1px solid #ebebeb;
-      border-bottom-color: #e2e2e2;
-      border-radius: 0.25em;
-    }
-    input[type='file'] {
-      /* 파일 필드 숨기기 */
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-    // ,
-    #submit {
-      /* 파일 필드 숨기기 */
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-  `
-};

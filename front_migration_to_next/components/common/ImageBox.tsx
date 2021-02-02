@@ -1,30 +1,53 @@
-import { useState, useEffect, useRef } from 'react';
-//현재 사용하지 않음
-const ImageBox = ({ thumbnail, onClick }) => {
+import { useState, useRef, useEffect } from 'react';
+import { clientConfig } from '../../configuration/clientConfig';
+const PATH = clientConfig.endpoint.api + '/file/';
+interface IImageBoxProps {
+  rowHeight: number;
+  rowGap: number;
+  windowSize: number;
+  url: string;
+  handleSelect?: (photo, isUnsplash: boolean, url: string) => void;
+}
+const ImageBox = (props: IImageBoxProps) => {
+  const { rowHeight, rowGap, windowSize, url, handleSelect } = props;
   const [height, setHeight] = useState(0);
-
-  const targetDiv = useRef(null);
+  const [gridRowEnd, setGridRowEnd] = useState(0);
+  const targetRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setHeight(targetRef.current.clientHeight);
+  }, [windowSize]);
 
   useEffect(() => {
-    setHeight(targetDiv.current.clientHeight);
+    if (height !== 0) {
+      const rowSpan = Math.ceil((height + rowGap) / (rowHeight + rowGap));
+      setGridRowEnd(rowSpan);
+    }
+  }, [height]);
+
+  useEffect(() => {
+    setHeight(targetRef.current.clientHeight);
   }, []);
 
+  useEffect(() => {
+    setHeight(targetRef.current.clientHeight);
+  }, [loading]);
+
+  function handleImageLoaded() {
+    setLoading(false);
+  }
+  const fullUrl = PATH + 'image/' + url;
   return (
-    <div
-      className="thumbnail__item'"
-      style={{
-        gridRowEnd: `span ${Math.floor(height / 10)}`,
-      }}
-      ref={targetDiv}
-    >
-      <img
-        src={thumbnail.urls.thumb}
-        //data-src={defaultImg}
-        alt={thumbnail.alt_description}
-        //className={CX({ [styles.active]: thumbnail.id === selected })}
-        onClick={() => onClick(thumbnail)}
-      />
-      <span>By {thumbnail.user.username}</span>
+    <div className="item photo" style={{ gridRowEnd: `span ${gridRowEnd}` }}>
+      <div className="content" ref={targetRef}>
+        <img
+          className="photothumb"
+          src={fullUrl}
+          onLoad={handleImageLoaded}
+          data-src={loading ? '/images/temp.jpage' : fullUrl}
+          onClick={() => handleSelect('', false, url)}
+        />
+      </div>
     </div>
   );
 };

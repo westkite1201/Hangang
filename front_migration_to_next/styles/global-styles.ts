@@ -1,5 +1,5 @@
-import reset from "styled-reset";
-import { createGlobalStyle } from "styled-components";
+import reset from 'styled-reset';
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -70,6 +70,59 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+
+  .grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-auto-rows: 20px;
+
+  }
+  .item {
+    background-color: #ffffff;
+  }
+  
+  .photothumb{
+    width: 100%;
+  }
+  
+  .title {
+    padding: 20px;
+   }
+  
+  .title h3{
+    font-size: 1.2em;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+  
+  .project .title{
+    background-color: #607D8B;
+  }
+  
+  .blog .title{
+    background-color: #ff9800;
+  }
+  
+  .photo .title{
+    background-color: #f44336;
+  }
+  
+  .desc{
+    padding: 10px 10px 5px 10px;
+  }
+  
+  .desc img{
+    width: 50%;
+    margin: 0 10px 10px 0;
+    float: left;
+  }
+  
+  .desc p{
+    margin-bottom: 10px;
+  }
+
 `;
 
 export default GlobalStyle;
