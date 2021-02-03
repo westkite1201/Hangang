@@ -12,8 +12,11 @@ import {
   setSelectedBackgroundUrl
 } from '../../lib/slices/quotesSlice';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { lnfoToast } from '../../lib/toast';
 import StyledTab from '../common/StyledTab';
+import axios from 'axios';
+
 const PER_PAGE = 30;
 const St = {
   Wrapper: styled.div`
@@ -27,6 +30,7 @@ const St = {
     margin: auto;
   `
 };
+
 const UnsplashContainer = () => {
   const dispatch = useDispatch();
   const currentQuery = useRef('');

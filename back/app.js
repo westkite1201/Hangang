@@ -12,11 +12,11 @@ let fileRouter = require('./routes/api/fileController');
 
 let { graphqlHTTP } = require('express-graphql');
 
-let corsOption = {
-  origin: 'http://localhost:3030',
-  credentials: true,
-};
-let cors = require('cors')(corsOption);
+// let corsOption = {
+//   origin: 'http://localhost:3030',
+//   credentials: true,
+// };
+let cors = require('cors')();
 
 let app = express();
 require('dotenv').config();

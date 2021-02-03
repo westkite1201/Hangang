@@ -89,12 +89,18 @@ const QuotesAuthorThumbnailContainer = styled.div`
   position: relative;
   padding: 20% 20% 0 20%;
 `;
+
+// interface를 이용한 방법
+interface IThumbnailStyleProps {
+  thumbnail: string;
+}
 const QuotesAuthorThumbnail = styled.div`
   margin: auto;
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  background-image: url(${(props) => props.thumbnail || props.thumbnail});
+  background-image: url(${(props: IThumbnailStyleProps) =>
+    props.thumbnail || props.thumbnail});
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;

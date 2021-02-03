@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
 import { getImageFileFullPath } from '../../lib/helper';
@@ -7,6 +6,10 @@ import styled from 'styled-components';
 import { IQuote } from '../../interfaces';
 const MAX = 200;
 const MIN = 50;
+interface IBackground {
+  backgroundImagePath: string;
+}
+
 const St = {
   card: styled.div`
     margin-top: 20px;
@@ -28,7 +31,7 @@ const St = {
     padding: 100px 60px;
     border-radius: 4px;
     transition: 0.3s all;
-    background-image: url(${(props) => props.backgroundImagePath});
+    background-image: url(${(props: IBackground) => props.backgroundImagePath});
   `,
   cardHeaderCenter: styled.div`
     font-family: 'NanumMyeongjo';
@@ -64,16 +67,16 @@ const St = {
     width: 100px;
     margin: auto;
     padding: 10px;
-  `,
+  `
 };
 interface IBannerQuotesCard {
   quotes: IQuote;
 }
 const BannerQuotesCard = ({ quotes }: IBannerQuotesCard) => {
-  let cardHoverStyle = {
+  const cardHoverStyle = {
     transition: 'all 0.5s ease',
     transform: 'translate3d(0, -10px, 0) scale3d(1.00, 1.00, 1.00)',
-    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)',
+    boxShadow: '0px 30px 100px -10px rgba(0, 0, 0, 0.8)'
   };
 
   const [mouseOver, setMouseOver] = useState(false);

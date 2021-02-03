@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { successToast, errorToast } from '../../lib/toast';
 import { RootState } from '../../store';
 import MasonryUseGrid from '../common/MasonryUseGrid';
+import useRequest from '../../hooks/useRequest';
+import useSWR from 'swr';
 //import { SUCCESS_TOAST, FAILURE_TOAST } from '../../../modules/toast/reducer';
 const USER_ID = 'testUser';
 const PATH = clientConfig.endpoint.api + '/file/';
@@ -113,26 +115,33 @@ const ImgDiv = styled.div`
     height: 100%;
   }
 `;
+
 const FileUploadForm = ({ handleSelect }) => {
   const dispatch = useDispatch();
   const { selectedBackgroundUrl } = useSelector(
     (state: RootState) => state.quotes
   );
-
   const [files, setFiles] = useState([]);
-  const [filesPathList, setFilesPathList] = useState([]);
-
-  useEffect(() => {
-    getFileList();
-  }, []);
-
-  async function getFileList() {
-    const data = {
-      user_id: USER_ID
+  //const [filesPathList, setFilesPathList] = useState([]);
+  //const { data, error } = useSWR(PATH + 'getImageFilePath', fetcher);
+  const { data, error } = useRequest<{
+    code: number;
+    message: number;
+    data: {
+      files: string[];
     };
-    const res = await axios.post(PATH + 'getImageFilePath', data);
-    setFilesPathList(res.data.data.files);
-  }
+  }>({
+    method: 'post',
+    url: PATH + 'getImageFilePath'
+  });
+
+  // async function getFileList() {
+  //   const data = {
+  //     user_id: USER_ID
+  //   };
+  //   const res = await axios.post(PATH + 'getImageFilePath', data);
+  //   setFilesPathList(res.data.data.files);
+  // }
 
   /*file Save to Server */
   async function onSubmitForm(e) {
@@ -162,7 +171,7 @@ const FileUploadForm = ({ handleSelect }) => {
       console.log(res);
       if (res.data.code !== 200) {
         successToast('저장되었습니다');
-        getFileList();
+        //getFileList();
       } else {
         errorToast('저장에 실패하였습니다.');
       }
@@ -198,7 +207,7 @@ const FileUploadForm = ({ handleSelect }) => {
       );
       if (res.status === 200) {
         successToast('삭제에 성공하였습니다.');
-        getFileList();
+        //getFileList();
       } else {
         errorToast('삭제에 실패하였습니다.');
       }
@@ -210,7 +219,7 @@ const FileUploadForm = ({ handleSelect }) => {
   return (
     <div>
       <St.InputContainer>
-        <Button onClick={getFileList}>새로고침</Button>
+        {/*<Button onClick={getFileList}>새로고침</Button>*/}
         <form encType="multipart/form-data" onSubmit={onSubmitForm}>
           <St.FileBox>
             <label id="labelFileAdd" htmlFor="fileAdd">
@@ -232,7 +241,10 @@ const FileUploadForm = ({ handleSelect }) => {
         </form>
       </St.InputContainer>
       <div style={{ height: '100vh', overflow: 'auto' }}>
-        <MasonryUseGrid imageList={filesPathList} handleSelect={handleSelect} />
+        <MasonryUseGrid
+          imageList={data && data.data.files}
+          handleSelect={handleSelect}
+        />
       </div>
     </div>
   );

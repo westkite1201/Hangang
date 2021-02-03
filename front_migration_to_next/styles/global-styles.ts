@@ -8,8 +8,8 @@ const GlobalStyle = createGlobalStyle`
   }
   body{
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background: linear-gradient(to bottom, #dae2f8, #d6a4a4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    //background: linear-gradient(to bottom, #dae2f8, #d6a4a4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background : #dae2f8;
   }
   a {
     color: inherit;

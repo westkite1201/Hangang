@@ -28,6 +28,7 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
   }, [totalCount]);
   const [target, setTarget] = useState(null);
   console.log(quotesArray, totalCount, isLast, pageNum, loading);
+
   useInfinteScroll({
     target,
     onIntersect: ([{ isIntersecting }]) => {
