@@ -8,6 +8,36 @@ type Props = {
   children?: ReactNode;
   title?: string;
 };
+// global style 에서 폰트를 임포트할경우 re-rendering 이슈로 여기서 진행하도록함
+const fontStyle = `@font-face {
+  font-family: 'NotoSansKR-Medium';
+  src: local('NotoSansKR-Medium'),
+    url('/fonts/NotoSansKR-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumMyeongjo';
+  src: url('/fonts/NanumMyeongjo.ttf');
+}
+@font-face {
+  font-family: 'JejuMyeongjo';
+  src: url('/fonts/JejuMyeongjo-Regular.ttf') format('ttf');
+}
+@font-face {
+  font-family: 'BlackHanSans-Regular';
+  src: local('BlackHanSans-Regular'),
+    url('/fonts/black-han-sans-v8-korean-regular.woff2') format('woff2'); // pattern: /directoryName/file.extension
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NanumBrushScript-Regular';
+  src: url('/fonts/NanumBrushScript-Regular.ttf'); // pattern: /directoryName/file.extension
+}
+@font-face {
+  font-family: 'NanumSquareR';
+  src: url('/fonts/NanumSquareR.woff'); // pattern: /directoryName/file.extension
+}`;
 
 const Layout = ({ children, title = 'This is the default title' }: Props) => {
   const router = useRouter();
@@ -25,6 +55,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
           type="text/javascript"
           src="https://developers.kakao.com/sdk/js/kakao.min.js"
         ></script>
+        <style>{fontStyle}</style>
       </Head>
       <ToastContainer />
       {router.pathname !== '/login' && <Sidebar />}
