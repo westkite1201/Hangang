@@ -191,6 +191,7 @@ router.post('/insert_quotes', async (req, res) => {
       backgroundImagePath,
       accepted,
       card_exps_typ_cd,
+      font_color,
     } = req.body;
     // const data = helpers.makeJsonKeyUpper({
     //   name,
@@ -210,6 +211,7 @@ router.post('/insert_quotes', async (req, res) => {
       CARD_EXPS_TYP_CD: card_exps_typ_cd,
       ACCEPTED: accepted,
       CARD_ORDER: count + 1,
+      FONT_COLOR: font_color,
     };
 
     console.log(data);

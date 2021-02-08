@@ -9,7 +9,9 @@ const MIN = 50;
 interface IBackground {
   backgroundImagePath: string;
 }
-
+interface IHexColor {
+  fontColor: string;
+}
 const St = {
   card: styled.div`
     margin-top: 20px;

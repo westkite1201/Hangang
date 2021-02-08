@@ -11,6 +11,7 @@ interface IPosterQuotesCard {
 const MAX = 200;
 const MIN = 50;
 const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
+  console.log(quotes);
   const [mouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = () => {
@@ -46,12 +47,12 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
       style={mouseOver ? cardHoverStyle : {}}
     >
       <BackGround backgroundImagePath={getImageFileFullPath(quotes)} />
-      <QuotesContent>
+      <QuotesContent fontColor={quotes.font_color}>
         {quotes.usePreview
           ? quotes.word
           : makePosterText(quotes.word, quotes._id)}
       </QuotesContent>
-      <QuotesAuthor>{quotes.name}</QuotesAuthor>
+      <QuotesAuthor fontColor={quotes.font_color}>{quotes.name}</QuotesAuthor>
     </QuotesWrapper>
   );
 };
@@ -92,10 +93,14 @@ const QuotesWrapper = styled.div`
   margin: auto;
 `;
 
+interface IHexColor {
+  fontColor: string;
+}
 const QuotesContent = styled.div`
   font-weight: bold;
   font-size: 1.4rem;
   text-align: center;
+  color: ${(props: IHexColor) => props.fontColor};
   padding: 20%;
   @media only screen and (min-width: 768px) {
     font-size: 1.2rem;
@@ -109,6 +114,7 @@ const QuotesAuthor = styled.h4`
   color: white;
   font-size: 1rem;
   text-align: center;
+  color: ${(props: IHexColor) => props.fontColor};
 `;
 
 export default PosterQuotesCard;

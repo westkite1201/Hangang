@@ -1,6 +1,6 @@
-import moment from "moment";
-import styled from "styled-components";
-import { IHangangTemp, IHangangStation } from "../../interfaces";
+import moment from 'moment';
+import styled from 'styled-components';
+import { IHangangTemp, IHangangStation } from '../../interfaces';
 interface IStationInfoprops {
   tempertureData: IHangangTemp;
   station: IHangangStation;
@@ -12,12 +12,12 @@ function StationInfo({ tempertureData, station }: IStationInfoprops) {
         <div>
           <span className="date">
             {tempertureData
-              ? moment(tempertureData.MSR_DATE).format("YYYY년 MM월 DD일")
-              : "--"}
+              ? moment(tempertureData.MSR_DATE).format('YYYY년 MM월 DD일')
+              : '--'}
           </span>
         </div>
         <div className="measure-time">
-          {tempertureData ? tempertureData.MSR_TIME : "--"}
+          {tempertureData ? tempertureData.MSR_TIME : '--'}
         </div>
       </StationInfoTime>
 
@@ -26,7 +26,7 @@ function StationInfo({ tempertureData, station }: IStationInfoprops) {
           측정소 <span className="station-name">{station && station.name}</span>
         </div>
         <div>
-          측정소까지{" "}
+          측정소까지{' '}
           <span className="station-distance">
             {station && `${station.distance / 1000}km`}
           </span>

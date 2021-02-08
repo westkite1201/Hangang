@@ -12,10 +12,8 @@ import {
   setSelectedBackgroundUrl
 } from '../../lib/slices/quotesSlice';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import { lnfoToast } from '../../lib/toast';
 import StyledTab from '../common/StyledTab';
-import axios from 'axios';
 
 const PER_PAGE = 30;
 const St = {
@@ -95,6 +93,7 @@ const UnsplashContainer = () => {
     } catch (e) {
       setError(e);
     } finally {
+      console.log('[SEO] loadRandom FINAL');
       setLoading(false);
     }
   }
@@ -109,7 +108,7 @@ const UnsplashContainer = () => {
       console.log('data ', data);
       setImages([...images, ...data.results]);
     }
-  }, [images, loadImage, targetRef]);
+  }, [images, loadImage, targetRef, loading]);
 
   const downloadImage = useCallback(async () => {
     try {
@@ -128,10 +127,17 @@ const UnsplashContainer = () => {
     } finally {
       setLoading(false);
     }
-  }, [setError, setPhoto, photo]);
+  }, [setError, setPhoto, photo, loading]);
 
   useEffect(() => {
     const _onIntersect = ([entry]) => {
+      console.log(
+        '[seo] oninsercect !',
+        !loading,
+        entry.isIntersecting,
+        currentPage.current,
+        totalPage.current
+      );
       if (
         !loading &&
         entry.isIntersecting &&
@@ -150,7 +156,7 @@ const UnsplashContainer = () => {
       observer.observe(targetRef.current);
     }
     return () => observer && observer.disconnect();
-  }, [targetRef, targetRef.current, images]);
+  }, [targetRef, targetRef.current, images, loading]);
 
   // useIntersectionObserver({
   //   root: rootRef.current,

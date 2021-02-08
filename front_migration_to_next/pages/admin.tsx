@@ -4,6 +4,7 @@ import UnsplashContainer from '../components/UnsplashContainer/UnsplashContainer
 import styled from 'styled-components';
 import { Button, TextField } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
+import ColorPicker from '../components/common/ColorPicker';
 import { RootState } from '../store';
 import {
   submitQuotesThunk,
@@ -102,7 +103,9 @@ const PreviewContainer = () => {
                   variant="outlined"
                   onChange={handleAuthorChange}
                 />
+                <ColorPicker quotes={quotes} setQuotes={setQuotes} />
               </St.InputContainer>
+
               <Button
                 variant="outlined"
                 color="secondary"
