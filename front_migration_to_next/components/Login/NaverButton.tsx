@@ -11,7 +11,6 @@ type NaverBtnProps = {
 };
 
 const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
-<<<<<<< HEAD
   const NaverLogin = () => {
     const {
       naver: { LoginWithNaverId }
@@ -60,61 +59,6 @@ const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
     </div>
   );
 };
-=======
-    useEffect(() => {
-        NaverLogin()
-    }, [])
-    
-    const NaverLogin = () => {
-        const { naver: { LoginWithNaverId } } = window
-        const naverLogin = new LoginWithNaverId({
-            clientId: clientId,
-            callbackUrl: callbackUrl,
-            isPopup: false,
-            callbackHandle: true,
-            loginButton: {
-                color: 'green',
-                type: 1,
-                height: 100
-            }
-        })
-
-        naverLogin.init()
-
-        naverLogin.getLoginStatus(function (status) {
-            console.log(status)
-            if (status) {
-                console.log(naverLogin.user)
-            } else {
-                console.log("AccessToken이 올바르지 않습니다.");
-            }
-        });
-    }
-
-    const naverLogout = async () => {
-        const { naver: { logout } } = window
-
-        const hostUrl = 'https://nid.naver.com/oauth2.0/token?'
-        const grantType = 'grant_type=' + 'delete'
-        const clientId = 'client_id=' + 'D0CsChNrt0YRFNdIhg3F'
-        const clientSecret = 'client_secret=' + 'iU8KrijzIn'
-        const accessToken = 'access_token' + 'AAAAOJ14MQi0w59cRzT7VsRzKt10CU7xSplydw6MPqq37NBUKx3Xw1JUoKbKWavsG1m1MvCDTJmUzjH0RUX6OLT6iV4'
-        const serviceProvider = 'service_provider' + 'NAVER'
-        const url = hostUrl + grantType + '&' + clientId + '&' + clientSecret + '&' + accessToken + '&' + serviceProvider
-        // const url = 'https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=D0CsChNrt0YRFNdIhg3F&client_secret=iU8KrijzIn&access_token=AAAAOJ14MQi0w59cRzT7VsRzKt10CU7xSplydw6MPqq37NBUKx3Xw1JUoKbKWavsG1m1MvCDTJmUzjH0RUX6OLT6iV4&service_provider=NAVER'
-
-        const res = await fetch(url)
-        console.log(res)
-    }
-
-    return (
-        <div>
-            <div id='naverIdLogin' onClick={NaverLogin}></div>
-            <button onClick={naverLogout}>네이버 로그아웃</button>
-        </div>
-    )
-}
->>>>>>> feature/migration_next
 
 NaverButton.defaultProps = {
   clientId: 'D0CsChNrt0YRFNdIhg3F',
