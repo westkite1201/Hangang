@@ -9,7 +9,7 @@ const isDev = () => {
   return process.env.NEXT_PUBLIC_NODE_ENV !== 'production';
 };
 
-const initGA = (code: string, Router) => {
+const initGA = (code, Router) => {
   // local이거나 development 환경일 땐 ga를 실행하지 않습니다.
   const shouldNotTrack = isLocal() || isDev();
 
