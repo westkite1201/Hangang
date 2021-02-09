@@ -57,7 +57,6 @@ const SketchExample = ({ quotes, setQuotes }) => {
   };
 
   const handleChange = (color) => {
-    console.log('hello clolr ', color);
     setColor(color.rgb);
     setQuotes({ ...quotes, font_color: color.hex });
   };

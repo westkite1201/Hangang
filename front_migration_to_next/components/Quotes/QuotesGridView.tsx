@@ -27,7 +27,6 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
     maxPageNum.current = Math.ceil(totalCount / PAGE_COUNT);
   }, [totalCount]);
   const [target, setTarget] = useState(null);
-  console.log(quotesArray, totalCount, isLast, pageNum, loading);
 
   useInfinteScroll({
     target,

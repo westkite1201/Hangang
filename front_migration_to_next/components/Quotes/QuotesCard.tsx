@@ -10,7 +10,7 @@ import { BANNER, POSTER } from '../../lib/CommonString';
 function CardComponent({ quotes }) {
   const { card_exps_typ_cd } = quotes;
   const cardType = getContentCardType(card_exps_typ_cd);
-  console.log('cardType ', cardType);
+
   switch (cardType) {
     case 'poster':
       return <PosterQuotesCard quotes={quotes} key={quotes._id} />;

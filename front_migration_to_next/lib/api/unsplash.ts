@@ -17,7 +17,6 @@ export const getRandomPhotos = (params) => {
 };
 
 export const searchPhotos = async (params) => {
-  console.log('searchPhotos ', params);
   return instance
     .get(`/search/photos?${objectToQueryString(params)}`)
     .then((res) => res.data);

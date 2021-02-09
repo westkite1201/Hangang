@@ -11,7 +11,6 @@ interface IPosterQuotesCard {
 const MAX = 200;
 const MIN = 50;
 const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
-  console.log(quotes);
   const [mouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = () => {
@@ -39,7 +38,7 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
       );
     });
   };
-  console.log('quotes.word', quotes.word);
+
   return (
     <QuotesWrapper
       onMouseEnter={handleMouseOver}

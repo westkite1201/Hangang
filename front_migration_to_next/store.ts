@@ -6,9 +6,9 @@ export const makeStore = () =>
   configureStore({
     reducer: {
       quotes: quotesReducer,
-      hangang: hangangReducer,
+      hangang: hangangReducer
     },
-    devTools: process.env.NODE_ENV === 'development',
+    devTools: process.env.NEXT_PUBLIC_NODE_ENV === 'development'
   });
 
 export type RootStore = ReturnType<typeof makeStore>;

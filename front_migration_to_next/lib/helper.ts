@@ -15,7 +15,7 @@ export function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
   // var lng1 = array[0].getLng();
   // var lat2 = array[1].getLat();
   // var lng2 = array[1].getLng();
-  console.log(lat1, lng1, lat2, lng2);
+
   function deg2rad(deg) {
     return deg * (Math.PI / 180);
   }
@@ -60,16 +60,13 @@ function getRandomInt(min, max) {
 //아침, 저녁 , 밤 ,새벽,
 export function getBackgroundImage() {
   const time = parseInt(moment().format('HHmm'));
-  console.log('time', time);
+
   if (600 < time && time <= 1730) {
-    console.log('아침');
     return `/images/hangang/morning_${getRandomInt(0, 2)}.jpg`;
   } else if (1730 < time && time <= 2000) {
-    console.log('저녁', getRandomInt(0, 0));
     //일단 새벽이미지 사용
     return `/images/hangang/dawn_${getRandomInt(0, 0)}.jpg`;
   } else if ((2000 < time && time <= 2400) || time <= 600) {
-    console.log('밤');
     return `/images/hangang/night_${getRandomInt(0, 2)}.jpg`;
   }
 }

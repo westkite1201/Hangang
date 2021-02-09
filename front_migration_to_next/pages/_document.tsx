@@ -1,4 +1,4 @@
-import Document, { DocumentContext } from 'next/document';
+import Document from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 import { ServerStyleSheets } from '@material-ui/styles';
 

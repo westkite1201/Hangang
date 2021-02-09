@@ -45,7 +45,6 @@ const UnsplashContainer = () => {
   const loadImage = useCallback(
     async ({ query, page }) => {
       try {
-        console.log('loadImage ', loadImage);
         setLoading(true);
         const data = await UnsplashAPI.searchPhotos({
           query,
@@ -73,7 +72,7 @@ const UnsplashContainer = () => {
       currentPage.current = 1;
       try {
         const data = await loadImage({ query, page: 1, per_page: PER_PAGE });
-        console.log('searchImage data ', data);
+
         setImages([...data.results]);
       } catch (e) {
         console.error(e);
@@ -86,26 +85,23 @@ const UnsplashContainer = () => {
     try {
       setLoading(true);
       const data = await UnsplashAPI.getRandomPhotos({ count: 30 });
-      console.log('loadRandomImage ', data);
       totalPage.current = 5;
       currentQuery.current = '';
       setImages((images) => [...images, ...data]);
     } catch (e) {
       setError(e);
     } finally {
-      console.log('[SEO] loadRandom FINAL');
       setLoading(false);
     }
   }
   const loadMoreImage = useCallback(async () => {
-    console.log('loadMoreImage ', images);
     if (images.length > 0) {
       currentPage.current++;
       const data = await loadImage({
         query: currentQuery.current,
         page: currentPage.current
       });
-      console.log('data ', data);
+
       setImages([...images, ...data.results]);
     }
   }, [images, loadImage, targetRef, loading]);
@@ -113,7 +109,7 @@ const UnsplashContainer = () => {
   const downloadImage = useCallback(async () => {
     try {
       //alert('downloadImage');
-      console.log(photo);
+
       setLoading(true);
       //const blob = await downloadPhoto(photo.urls.regular);
       const blob = await UnsplashAPI.getImage(
@@ -131,13 +127,6 @@ const UnsplashContainer = () => {
 
   useEffect(() => {
     const _onIntersect = ([entry]) => {
-      console.log(
-        '[seo] oninsercect !',
-        !loading,
-        entry.isIntersecting,
-        currentPage.current,
-        totalPage.current
-      );
       if (
         !loading &&
         entry.isIntersecting &&

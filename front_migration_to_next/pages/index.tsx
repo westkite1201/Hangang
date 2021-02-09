@@ -6,7 +6,7 @@ import { getQuotesThunk, PAGE_COUNT } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
 const IndexPage = () => {
   const { riverTempData } = useSelector((state: RootState) => state.hangang);
-  console.log(riverTempData);
+
   return <>{<HangangMain riverTempData={riverTempData} />}</>;
 };
 

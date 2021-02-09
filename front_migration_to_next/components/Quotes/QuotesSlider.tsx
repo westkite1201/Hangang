@@ -47,10 +47,10 @@ const QuotesSlider = (props) => {
     speed: 1000,
     autoplaySpeed: 7000,
     beforeChange: function (currentSlide, nextSlide) {
-      console.log('before change', currentSlide, nextSlide);
+      //console.log('before change', currentSlide, nextSlide);
     },
     afterChange: function (currentSlide) {
-      console.log('after change', currentSlide);
+      //console.log('after change', currentSlide);
     }
   };
   const { quotesArray } = quotesData;

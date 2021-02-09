@@ -168,7 +168,7 @@ const FileUploadForm = ({ handleSelect }) => {
         clientConfig.endpoint.api + '/file/uploadFiles',
         formData
       );
-      console.log(res);
+
       if (res.data.code !== 200) {
         successToast('저장되었습니다');
         //getFileList();
@@ -182,7 +182,6 @@ const FileUploadForm = ({ handleSelect }) => {
 
   /* fileUpload  */
   const fileUpload = (event) => {
-    console.log(event.target.files);
     const fileInput = document.getElementById('fileAdd');
     if (_.isNil(fileInput)) {
       return;

@@ -9,7 +9,7 @@ export async function updateQuote(quote: IQuote) {
     `${clientConfig.endpoint.api}/hangang/update_quotes_name_word`,
     quote
   );
-  console.log('updateQuote updateQuote  ', response.data.data);
+
   return response.data.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 

@@ -10,12 +10,12 @@ export const getHangangTempThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await getHangangTemp();
-      console.log('response ', response);
+
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  },
+  }
 );
 
 interface InitialState {
@@ -27,7 +27,7 @@ interface InitialState {
 const initialState: InitialState = {
   riverTempData: [],
   loading: false,
-  error: '',
+  error: ''
 };
 
 const hanngangSlice = createSlice({
@@ -49,7 +49,7 @@ const hanngangSlice = createSlice({
     builder.addCase(getHangangTempThunk.rejected, (state, action) => {
       state.loading = false;
     });
-  },
+  }
 });
 
 export default hanngangSlice.reducer;

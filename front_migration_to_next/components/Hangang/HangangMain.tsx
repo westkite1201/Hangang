@@ -15,7 +15,6 @@ import Hr from '../common/Hr';
 let backGroundtimer = null;
 
 function HangangContainer({ riverTempData }) {
-  console.log('riverTempData ', riverTempData);
   const [backgroundImagePath, setBackGroundImagePath] = useState('');
   const [tempertureData, setTempertureData] = useState<IHangangTemp>();
   const [station, setStation] = useState({
@@ -33,7 +32,6 @@ function HangangContainer({ riverTempData }) {
 
   //function
   function getTempData(stations, riverTempData) {
-    console.log('getTempData ', stations, riverTempData);
     let stationNum = 0;
     stations.some((item, key) => {
       stationNum = key;
@@ -45,11 +43,8 @@ function HangangContainer({ riverTempData }) {
     };
   }
   useEffect(() => {
-    console.log('useEfffect ', stations, riverTempData);
-
     if (stations && riverTempData && riverTempData.length !== 0) {
       const { tempertureData, station } = getTempData(stations, riverTempData);
-      console.log('inside useEffect ', tempertureData, station);
       setTempertureData(tempertureData);
       setStation(station);
     }

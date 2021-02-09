@@ -14,7 +14,6 @@ export const getQuotesThunk = createAsyncThunk(
     try {
       //console.log('getQuotesThunk ', params);
       const response = await getQuotes(params);
-      console.log('response ', response);
       return response;
     } catch (error) {
       console.log('error ', error);
@@ -28,7 +27,7 @@ export const uploadImageThunk = createAsyncThunk(
   async (params: IUploadImageParams, thunkAPI) => {
     try {
       const submitQuotesResponse = await getImageDownloadToUrl(params);
-      console.log('response ', submitQuotesResponse);
+
       return submitQuotesResponse;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -42,8 +41,7 @@ export const submitQuotesThunk = createAsyncThunk(
   'quotes/submitQuotesThunk',
   async (params: IQuote, thunkAPI) => {
     const { isUnsplash, backgroundImagePath, url, id } = params;
-    console.log('params', params);
-    console.log('isUnsp;ashj ', isUnsplash, url);
+
     try {
       if (isUnsplash) {
         const imageUploadParams = { backgroundImagePath, url, id };
@@ -55,11 +53,10 @@ export const submitQuotesThunk = createAsyncThunk(
         if (message === 'success' || status === ' 200') {
           params.backgroundImagePath = extractImageFileName(params);
           const submitQuotesResponse = await submitQuotes(params);
-          console.log('response ', submitQuotesResponse);
+
           return submitQuotesResponse;
         }
       } else {
-        console.log('ISNOT unsplash ', params);
         const submitQuotesResponse = await submitQuotes(params);
         //console.log('response ', submitQuotesResponse);
         return submitQuotesResponse;
@@ -116,14 +113,13 @@ const quotesSlice = createSlice({
     builder.addCase(hydrate, (state, action) => action.payload['quotes']);
 
     builder.addCase(getQuotesThunk.pending, (state, action) => {
-      console.log('loadNotes pending');
       //state.quotesData = [];
       state.quotesData.loading = true;
     });
 
     builder.addCase(getQuotesThunk.fulfilled, (state, action) => {
       const { quotes_array, total_count } = action.payload;
-      console.log('loadNotes.fulfiled', state, action.payload);
+
       state.quotesData.quotesArray.push(...quotes_array);
       state.quotesData.totalCount = total_count;
       state.quotesData.loading = false;

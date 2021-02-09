@@ -14,7 +14,7 @@ const PreviewContainer = () => {
   const { selectedBackgroundUrl } = useSelector(
     (state: RootState) => state.quotes
   );
-  console.log('selecetedBackgroundUrl', selectedBackgroundUrl);
+
   const spaceInsert = (str) => {
     return str.replace(/#/gi, '\n');
   };
@@ -61,7 +61,6 @@ const PreviewContainer = () => {
   };
 
   const submitQuotes = () => {
-    console.log('buttonClick');
     dispatch(submitQuotesThunk(quotes));
   };
   const handleSetSelectedBackgroundUrl = (image) => {

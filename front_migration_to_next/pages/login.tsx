@@ -56,11 +56,9 @@ const LoginPage = () => {
   }, [enterLogin]);
 
   const handlePassword = (e) => {
-    console.log('hell', password);
     setPassword(e.target.value);
   };
   const handleEmail = (e) => {
-    console.log('hell', email);
     setEmail(e.target.value);
   };
 

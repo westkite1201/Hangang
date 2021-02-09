@@ -6,7 +6,7 @@ import { getQuotesThunk, PAGE_COUNT } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
 const Quotes = (props) => {
   const { quotesData } = useSelector((state: RootState) => state.quotes);
-  console.log('quotesData', quotesData);
+
   return (
     <div>
       <QuotesGridView quotesData={quotesData} />
