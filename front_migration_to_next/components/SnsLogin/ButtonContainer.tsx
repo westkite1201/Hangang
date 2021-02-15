@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import KakaoButton from './KakaoButton';
 import NaverButton from './NaverButton';
 
+import { getSnsLoginUserDataThunk } from '../../lib/slices/loginSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+
 const ButtonContainer = () => {
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state: RootState) => state.login);
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    console.log('[masonms] userData: ', userData);
+  }, [dispatch, userData]);
+
+  useEffect(() => {
+    if (userData.isLogin) {
+      window.location.href = window.location.origin;
+    }
+  }, [userData]);
+
+  const snsLoginSuccess = (accessToken) => {
+    dispatch(
+      getSnsLoginUserDataThunk({ ACCESS_TOKEN: accessToken, SNS_TYPE: 'KAKAO' })
+    );
+  };
+
   return (
     <div>
-      <NaverButton />
-      <KakaoButton />
+      {/* <NaverButton snsLoginSuccess={snsLoginSuccess} /> */}
+      <KakaoButton snsLoginSuccess={snsLoginSuccess} />
     </div>
   );
 };

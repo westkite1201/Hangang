@@ -4,6 +4,10 @@ export interface IUserData {
   USER_TYPE: string;
 }
 
+export interface ISnsUserData {
+  ACCESS_TOKEN: string;
+  SNS_TYPE: string;
+}
 export interface IHangangTemp {
   MSR_DATE: string;
   MSR_TIME: string;

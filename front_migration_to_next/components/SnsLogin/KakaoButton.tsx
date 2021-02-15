@@ -8,9 +8,10 @@ declare global {
 
 type KakaoBtnProps = {
   token: string;
+  snsLoginSuccess: (accessToken: string) => void;
 };
 
-const KakaoButton = ({ token }: KakaoBtnProps) => {
+const KakaoButton = ({ token, snsLoginSuccess }: KakaoBtnProps) => {
   useEffect(() => {
     KakaoInit();
   }, []);
@@ -24,6 +25,7 @@ const KakaoButton = ({ token }: KakaoBtnProps) => {
     Kakao.Auth.createLoginButton({
       container: '#kakao-login-btn',
       success: (response) => {
+        snsLoginSuccess(response.access_token);
         Kakao.Auth.setAccessToken(response.access_token);
         Kakao.API.request({
           url: '/v2/user/me',
