@@ -17,12 +17,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState();
   const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.login);
-  // console.log('[masonms] userData', userData);
-  //   useEffect(() => {
-  //     if (memberInfo.isLogin) {
-  //       history.push('/');
-  //     }
-  //   }, [memberInfo, history]);
 
   const onClickLogin = () => {
     // dispatch({
@@ -58,10 +52,6 @@ const LoginPage = () => {
       window.removeEventListener('keydown', enterLogin);
     };
   }, [enterLogin]);
-
-  useEffect(() => {
-    // console.log('[masonms] userData: ', userData);
-  }, []);
 
   const handlePassword = (e) => {
     setPassword(e.target.value);

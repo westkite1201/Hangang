@@ -12,10 +12,6 @@ const ButtonContainer = () => {
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    console.log('[masonms] userData: ', userData);
-  }, [dispatch, userData]);
-
-  useEffect(() => {
     if (userData.isLogin) {
       window.location.href = window.location.origin;
     }

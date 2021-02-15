@@ -23,9 +23,7 @@ export const getSnsLoginUserDataThunk = createAsyncThunk(
   'login/getSnsLoginData',
   async (params: ISnsUserData, thunkAPI) => {
     try {
-      // console.log('[masonms] req params: ', params);
       const response = await getSnsLoginData(params);
-      // console.log('getSnsLoginData response: ', response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
