@@ -61,7 +61,6 @@ const KakaoButton = ({ token }: KakaoBtnProps) => {
   return (
     <div>
       <a id="kakao-login-btn"></a>
-      <button onClick={logout}>카카오톡 로그아웃</button>
     </div>
   );
 };

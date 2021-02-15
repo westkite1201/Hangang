@@ -7,13 +7,18 @@ import {
   RightAlignedLink
 } from '../components/Auth';
 
-import { useDispatch } from 'react-redux';
+import LoginButtonContainer from '../components/SnsLogin/ButtonContainer';
+import { RootState } from '../store';
+import { IUserData } from '../interfaces';
+import { getTestDataThunk } from '../lib/slices/loginSlice';
+
+import { useDispatch, useSelector } from 'react-redux';
 const LoginPage = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const dispatch = useDispatch();
-  // const { memberInfo } = useSelector((state) => state.auth);
-
+  const { userData } = useSelector((state: RootState) => state.login);
+  // console.log('[masonms] userData', userData);
   //   useEffect(() => {
   //     if (memberInfo.isLogin) {
   //       history.push('/');
@@ -55,6 +60,11 @@ const LoginPage = () => {
     };
   }, [enterLogin]);
 
+  useEffect(() => {
+    dispatch(getTestDataThunk());
+    console.log('[masonms] userData: ', userData);
+  }, []);
+
   const handlePassword = (e) => {
     console.log('hell', password);
     setPassword(e.target.value);
@@ -84,6 +94,7 @@ const LoginPage = () => {
           <AuthButton onClick={onClickLogin}>로그인</AuthButton>
           <RightAlignedLink to="/auth/register">회원가입</RightAlignedLink>
         </AuthContent>
+        <LoginButtonContainer />
       </AuthWrapper>
     </div>
   );
