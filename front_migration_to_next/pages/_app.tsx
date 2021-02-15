@@ -35,6 +35,19 @@ const MyApp = ({ Component, pageProps }) => {
             <Component {...pageProps} themeMode={themeMode} />
           </Layout>
         </St.Background>
+        <div
+          style={{
+            padding: '20px',
+            position: 'fixed',
+            width: '100%',
+            bottom: 0,
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <span>💜 Spreading values, TEAM D_D💜</span>
+        </div>
       </ThemeProvider>
     </div>
   );
