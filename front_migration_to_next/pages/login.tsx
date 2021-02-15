@@ -11,6 +11,7 @@ import LoginButtonContainer from '../components/SnsLogin/ButtonContainer';
 import { RootState } from '../store';
 import { IUserData } from '../interfaces';
 import { getTestDataThunk } from '../lib/slices/loginSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
 
 const Register = ({ handleRegistForm, resist }) => {
@@ -41,12 +42,6 @@ const LoginPage = () => {
   const [isRegist, setIsRegist] = useState(false);
   const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.login);
-  // console.log('[masonms] userData', userData);
-  //   useEffect(() => {
-  //     if (memberInfo.isLogin) {
-  //       history.push('/');
-  //     }
-  //   }, [memberInfo, history]);
 
   const onClickLogin = () => {
     // dispatch({
@@ -82,11 +77,6 @@ const LoginPage = () => {
       window.removeEventListener('keydown', enterLogin);
     };
   }, [enterLogin]);
-
-  useEffect(() => {
-    dispatch(getTestDataThunk());
-    console.log('[masonms] userData: ', userData);
-  }, []);
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
