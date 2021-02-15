@@ -1,13 +1,16 @@
 import { useSelector } from 'react-redux';
-import HangangMain from '../components/Hangang/HangangMain';
+
 import { wrapper } from '../store';
 import { getHangangTempThunk } from '../lib/slices/hangangSlice';
 import { getQuotesThunk, PAGE_COUNT } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
-const IndexPage = () => {
-  const { riverTempData } = useSelector((state: RootState) => state.hangang);
+import dynamic from 'next/dynamic';
+//import HangangMain from '../components/Hangang/HangangMain';
+const HangangMain = dynamic(() => import('../components/Hangang/HangangMain'));
 
-  return <>{<HangangMain riverTempData={riverTempData} />}</>;
+const IndexPage = ({ themeMode }) => {
+  const { riverTempData } = useSelector((state: RootState) => state.hangang);
+  return <HangangMain riverTempData={riverTempData} themeMode={themeMode} />;
 };
 
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {

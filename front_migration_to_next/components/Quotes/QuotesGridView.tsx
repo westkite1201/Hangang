@@ -57,7 +57,7 @@ const QuotesGridView = ({ quotesData }: QuotesGridviewProps) => {
                     <QuotesCard
                       quotes={quotes}
                       index={quotes._id + ' ' + index}
-                      key={quotes._id}
+                      key={quotes._id + ' ' + index + '_QuotesCard'}
                     />
                   );
                 })}

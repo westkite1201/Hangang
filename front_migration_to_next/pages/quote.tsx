@@ -1,17 +1,15 @@
 import React from 'react';
 import { wrapper } from '../store';
-import QuotesGridView from '../components/Quotes/QuotesGridView';
 import { useSelector } from 'react-redux';
 import { getQuotesThunk, PAGE_COUNT } from '../lib/slices/quotesSlice';
 import { RootState } from '../store';
+import dynamic from 'next/dynamic';
+const QuotesGridView = dynamic(() =>
+  import('../components/Quotes/QuotesGridView')
+);
 const Quotes = (props) => {
   const { quotesData } = useSelector((state: RootState) => state.quotes);
-
-  return (
-    <div>
-      <QuotesGridView quotesData={quotesData} />
-    </div>
-  );
+  return <QuotesGridView quotesData={quotesData} />;
 };
 
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {

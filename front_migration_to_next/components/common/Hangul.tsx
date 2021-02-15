@@ -31,7 +31,7 @@ const Hangul = ({ str, id, intervalTime }: IHangulProps) => {
       const nTmp = cCode - 0xac00;
       jong = nTmp % 28; // 종성
       jung = ((nTmp - jong) / 28) % 21; // 중성
-      cho = ((nTmp - jong) / 28 - jung) / 21; // 종성
+      cho = ((nTmp - jong) / 28 - jung) / 21; // 초성
       return {
         jong: jong,
         jung: jung,

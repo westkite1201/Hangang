@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { css } from '../../styles/themed-components';
+import styled, { css } from 'styled-components';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 const Sidebar = () => {
@@ -16,18 +16,9 @@ const Sidebar = () => {
   return (
     <div>
       {!sideMenu && (
-        <div
-          style={{
-            color: 'black',
-            position: 'absolute',
-            zIndex: 120,
-            padding: '10px',
-            cursor: 'pointer'
-          }}
-          onClick={showSideMenu}
-        >
+        <St.MenuIcon onClick={showSideMenu}>
           <MenuIcon onClick={showSideMenu} style={{ fontSize: '2rem' }} />
-        </div>
+        </St.MenuIcon>
       )}
 
       <SideNav sideMenu={sideMenu} hideSideMenu={hideSideMenu} />
@@ -67,6 +58,13 @@ interface ISidebarProps {
   sideMenu: boolean | null;
 }
 const St = {
+  MenuIcon: styled.div`
+    position: absolute;
+    color: ${({ theme }) => theme.mode.primaryText};
+    z-index: 120;
+    padding: 10px;
+    cursor: pointer;
+  `,
   AppbarWrapper: styled.div`
     color: black;
     background-color: rgba(0, 0, 0, 0);

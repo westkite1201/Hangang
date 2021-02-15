@@ -13,9 +13,9 @@ function CardComponent({ quotes }) {
 
   switch (cardType) {
     case 'poster':
-      return <PosterQuotesCard quotes={quotes} key={quotes._id} />;
+      return <PosterQuotesCard quotes={quotes} key={quotes._id + '_poster'} />;
     case 'banner':
-      return <BannerQuotesCard quotes={quotes} key={quotes._id} />;
+      return <BannerQuotesCard quotes={quotes} key={quotes._id + '_banner'} />;
     default:
       return <div />;
   }
@@ -41,7 +41,7 @@ const QuotesCard = ({ quotes, index }) => {
         xs={12}
         md={usePreview ? 12 : 4}
         lg={usePreview ? 12 : 3}
-        key={index}
+        key={quotes._id + ' ' + index + '_grid'}
       >
         <CardComponent quotes={quotes} />
       </Grid>

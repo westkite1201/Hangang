@@ -9,12 +9,12 @@ import { useSpring, animated } from 'react-spring';
 import * as easings from 'd3-ease';
 import { IHangangStation, ICoordinates, IHangangTemp } from '../../interfaces';
 import Hr from '../common/Hr';
-
 //import useHangangTemp from '../../hooks/useHangangTemp';
 
 let backGroundtimer = null;
 
-function HangangContainer({ riverTempData }) {
+function HangangMain({ riverTempData, themeMode }) {
+  console.log(themeMode);
   const [backgroundImagePath, setBackGroundImagePath] = useState('');
   const [tempertureData, setTempertureData] = useState<IHangangTemp>();
   const [station, setStation] = useState({
@@ -114,7 +114,10 @@ function HangangContainer({ riverTempData }) {
 
   return (
     <Wrapper>
-      <BackGround backgroundImagePath={backgroundImagePath} />
+      <BackGround
+        backgroundImagePath={backgroundImagePath}
+        themeMode={themeMode}
+      />
       <TitleWrapper>
         <Title>
           <Hr></Hr>
@@ -184,6 +187,7 @@ const TitleTemperture = styled.div`
 `;
 interface IBackground {
   backgroundImagePath: string;
+  themeMode: string;
 }
 const BackGround = styled.div`
   overflow-y: hidden;
@@ -193,7 +197,8 @@ const BackGround = styled.div`
   background-size: cover;
   background-color: transparent;
 
-  background-image: url(${(props: IBackground) => props.backgroundImagePath});
+  background-image: url(${(props: IBackground) =>
+    props.themeMode === 'light' ? props.backgroundImagePath : ''});
   position: absolute;
   top: 0;
   left: 0;
@@ -202,4 +207,4 @@ const BackGround = styled.div`
   filter: blur(4px);
   -webkit-filter: blur(4px);
 `;
-export default HangangContainer;
+export default HangangMain;
