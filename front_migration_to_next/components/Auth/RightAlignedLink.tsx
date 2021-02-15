@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import oc from 'open-color';
-
+import Link from 'next/link';
 const Aligner = styled.div`
   margin-top: 1rem;
   text-align: right;
@@ -14,9 +14,9 @@ const StyledLink = styled.div`
   }
 `;
 
-const RightAlignedLink = ({ to, children }) => (
+const RightAlignedLink = ({ onClick, children }) => (
   <Aligner>
-    <StyledLink>{children}</StyledLink>
+    <StyledLink onClick={onClick}>{children}</StyledLink>
   </Aligner>
 );
 

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { RootState } from '../../store';
-import { getLoginData, getTestData } from '../api/login';
+import { getLoginData, getTestData, getSnsLoginData } from '../api/login';
+import { ISnsUserData } from '../../interfaces';
 
 const hydrate = createAction<RootState>(HYDRATE);
 
@@ -10,20 +11,19 @@ export const getLoginUserDataThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await getLoginData();
-      console.log('response: ', response);
+      console.log('getLoginData response: ', response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
-)
+);
 
-export const getTestDataThunk = createAsyncThunk(
-  'login/getTestData',
-  async (_, thunkAPI) => {
+export const getSnsLoginUserDataThunk = createAsyncThunk(
+  'login/getSnsLoginData',
+  async (params: ISnsUserData, thunkAPI) => {
     try {
-      const response = await getTestData();
-      console.log('response: ', response);
+      const response = await getSnsLoginData(params);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -37,6 +37,7 @@ interface InitialState {
     accessToken: string;
     userId: string;
     userType: string;
+    isLogin: boolean;
   };
 }
 
@@ -45,7 +46,8 @@ const initialState: InitialState = {
   userData: {
     accessToken: '',
     userId: '',
-    userType: ''
+    userType: '',
+    isLogin: false
   }
 };
 
@@ -55,16 +57,17 @@ const loginSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     // builder.addCase(hydrate, (state, action) => action.payload['hangang']);
-    builder.addCase(getTestDataThunk.pending, (state, action) => {
+    builder.addCase(getSnsLoginUserDataThunk.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(getTestDataThunk.fulfilled, (state, action) => {
+    builder.addCase(getSnsLoginUserDataThunk.fulfilled, (state, action) => {
       state.userData.accessToken = action.payload.access_token;
       state.userData.userId = action.payload.user_id;
       state.userData.userType = action.payload.user_type;
+      state.userData.isLogin = true;
       state.loading = false;
     });
-    builder.addCase(getTestDataThunk.rejected, (state, action) => {
+    builder.addCase(getSnsLoginUserDataThunk.rejected, (state, action) => {
       state.loading = false;
     });
   }
