@@ -1,11 +1,12 @@
 import dynamic from 'next/dynamic';
 //import HangangMain from '../components/Hangang/HangangMain';
-const QuotesMaker = dynamic(() => import('../components/Quotes/QuotesMaker'), {
-  ssr: false
-});
+import Dashboard from '../components/DashBoard/DashBoardMain';
+// const QuotesMaker = dynamic(() => import('../components/Quotes/QuotesMaker'), {
+//   ssr: false
+// });
 
 const Admin = () => {
-  <QuotesMaker />;
+  return <Dashboard></Dashboard>;
 };
 
 export default Admin;

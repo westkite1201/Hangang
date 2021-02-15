@@ -58,7 +58,8 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
         <style>{fontStyle}</style>
       </Head>
       <ToastContainer />
-      {router.pathname !== '/login' && <Sidebar />}
+      {router.pathname !== '/login' ||
+        (router.pathname.includes('admin') && <Sidebar />)}
       {children}
       {/* <script type='text/javascript' src='/static/js/naveridlogin_js_sdk_2.0.2.js'></script> */}
     </div>
