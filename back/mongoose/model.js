@@ -22,7 +22,7 @@ module.exports = (function(){
     const model = {};
     
     // Schema가 추가되면 여기에 추가로 등록
-    schema.Member = require('./schema/member')(mongoose);
+    // schema.Member = require('./schema/member')(mongoose);
     schema.Quote = require('./schema/quote')(mongoose);
 
     for(let k in schema){

@@ -31,6 +31,24 @@ bcryptCheck = async (password, rows) => {
   }
 };
 
+router.get('/login-test', async (req, res) => {
+  try {
+    let ACCESS_TOKEN = 'token';
+    let USER_ID = 'id';
+    let USER_TYPE = 'userType';
+    let SNS_TYPE = 'snsType';
+
+    return res.json({
+      ACCESS_TOKEN,
+      USER_ID,
+      USER_TYPE,
+      SNS_TYPE
+    })
+  } catch (error) {
+    
+  }
+});
+
 //google, kakao
 router.post('/sns-login', async (req, res) => {
   try {

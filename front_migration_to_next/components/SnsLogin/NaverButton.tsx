@@ -11,6 +11,10 @@ type NaverBtnProps = {
 };
 
 const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
+  useEffect(() => {
+    NaverLogin();
+  }, []);
+
   const NaverLogin = () => {
     const {
       naver: { LoginWithNaverId }
@@ -55,7 +59,6 @@ const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
   return (
     <div>
       <button id="naverIdLogin" onClick={NaverLogin}></button>
-      <button onClick={naverLogout}>네이버 로그아웃</button>
     </div>
   );
 };

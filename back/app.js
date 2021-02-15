@@ -8,7 +8,7 @@ let bodyParser = require('body-parser');
 let indexRouter = require('./routes/index');
 let hangangRouter = require('./routes/api/hangangController');
 let fileRouter = require('./routes/api/fileController');
-//let authRouter = require('./routes/api/authController');
+let authRouter = require('./routes/api/authController');
 
 let { graphqlHTTP } = require('express-graphql');
 
@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/hangang', hangangRouter);
 app.use('/api/file', fileRouter);
-//app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 var { schema, root } = require('./graphql/schema');
 
