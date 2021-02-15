@@ -8,9 +8,14 @@ declare global {
 type NaverBtnProps = {
   clientId: string;
   callbackUrl: string;
+  snsLoginSuccess: (accessToken: string) => void;
 };
 
-const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
+const NaverButton = ({
+  clientId,
+  callbackUrl,
+  snsLoginSuccess
+}: NaverBtnProps) => {
   useEffect(() => {
     NaverLogin();
   }, []);
@@ -36,7 +41,7 @@ const NaverButton = ({ clientId, callbackUrl }: NaverBtnProps) => {
     naverLogin.getLoginStatus(function (status) {
       console.log(status);
       if (status) {
-        console.log(naverLogin.user);
+        snsLoginSuccess('naver accesstoken: ' + '1234');
       } else {
         console.log('AccessToken이 올바르지 않습니다.');
       }

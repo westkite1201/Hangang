@@ -31,50 +31,45 @@ bcryptCheck = async (password, rows) => {
   }
 };
 
-router.get('/login-test', async (req, res) => {
-  try {
-    let ACCESS_TOKEN = 'token';
-    let USER_ID = 'id';
-    let USER_TYPE = 'userType';
-    let SNS_TYPE = 'snsType';
-
-    return res.json({
-      ACCESS_TOKEN,
-      USER_ID,
-      USER_TYPE,
-      SNS_TYPE
-    })
-  } catch (error) {
-    
-  }
-});
-
 //google, kakao
 router.post('/sns-login', async (req, res) => {
   try {
-    let accessToken = req.body.access_token;
+    let sns_id = req.body.sns_id;
     let snsType = req.body.sns_type;
+    let accessToken = req.body.access_token
     let options;
 
-    if (snsType === 'GOOGLE') {
-      const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
-      options = {
-        uri: PEOPLE_URI,
-        method: 'get',
-        headers: {
-          Authorization: 'Bearer ' + accessToken
-        }
-      };
-    } else {
-      //카카오
-      const PEOPLE_URI = 'https://kapi.kakao.com/v2/user/me';
-      options = {
-        uri: PEOPLE_URI,
-        method: 'get',
-        headers: {
-          Authorization: 'Bearer ' + accessToken
-        }
-      };
+    console.log('req.body: ', req.body)
+    switch (snsType) {
+      case 'GOOGLE':
+        
+        // const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
+        // options = {
+        // uri: PEOPLE_URI,
+        // method: 'get',
+        // headers: {
+        //   Authorization: 'Bearer ' + accessToken
+        // }
+      // }
+        break;
+      case 'NAVER':
+
+        break;
+      
+      case 'KAKAO':
+        //카카오
+        const PEOPLE_URI = 'https://kapi.kakao.com/v2/user/me';
+        options = {
+          uri: PEOPLE_URI,
+          method: 'get',
+          headers: {
+            Authorization: 'Bearer ' + accessToken
+          }
+        } 
+        break;
+
+      default:
+        break;
     }
 
     let result = await request.get(options);
@@ -87,14 +82,16 @@ router.post('/sns-login', async (req, res) => {
       tempData.email = result.email;
       tempData.name = result.name;
       tempData.picture = result.picture;
-    } else {
+    } else if (snsType === 'KAKAO') {
+      console.log('kakao_result: ', result)
       const { kakao_account } = result;
       tempData.verifiedEmail = kakao_account.is_email_verified
       tempData.email = (kakao_account.email && kakao_account.email !== undefined ? kakao_account.email : userId);
       tempData.name = kakao_account.profile.nickname;
       tempData.picture = kakao_account.profile.thumbnail_image_url;
-    }
+    } else if (snsType === 'NAVER') {
 
+    }
     // SNS로그인시 E-mail 검증 완료
     if (tempData.verifiedEmail) {
       const filter = {
@@ -109,7 +106,10 @@ router.post('/sns-login', async (req, res) => {
           return res.json({
             message: 'sns login success',
             code: 200,
-            token: jwtToken
+            token: jwtToken,
+            ACCESS_TOKEN: jwtToken,
+            USER_ID: userId,
+            USER_TYPE: snsType
           })
         }
       } else { // userId로 DB조회결과 유저 없음 -> 회원가입 진행(ID와 email은 동일)
@@ -136,12 +136,19 @@ router.post('/sns-login', async (req, res) => {
           return res.json({
             message: 'logged in successfully',
             token: jwtToken,
+            ACCESS_TOKEN: jwtToken,
+            USER_ID: userId,
+            USER_TYPE: snsType,
             code: 200
           });
         }
       }
     } else {  // 검증안되었을때, 회원가입으로 돌릴지? 협의필요
-
+      return res.json({
+        message: 'logged in failed',
+        token: 'token!',
+        code: 200
+      });
     }
   } catch (e) {
     console.log(e);
