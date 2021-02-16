@@ -2,12 +2,18 @@
 //import axios from './apiClient';
 import axios from 'axios';
 import { clientConfig } from '../../configuration/clientConfig';
-import { ISnsUserData } from '../../interfaces';
+import { ILoginUserData, ISnsUserData } from '../../interfaces';
 import { IUserData } from '../../interfaces';
 
-export async function getLoginData() {
-  const response = await axios.get<IUserData>(
-    `${clientConfig.endpoint.api}/auth/login`
+export async function getLoginData(params: ILoginUserData) {
+  const postBody = {
+    mem_email: params.MEM_EMAIL,
+    mem_password: params.MEM_PASSWORD
+  };
+
+  const response = await axios.post<IUserData>(
+    `${clientConfig.endpoint.api}/auth/login`,
+    postBody
   );
 
   console.log('getTestData response: ', response);

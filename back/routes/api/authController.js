@@ -156,15 +156,16 @@ router.post('/sns-login', async (req, res) => {
 });
 /* 로그인  */
 router.post('/login', async (req, res) => {
+  console.log('[masonms] login: ', req.body);
   try {
     let filter = {
-      MEM_EMAIL: req.body.memEmail
+      MEM_EMAIL: req.body.mem_email
     };
     let memberRow = await Member.find(filter);
     if (memberRow && memberRow.length !== 0) {
       console.log('isExist');
       //온경우
-      const password = req.body.memPassword;
+      const password = req.body.mem_password;
       let jwtToken = await bcryptCheck(password, memberRow);
       console.log(jwtToken);
       // res.cookie('access-token', jwtToken, {
@@ -175,7 +176,9 @@ router.post('/login', async (req, res) => {
         return res.json({
           message: 'logged in successfully',
           token: jwtToken,
-          status: 200
+          status: 200,
+          ACCESS_TOKEN: jwtToken,
+          USER_ID: MEM_EMAIL
         });
       } else {
         return res.json({ message: 'error', status: 400 });

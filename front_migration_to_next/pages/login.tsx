@@ -10,7 +10,7 @@ import {
 import LoginButtonContainer from '../components/SnsLogin/ButtonContainer';
 import { RootState } from '../store';
 import { IUserData } from '../interfaces';
-import { getTestDataThunk } from '../lib/slices/loginSlice';
+import { getLoginUserDataThunk } from '../lib/slices/loginSlice';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,26 +44,15 @@ const LoginPage = () => {
   const { userData } = useSelector((state: RootState) => state.login);
 
   const onClickLogin = () => {
-    // dispatch({
-    //   type: LOGIN_REQUEST,
-    //   payload: {
-    //     memEmail: email,
-    //     memPassword: password
-    //   }
-    // });
+    dispatch(
+      getLoginUserDataThunk({ MEM_EMAIL: email, MEM_PASSWORD: password })
+    );
   };
   const enterLogin = useCallback(
     (e) => {
       const disPatchLogin = () => {
-        // dispatch({
-        //   type: LOGIN_REQUEST,
-        //   payload: {
-        //     memEmail: email,
-        //     memPassword: password
-        //   }
-        // });
+        onClickLogin();
       };
-      //console.log('enter  Login ee', enterLogin);
       if (e.keyCode === 13) {
         disPatchLogin();
       }

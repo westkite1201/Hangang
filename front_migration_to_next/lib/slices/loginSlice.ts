@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { RootState } from '../../store';
 import { getLoginData, getTestData, getSnsLoginData } from '../api/login';
-import { ISnsUserData } from '../../interfaces';
+import { ILoginUserData, ISnsUserData } from '../../interfaces';
 
 const hydrate = createAction<RootState>(HYDRATE);
 
 export const getLoginUserDataThunk = createAsyncThunk(
   'login/getLoginUserData',
-  async (_, thunkAPI) => {
+  async (params: ILoginUserData, thunkAPI) => {
     try {
-      const response = await getLoginData();
+      const response = await getLoginData(params);
       console.log('getLoginData response: ', response);
       return response;
     } catch (error) {

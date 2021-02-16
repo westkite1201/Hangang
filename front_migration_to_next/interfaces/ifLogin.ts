@@ -1,7 +1,6 @@
-export interface IUserData {
-  ACCESS_TOKEN: string;
-  USER_ID: string;
-  USER_TYPE: string;
+export interface ILoginUserData {
+  MEM_EMAIL: string;
+  MEM_PASSWORD: string;
 }
 
 export interface ISnsUserData {
