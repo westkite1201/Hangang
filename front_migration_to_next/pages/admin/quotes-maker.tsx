@@ -8,9 +8,9 @@ const QuotesMaker = dynamic(
   }
 );
 
-const Admin = () => {
+const Admin = ({ themeMode }) => {
   return (
-    <DashBoard>
+    <DashBoard themeMode={themeMode}>
       <QuotesMaker />
     </DashBoard>
   );

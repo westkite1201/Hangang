@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { AccountBookOutlined } from '@ant-design/icons';
 import { Items } from './MenuItems';
 import styled from 'styled-components';
+import Link from 'next/link';
 const St = {
   BrandWrapper: styled.div`
     z-index: 1;
@@ -51,9 +53,18 @@ const St = {
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
-const Sidebar = ({ collapsed, onCollapse }) => {
+const Sidebar = ({ collapsed, onCollapse, themeMode }) => {
+  console.log('Sidebar ', themeMode);
+  useEffect(() => {
+    return;
+  }, [themeMode]);
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={onCollapse}
+      theme={themeMode}
+    >
       <St.BrandWrapper>
         <St.BrandLogoWrapper>
           <img alt="logo" src="/images/river-icon-png-15.jpg" />
@@ -61,12 +72,12 @@ const Sidebar = ({ collapsed, onCollapse }) => {
         </St.BrandLogoWrapper>
       </St.BrandWrapper>
 
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+      <Menu theme={themeMode} defaultSelectedKeys={['1']} mode="inline">
         {Items.map((item, index) => {
           if (item.children) {
             return (
               <SubMenu
-                key={'sub-' + index}
+                key={'sub-title-' + index}
                 title={
                   <span>
                     <AccountBookOutlined type="user" />
@@ -74,16 +85,20 @@ const Sidebar = ({ collapsed, onCollapse }) => {
                   </span>
                 }
               >
-                {item.children.map((item) => {
-                  return <Menu.Item>{item.title}</Menu.Item>;
+                {item.children.map((item, index) => {
+                  return (
+                    <Menu.Item key={'sub-menu-' + index}>
+                      {item.title}
+                    </Menu.Item>
+                  );
                 })}
               </SubMenu>
             );
           } else {
             return (
-              <Menu.Item key={index}>
+              <Menu.Item key={'menu-title-' + index}>
                 <AccountBookOutlined type="pie-chart" />
-                <span> {item.title}</span>
+                <Link href={item.link.href}>{item.title && item.title}</Link>
               </Menu.Item>
             );
           }

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Sidebar from '../components/common/Sidebar';
 import { ToastContainer } from 'react-toastify';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 type Props = {
   children?: ReactNode;
@@ -41,6 +42,9 @@ const fontStyle = `@font-face {
 
 const Layout = ({ children, title = 'This is the default title' }: Props) => {
   const router = useRouter();
+  console.log(
+    router.pathname !== '/login' && !router.pathname.includes('/admin')
+  );
   return (
     <div>
       <Head>
@@ -58,12 +62,35 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
         <style>{fontStyle}</style>
       </Head>
       <ToastContainer />
-      {router.pathname !== '/login' ||
-        (router.pathname.includes('admin') && <Sidebar />)}
+      {router.pathname !== '/login' && !router.pathname.includes('/admin') && (
+        <Sidebar />
+      )}
       {children}
+
+      {router.pathname !== '/login' && !router.pathname.includes('/admin') && (
+        <St.Footer>
+          <span>💜 Spreading values, TEAM D_D 💜</span>
+        </St.Footer>
+      )}
+
       {/* <script type='text/javascript' src='/static/js/naveridlogin_js_sdk_2.0.2.js'></script> */}
     </div>
   );
+};
+const St = {
+  Background: styled.div`
+    //background-color: ${({ theme }) => theme.mode.mainBackground};
+    height: 100%;
+  `,
+  Footer: styled.div`
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    color: white;
+    display: flex;
+    justify-content: center;
+  `
 };
 
 export default Layout;

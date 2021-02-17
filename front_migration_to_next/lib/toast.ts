@@ -8,7 +8,7 @@ export const successToast = (text = '성공하였습니다.') => {
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 };
 export const errorToast = (text = '실패하였습니다.') => {
@@ -19,7 +19,7 @@ export const errorToast = (text = '실패하였습니다.') => {
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 };
 
@@ -31,7 +31,7 @@ export const lnfoToast = (text = '주의!') => {
     closeOnClick: true,
     pauseOnHover: false,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 };
 
@@ -43,6 +43,6 @@ export const loadingToast = (text = '진행중입니다.') => {
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 };

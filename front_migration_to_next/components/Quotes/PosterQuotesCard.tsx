@@ -28,13 +28,11 @@ const PosterQuotesCard = ({ quotes }: IPosterQuotesCard) => {
   const makePosterText = (str: string, id: string) => {
     return str.split('\n').map((item) => {
       return (
-        <div>
-          <Hangul
-            str={item}
-            id={id}
-            intervalTime={Math.floor(Math.random() * (MAX - MIN) + MIN)}
-          />
-        </div>
+        <Hangul
+          str={item}
+          id={id}
+          intervalTime={Math.floor(Math.random() * (MAX - MIN) + MIN)}
+        />
       );
     });
   };

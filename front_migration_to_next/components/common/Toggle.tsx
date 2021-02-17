@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import NightsStayIcon from '@material-ui/icons/NightsStay';
@@ -13,6 +13,10 @@ interface IWrapper {
 }
 
 const Toggle = ({ themeMode, toggleTheme }: IToggle) => {
+  console.log('toggleTheme themeMode ', themeMode, themeMode === 'dark');
+  useEffect(() => {
+    toggleTheme(true);
+  }, []);
   return (
     <>
       <Wrapper onClick={toggleTheme} themeMode={themeMode}>

@@ -13,11 +13,21 @@ export const Items: IMenuItems[] = [
   {
     title: 'Home Page',
     icon: { name: 'home' },
-    link: { href: '/dashboard' }
+    link: { href: '/' }
   },
   {
-    title: 'FEATURES',
-    group: true
+    title: 'Quotes',
+    children: [
+      {
+        title: 'quotes-manage',
+        link: { href: '/admin/quotes-manage' }
+      },
+
+      {
+        title: 'quotes-Home',
+        link: { href: '/quote' }
+      }
+    ]
   },
   {
     title: 'Extra Components',
