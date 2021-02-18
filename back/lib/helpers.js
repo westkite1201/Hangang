@@ -3,13 +3,13 @@ let token = require('./token');
 const STATUS_CODE = {
   200: 'success',
   404: 'data not found',
-  999: 'etc'
+  999: 'etc',
 };
 const generateStatus = () => {
   return {
     message: '',
     data: '',
-    status: ''
+    status: '',
   };
 };
 
@@ -36,7 +36,7 @@ function makeReturnData(code, data) {
   return {
     result: code,
     message: STATUS_CODE[code],
-    data: data
+    data: data,
   };
 }
 
@@ -53,7 +53,7 @@ const bcryptCompare = (password, rows) => {
           mem_email: rows[0].MEM_EMAIL,
           gb_cd: rows[0].MEM_GB_CD,
           mem_avater_path: rows[0].MEM_AVATER_PATH,
-          mem_user_name: rows[0].MEM_USER_NAME
+          mem_user_name: rows[0].MEM_USER_NAME,
         };
         resolve(token.generateToken(payload));
       } else {
@@ -67,5 +67,5 @@ module.exports = {
   getBcryptSalt: getBcryptSalt,
   getHashedPassword: getHashedPassword,
   bcryptCompare: bcryptCompare,
-  makeReturnData: makeReturnData
+  makeReturnData: makeReturnData,
 };

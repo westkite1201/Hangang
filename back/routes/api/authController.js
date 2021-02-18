@@ -36,13 +36,12 @@ router.post('/sns-login', async (req, res) => {
   try {
     let sns_id = req.body.sns_id;
     let snsType = req.body.sns_type;
-    let accessToken = req.body.access_token
+    let accessToken = req.body.access_token;
     let options;
 
-    console.log('req.body: ', req.body)
+    console.log('req.body: ', req.body);
     switch (snsType) {
       case 'GOOGLE':
-        
         // const PEOPLE_URI = 'https://www.googleapis.com/oauth2/v2/userinfo';
         // options = {
         // uri: PEOPLE_URI,
@@ -50,12 +49,11 @@ router.post('/sns-login', async (req, res) => {
         // headers: {
         //   Authorization: 'Bearer ' + accessToken
         // }
-      // }
+        // }
         break;
       case 'NAVER':
-
         break;
-      
+
       case 'KAKAO':
         //카카오
         const PEOPLE_URI = 'https://kapi.kakao.com/v2/user/me';
@@ -63,9 +61,9 @@ router.post('/sns-login', async (req, res) => {
           uri: PEOPLE_URI,
           method: 'get',
           headers: {
-            Authorization: 'Bearer ' + accessToken
-          }
-        } 
+            Authorization: 'Bearer ' + accessToken,
+          },
+        };
         break;
 
       default:
@@ -83,23 +81,26 @@ router.post('/sns-login', async (req, res) => {
       tempData.name = result.name;
       tempData.picture = result.picture;
     } else if (snsType === 'KAKAO') {
-      console.log('kakao_result: ', result)
+      console.log('kakao_result: ', result);
       const { kakao_account } = result;
-      tempData.verifiedEmail = kakao_account.is_email_verified
-      tempData.email = (kakao_account.email && kakao_account.email !== undefined ? kakao_account.email : userId);
+      tempData.verifiedEmail = kakao_account.is_email_verified;
+      tempData.email =
+        kakao_account.email && kakao_account.email !== undefined
+          ? kakao_account.email
+          : userId;
       tempData.name = kakao_account.profile.nickname;
       tempData.picture = kakao_account.profile.thumbnail_image_url;
     } else if (snsType === 'NAVER') {
-
     }
     // SNS로그인시 E-mail 검증 완료
     if (tempData.verifiedEmail) {
       const filter = {
-        MEM_USER_ID: userId
-      }
+        MEM_USER_ID: userId,
+      };
 
       let findMember = await Member.find(filter);
-      if (findMember && findMember.length !== 0) {  // userId로 DB조회 결과 유저 있음
+      if (findMember && findMember.length !== 0) {
+        // userId로 DB조회 결과 유저 있음
         const password = userId + '_' + process.env.JWT_SECRET;
         const jwtToken = await bcryptCheck(password, findMember);
         if (jwtToken) {
@@ -109,15 +110,16 @@ router.post('/sns-login', async (req, res) => {
             token: jwtToken,
             ACCESS_TOKEN: jwtToken,
             USER_ID: userId,
-            USER_TYPE: snsType
-          })
+            USER_TYPE: snsType,
+          });
         }
-      } else { // userId로 DB조회결과 유저 없음 -> 회원가입 진행(ID와 email은 동일)
+      } else {
+        // userId로 DB조회결과 유저 없음 -> 회원가입 진행(ID와 email은 동일)
         let password = userId + '_' + process.env.JWT_SECRET;
         const bcySalt = await helper.getBcryptSalt();
         const hashedPassword = await helper.getHashedPassword(
           password,
-          bcySalt
+          bcySalt,
         );
         let userData = {
           MEM_EMAIL: tempData.email,
@@ -125,7 +127,7 @@ router.post('/sns-login', async (req, res) => {
           MEM_PASSWORD: hashedPassword,
           MEM_USER_NAME: tempData.name,
           MEM_AVATER_PATH: tempData.picture,
-          MEM_SIGN_TYPE: snsType
+          MEM_SIGN_TYPE: snsType,
         };
         const member = new Member(userData);
         await member.save();
@@ -139,15 +141,16 @@ router.post('/sns-login', async (req, res) => {
             ACCESS_TOKEN: jwtToken,
             USER_ID: userId,
             USER_TYPE: snsType,
-            code: 200
+            code: 200,
           });
         }
       }
-    } else {  // 검증안되었을때, 회원가입으로 돌릴지? 협의필요
+    } else {
+      // 검증안되었을때, 회원가입으로 돌릴지? 협의필요
       return res.json({
         message: 'logged in failed',
         token: 'token!',
-        code: 200
+        code: 200,
       });
     }
   } catch (e) {
@@ -158,7 +161,7 @@ router.post('/sns-login', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     let filter = {
-      MEM_EMAIL: req.body.memEmail
+      MEM_EMAIL: req.body.memEmail,
     };
     let memberRow = await Member.find(filter);
     if (memberRow && memberRow.length !== 0) {
@@ -175,7 +178,7 @@ router.post('/login', async (req, res) => {
         return res.json({
           message: 'logged in successfully',
           token: jwtToken,
-          status: 200
+          status: 200,
         });
       } else {
         return res.json({ message: 'error', status: 400 });
@@ -207,19 +210,19 @@ router.post('/setMemberSignup', async (req, res) => {
     console.log('notVaildation');
     return res.json({
       message: 'fail',
-      code: 500
+      code: 500,
       //error: error
     });
   }
   try {
     let filter = {
-      MEM_EMAIL: req.body.memEmail
+      MEM_EMAIL: req.body.memEmail,
     };
     let memberRow = await Member.find(filter);
     if (memberRow && memberRow.length !== 0) {
       return res.json({
         status: 404,
-        message: 'email already exist'
+        message: 'email already exist',
       });
     } else {
       let password = req.body.memPassword;
@@ -229,13 +232,13 @@ router.post('/setMemberSignup', async (req, res) => {
         MEM_EMAIL: req.body.memEmail,
         MEM_PASSWORD: hashedPassword,
         MEM_USER_NAME: req.body.memUserName,
-        MEM_SIGN_TYPE: 'LOCAL'
+        MEM_SIGN_TYPE: 'LOCAL',
       };
       const member = new Member(userData);
       await member.save();
       return res.json({
         status: '200',
-        message: 'success sign up'
+        message: 'success sign up',
       });
     }
   } catch (error) {
@@ -243,7 +246,37 @@ router.post('/setMemberSignup', async (req, res) => {
     return res.json({
       message: 'fail',
       code: 500,
-      error: error
+      error: error,
+    });
+  }
+});
+
+/*회원 테이블 가져오기 */
+router.post('/get_member', async (req, res) => {
+  try {
+    let filter = {
+      MEM_NICK_NAME: 1,
+      MEM_AVATER_PATH: 1,
+      MEM_INFO: 1,
+      MEM_GB_CD: 1,
+      MEM_REG_TIME: 1,
+      MEM_EMAIL: 1,
+      MEM_USER_NAME: 1,
+      MEM_USER_ID: 1,
+      MEM_SIGN_TYPE: 1,
+    };
+    let memberRow = await Member.find({}, filter);
+    return res.json({
+      status: '200',
+      message: 'success',
+      data: memberRow,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      message: 'fail',
+      code: 500,
+      error: error,
     });
   }
 });

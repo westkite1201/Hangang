@@ -9,7 +9,7 @@ let indexRouter = require('./routes/index');
 let hangangRouter = require('./routes/api/hangangController');
 let fileRouter = require('./routes/api/fileController');
 let authRouter = require('./routes/api/authController');
-
+let externalRouter = require('./routes/api/externalController');
 let { graphqlHTTP } = require('express-graphql');
 
 // let corsOption = {
@@ -45,7 +45,7 @@ app.use('/', indexRouter);
 app.use('/api/hangang', hangangRouter);
 app.use('/api/file', fileRouter);
 app.use('/api/auth', authRouter);
-
+app.use('/api/ext', externalRouter);
 var { schema, root } = require('./graphql/schema');
 
 app.use(
