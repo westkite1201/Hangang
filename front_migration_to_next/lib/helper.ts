@@ -2,7 +2,35 @@ import moment from 'moment';
 import { stationLocationArray } from './CommonData';
 import { clientConfig } from '../configuration/clientConfig';
 import { IQuote } from '../interfaces';
+import { paletteColors } from './palette';
+//min , max
+//1000
+const COLOR_LENGTH = 10;
+export function getColor(
+  isAuto = false,
+  value = -1,
+  min = 1,
+  max = 1000,
+  color: 'red',
+  index = 0
+) {
+  console.log(isAuto, value);
+  const colors = paletteColors[color];
 
+  console.log('colors ', colors);
+  if (isAuto && value !== -1) {
+    const range = (max - min) / COLOR_LENGTH;
+    let colorIndex = COLOR_LENGTH - 1;
+    for (let i = max; i >= min; i -= Math.abs(range)) {
+      if (value > i) {
+        return colors[colorIndex];
+      }
+      colorIndex -= 1;
+    }
+  } else {
+    return colors[index];
+  }
+}
 export function getRandomNumber(minValue: number, maxValue: number) {
   const min = Math.ceil(minValue);
   const max = Math.floor(maxValue);

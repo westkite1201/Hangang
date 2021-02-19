@@ -24,7 +24,7 @@ let options = {
   tagValueProcessor: (val, tagName) => he.decode(val), //default is a=>a
   stopNodes: ['parse-me-as-string'],
 };
-/* 로그인  */
+
 let OPTIONS = {
   url: null,
   qs: null,
@@ -48,8 +48,8 @@ router.post('/get-corona', async (req, res) => {
     //1주일치
     const defaultParams = {
       pageNo: 1,
-      numOfRows: 10,
-      startCreateDt: moment().subtract(7, 'day').format('YYYYMMDD'),
+      numOfRows: 15,
+      startCreateDt: moment().subtract(15, 'day').format('YYYYMMDD'),
       endCreateDt: moment().format('YYYYMMDD'),
     };
     const { pageNo, numOfRows, startCreateDt, endCreateDt } = defaultParams;

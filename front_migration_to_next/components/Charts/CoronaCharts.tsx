@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import moment from 'moment';
 import {
   Legend,
   Bar,
+  LabelList,
   Line,
+  Cell,
   ResponsiveContainer,
   ComposedChart,
   XAxis,
@@ -11,21 +13,42 @@ import {
   CartesianGrid,
   Tooltip
 } from 'recharts';
-
-const UsageAndBill = ({ tabButtonKey }) => {
+import corona_data from './corona.json';
+export interface ICoronaInfo {
+  accDefRate: number;
+  accExamCnt: number;
+  accExamCompCnt: number;
+  careCnt: number;
+  clearCnt: number;
+  createDt: Date;
+  deathCnt: number;
+  decideCnt: number;
+  examCnt: number;
+  resutlNegCnt: number;
+  seq: number;
+  stateDt: number;
+  stateTime: string;
+  updateDt: Date | null;
+  dailyDecideStatus: number;
+}
+import { getColor } from '../../lib/helper';
+//일별 확진자
+//월별 확진자
+//누적 합
+const Corona = ({ tabButtonKey }) => {
   const [usageStatus, setUsageStatus] = useState([]);
   useEffect(() => {
-    axios.get('/data/SmartView/usageAndBill.json').then((res) => {
-      const dataTemp = res.data[tabButtonKey].map((data) => {
-        return {
-          xAxis: data.MR_HHMI,
-          '사용량(kWh)': data.F_AP_QT,
-          '전년 사용량(kWh)': data.LYEAR_F_AP_QT,
-          '요금(원)': data.KWH_BILL
-        };
+    const res = corona_data.data.response.body.items.item;
+    const coronaStatus = [];
+    for (let i = 0; i < res.length - 2; i++) {
+      coronaStatus.push({
+        ...res[i],
+        stateDt: moment(res[i].stateDt.toString()).format('M.DD'),
+        dailyDecideStatus: res[i].decideCnt - res[i + 1].decideCnt
       });
-      setUsageStatus(dataTemp);
-    });
+    }
+    console.log(coronaStatus);
+    setUsageStatus(coronaStatus.reverse());
   }, [tabButtonKey]);
 
   const formatXAxis = (tickItem) => {
@@ -33,8 +56,9 @@ const UsageAndBill = ({ tabButtonKey }) => {
       return `${tickItem.slice(0, 2)}시`;
     else if (tickItem && tabButtonKey === 'monthlyUsage')
       return `${tickItem}월`;
-    else if (tickItem && tabButtonKey === 'yearlyUsage') return `${tickItem}년`;
-    else return tickItem;
+    else if (tickItem && tabButtonKey === 'daliyStatus') {
+      return `${tickItem}`;
+    } else return tickItem;
   };
   const formatYAxis = (tickItem) => tickItem.toLocaleString();
   const formatTooltip = (tickItem) => tickItem.toLocaleString();
@@ -47,7 +71,7 @@ const UsageAndBill = ({ tabButtonKey }) => {
       >
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis
-          dataKey="xAxis"
+          dataKey="stateDt"
           padding={
             tabButtonKey === 'yearlyUsage'
               ? { left: 450, right: 450 }
@@ -58,13 +82,7 @@ const UsageAndBill = ({ tabButtonKey }) => {
         <YAxis
           type="number"
           yAxisId="left"
-          label={{ value: '원', offset: 30, angle: 0, position: 'top' }}
-          tickFormatter={formatYAxis}
-        />
-        <YAxis
-          yAxisId="right"
-          orientation="right"
-          label={{ value: 'kWh', offset: 30, angle: 0, position: 'top' }}
+          label={{ value: '확진자 수', offset: 30, angle: 0, position: 'top' }}
           tickFormatter={formatYAxis}
         />
         <Tooltip
@@ -73,31 +91,40 @@ const UsageAndBill = ({ tabButtonKey }) => {
           labelFormatter={formatXAxis}
         />
         <Legend />
-        <Bar
-          yAxisId="left"
-          dataKey="요금(원)"
-          barSize={tabButtonKey === 'yearlyUsage' ? 150 : 30}
-          fill="#7ac4c0"
-        />
-        <Line
-          yAxisId="right"
-          type="monotone"
-          dataKey="사용량(kWh)"
-          stroke="#fcac8d"
-          strokeWidth="2"
-          //animationDuration="400"
-        />
-        <Line
-          yAxisId="right"
-          type="monotone"
-          dataKey="전년 사용량(kWh)"
-          stroke="#8fa3d1"
-          hide={tabButtonKey === 'yearlyUsage' && true}
-          strokeWidth="2"
-          //animationDuration="500"
-        />
+        {tabButtonKey === 'daliyStatus' ? (
+          <Bar
+            yAxisId="left"
+            dataKey="dailyDecideStatus"
+            barSize={10}
+            fill="#ff6b6b"
+            name="일일 확진자"
+          >
+            {usageStatus &&
+              usageStatus.map((entry: ICoronaInfo, index) => {
+                const color = getColor(
+                  true,
+                  entry.dailyDecideStatus,
+                  1,
+                  1000,
+                  'red'
+                );
+                return <Cell fill={color} key={`cell-${index}`} />;
+              })}
+            <LabelList dataKey="dailyDecideStatus" position="top" />
+          </Bar>
+        ) : (
+          <Line
+            yAxisId="left"
+            type="monotone"
+            dataKey="decideCnt"
+            stroke="#fcac8d"
+            hide={tabButtonKey === 'daliyStatus' && true}
+            strokeWidth="2"
+            name="누적 확진자"
+          />
+        )}
       </ComposedChart>
     </ResponsiveContainer>
   );
 };
-export default UsageAndBill;
+export default Corona;

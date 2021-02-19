@@ -47,9 +47,7 @@ function NumberCard({ icon, color, title, value }: INumberCardProps) {
       <St.IconWarp color={color}>{iconMap[icon]}</St.IconWarp>
       <St.Content>
         <St.Title>{title || 'No Title'}</St.Title>
-        <St.Number>
-          <div>{value}</div>
-        </St.Number>
+        <St.Number>{value}</St.Number>
       </St.Content>
     </St.NumberCard>
   );

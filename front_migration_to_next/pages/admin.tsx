@@ -10,25 +10,39 @@ import Weather from '../components/DashBoard/Weather';
 import RecentSales from '../components/DashBoard/RecentSales';
 import Comments from '../components/DashBoard/Comments';
 import PieChartComponent from '../components/common/chart/PieChartComponent';
-
+import Corona from '../components/Charts/CoronaCharts';
 import { Row, Col } from 'antd';
 import { browser, recent, comments } from '../components/DashBoard/Data';
 import styled from 'styled-components';
+import { useState } from 'react';
+import { Button } from 'antd';
 
+// interface ICompoentWrapperProps {
+//   children?: React.ReactNode;
+// }
 const ComponentWrapper = ({ children }) => {
   return (
     children &&
-    children.map((item) => {
-      return <St.Wrapper>{item}`</St.Wrapper>;
+    children.length !== 0 &&
+    children.map((item, index) => {
+      return <St.Wrapper key={index}>{item}</St.Wrapper>;
     })
   );
 };
 const Admin = ({ themeMode }) => {
+  const [tabButtonKey, setTabButtonKey] = useState('daliyStatus');
+  function handleButton(value: string) {
+    setTabButtonKey(value);
+  }
   return (
     <Dashboard themeMode={themeMode}>
       <Row gutter={[16, 24]}>
         <Col span={6}>
-          <ComponentWrapper>
+          <Button onClick={() => handleButton('accumulateStatus')}>월별</Button>
+          <Button onClick={() => handleButton('daliyStatus')}>일별</Button>
+          {/*     <ComponentWrapper>
+      
+        
             <NumberCard
               icon={'user'}
               title={'member'}
@@ -36,9 +50,14 @@ const Admin = ({ themeMode }) => {
               color={'#fffff'}
             />
             <User username={'seo'} avatar={''} sales={100} sold={100} />
-          </ComponentWrapper>
+         
+          </ComponentWrapper>   */}
         </Col>
         <Col span={12}>
+          <div style={{ width: '100%', height: '500px' }}>
+            <Corona tabButtonKey={tabButtonKey} />
+          </div>
+          {/*
           <ComponentWrapper>
             <NumberCard
               icon={'user'}
@@ -49,9 +68,12 @@ const Admin = ({ themeMode }) => {
             <Comments data={comments} />
             <RecentSales data={recent} />
           </ComponentWrapper>
+*/}
         </Col>
         <Col span={6}>
+          {/*
           <ComponentWrapper>
+        
             <PieChartComponent width={400} height={400} />
             <BrowserView data={browser} />
             <Weather
@@ -62,16 +84,19 @@ const Admin = ({ themeMode }) => {
               name={'추움'}
               loading={false}
             />
-          </ComponentWrapper>
+            
+          </ComponentWrapper>*/}
         </Col>
       </Row>
     </Dashboard>
   );
 };
+
 const St = {
   Wrapper: styled.div`
     background: ${({ theme }) => theme.mode.mainBackground};
     margin: 10px;
   `
 };
+
 export default Admin;

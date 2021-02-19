@@ -73,11 +73,11 @@ const Sidebar = ({ collapsed, onCollapse, themeMode }) => {
       </St.BrandWrapper>
 
       <Menu theme={themeMode} defaultSelectedKeys={['1']} mode="inline">
-        {Items.map((item, index) => {
+        {Items.map((item, key) => {
           if (item.children) {
             return (
               <SubMenu
-                key={'sub-title-' + index}
+                key={'sub-title-' + key}
                 title={
                   <span>
                     <AccountBookOutlined type="user" />
@@ -87,7 +87,7 @@ const Sidebar = ({ collapsed, onCollapse, themeMode }) => {
               >
                 {item.children.map((item, index) => {
                   return (
-                    <Menu.Item key={'sub-menu-' + index}>
+                    <Menu.Item key={'sub-menu-' + key + '-' + index}>
                       {item.title}
                     </Menu.Item>
                   );
@@ -96,7 +96,7 @@ const Sidebar = ({ collapsed, onCollapse, themeMode }) => {
             );
           } else {
             return (
-              <Menu.Item key={'menu-title-' + index}>
+              <Menu.Item key={'menu-title-' + key}>
                 <AccountBookOutlined type="pie-chart" />
                 <Link href={item.link.href}>{item.title && item.title}</Link>
               </Menu.Item>

@@ -21,6 +21,7 @@
     "@types/react": "^17.0.0",
     "@types/react-color": "3.0.4",
     "@types/react-sizes": "2.0.0",
+    "@types/recharts": "1.8.19",
     "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
