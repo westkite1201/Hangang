@@ -15,7 +15,7 @@ interface IWrapper {
 const Toggle = ({ themeMode, toggleTheme }: IToggle) => {
   console.log('toggleTheme themeMode ', themeMode, themeMode === 'dark');
   useEffect(() => {
-    toggleTheme(true);
+    toggleTheme();
   }, []);
   return (
     <>

@@ -16,18 +16,20 @@ interface Quote {
 }
 const St = {
   Layout: styled.section`
-    display: -webkit-flex;
-    display: -moz-box;
     display: flex;
-    -webkit-flex: auto;
-    -moz-box-flex: 1;
     flex: auto;
-    -webkit-flex-direction: column;
-    -moz-box-orient: vertical;
-    -moz-box-direction: normal;
     flex-direction: column;
     min-height: 0;
     background: ${({ theme }) => theme.mode.mainBackground};
+  `,
+  Footer: styled.div`
+    background: ${({ theme }) => theme.mode.mainBackground};
+    padding: 24px 50px;
+    color: ${({ theme }) => theme.mode.primaryText};
+    font-size: 14px;
+
+    flex: 0 0 auto;
+    textalign: center;
   `
 };
 function DashBoard({ children, themeMode }) {
@@ -46,8 +48,7 @@ function DashBoard({ children, themeMode }) {
       <St.Layout>
         <Header onCollapse={onCollapse} collapsed={collapsed} />
         <Content style={{ margin: '0 16px' }}>{children}</Content>
-
-        <Footer style={{ textAlign: 'center' }}>© 2021 Design by DD^2</Footer>
+        <St.Footer>© 2021 Design by DD^2</St.Footer>
       </St.Layout>
     </Layout>
   );

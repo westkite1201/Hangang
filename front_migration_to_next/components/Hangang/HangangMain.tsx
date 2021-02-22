@@ -55,9 +55,11 @@ function HangangMain({ riverTempData, themeMode }) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log('position ', position);
             resolve(position.coords);
           },
           (err) => {
+            console.log('err');
             reject(err);
           }
         );
@@ -66,17 +68,18 @@ function HangangMain({ riverTempData, themeMode }) {
 
     const nowGeolocation = async () => {
       if (navigator.geolocation) {
+        console.log('coords', navigator.geolocation);
         // GPS를 지원하면
         try {
           const coords = await getPosition();
           const notLng = coords.longitude;
           const notLat = coords.latitude;
-          //console.log(getNearbyStaionArray(notLat, notLng));
           setStations(getNearbyStaionArray(notLat, notLng));
         } catch (e) {
           console.log('error ', e);
         }
       } else {
+        console.log('GPS를 지원하지 않습니다');
         alert('GPS를 지원하지 않습니다');
       }
     };

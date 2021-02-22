@@ -3,13 +3,14 @@ import { createWrapper, MakeStore } from 'next-redux-wrapper';
 import quotesReducer from './lib/slices/quotesSlice';
 import hangangReducer from './lib/slices/hangangSlice';
 import loginReducer from './lib/slices/loginSlice';
-
+import dataReducer from './lib/slices/dataSlice';
 export const makeStore = () =>
   configureStore({
     reducer: {
       quotes: quotesReducer,
       hangang: hangangReducer,
-      login: loginReducer
+      login: loginReducer,
+      data: dataReducer
     },
     devTools: process.env.NEXT_PUBLIC_NODE_ENV === 'development'
   });

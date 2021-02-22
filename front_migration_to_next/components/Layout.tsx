@@ -78,10 +78,6 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
   );
 };
 const St = {
-  Background: styled.div`
-    //background-color: ${({ theme }) => theme.mode.mainBackground};
-    height: 100%;
-  `,
   Footer: styled.div`
     padding: 20px;
     position: fixed;

@@ -3,6 +3,10 @@ import { Button, Avatar } from 'antd';
 import styled from 'styled-components';
 
 const St = {
+  UserWrapper: styled.div`
+    background: ${({ theme }) => theme.mode.mainBackground};
+  `,
+
   UserHeader: styled.div`
     display: flex;
     justify-content: center;
@@ -95,7 +99,7 @@ const St = {
 
 function User({ avatar, username, sales = 0, sold = 0 }) {
   return (
-    <div style={{ background: 'white' }}>
+    <div>
       <St.UserHeader>
         <St.UserHeaderInner>
           <Avatar size="large" src={avatar} />

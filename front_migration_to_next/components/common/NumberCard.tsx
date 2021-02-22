@@ -9,7 +9,7 @@ const St = {
     cursor: pointer;
     border-radius: 0;
     margin-bottom: 24px;
-    background: #fff;
+    background: ${({ theme }) => theme.mode.mainBackground};
   `,
 
   IconWarp: styled.span`

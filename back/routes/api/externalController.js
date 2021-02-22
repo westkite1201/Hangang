@@ -1,9 +1,13 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 const _ = require('lodash');
 const moment = require('moment');
 const he = require('he');
 const parser = require('fast-xml-parser');
+const { CacheService } = require('../../lib/cache.service');
+const ttl = 60 * 60 * 1; // cache for 1 Hour
+const cache = new CacheService(ttl); // Create a new cache service instance
+
 //parser option
 let options = {
   attributeNamePrefix: '@_',
@@ -43,8 +47,9 @@ router.post('/get-corona', async (req, res) => {
     const request = require('request');
     const querystring = require('querystring');
     OPTIONS.url = HOST + BASE_PATH_CORONA;
-    let serviceKey = process.env.DATA_GO_API_KEY;
-
+    const serviceKey = process.env.DATA_GO_API_KEY;
+    const params = req.body;
+    console.log('params@', params);
     //1주일치
     const defaultParams = {
       pageNo: 1,
@@ -52,7 +57,9 @@ router.post('/get-corona', async (req, res) => {
       startCreateDt: moment().subtract(15, 'day').format('YYYYMMDD'),
       endCreateDt: moment().format('YYYYMMDD'),
     };
-    const { pageNo, numOfRows, startCreateDt, endCreateDt } = defaultParams;
+    const { pageNo, numOfRows, startCreateDt, endCreateDt } = _.isEmpty(params)
+      ? defaultParams
+      : params;
 
     let propertiesObject = querystring.stringify({
       pageNo: pageNo,
@@ -65,6 +72,7 @@ router.post('/get-corona', async (req, res) => {
     OPTIONS.url += encodeURIComponent('ServiceKey') + '=' + serviceKey + '&';
     OPTIONS.url += propertiesObject;
     OPTIONS.url = OPTIONS.url;
+
     //async를 위해 request 함수 선언
     function doRequest() {
       return new Promise(function (resolve, reject) {
@@ -87,7 +95,9 @@ router.post('/get-corona', async (req, res) => {
         });
       });
     }
-    const resXml = await doRequest();
+    /* cache 적용  */
+    const resXml = await cache.get(OPTIONS.url, false, null, doRequest);
+    //const resXml = await doRequest();
     if (resXml.status === 200 && resXml.message === 'success') {
       var jsonObj = parser.parse(resXml.data, options);
       resXml.data = jsonObj;

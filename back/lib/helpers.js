@@ -62,6 +62,7 @@ const bcryptCompare = (password, rows) => {
     });
   });
 };
+
 module.exports = {
   generateStatus: generateStatus,
   getBcryptSalt: getBcryptSalt,

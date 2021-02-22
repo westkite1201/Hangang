@@ -14,10 +14,10 @@ export function getColor(
   color: 'red',
   index = 0
 ) {
-  console.log(isAuto, value);
+  //console.log(isAuto, value);
   const colors = paletteColors[color];
 
-  console.log('colors ', colors);
+  //console.log('colors ', colors);
   if (isAuto && value !== -1) {
     const range = (max - min) / COLOR_LENGTH;
     let colorIndex = COLOR_LENGTH - 1;

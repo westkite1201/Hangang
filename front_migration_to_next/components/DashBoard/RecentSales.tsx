@@ -6,8 +6,8 @@ import styled from 'styled-components';
 const St = {
   Recentsales: styled.div`
     :global .ant-table-thead > tr > th {
-      background: #fff;
       border-bottom: solid 1px @border-color-base;
+      background: ${({ theme }) => theme.mode.mainBackground};
     }
   `
 };

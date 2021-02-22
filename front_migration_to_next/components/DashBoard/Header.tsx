@@ -27,7 +27,7 @@ const St = {
       z-index: 9;
       -ms-flex-align: center;
       align-items: center;
-      background-color: #fff;
+      background: ${({ theme }) => theme.mode.mainBackground};
     }
   `,
   CollapsedButton: styled.div`
