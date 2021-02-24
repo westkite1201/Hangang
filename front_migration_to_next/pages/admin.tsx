@@ -40,10 +40,9 @@ const Admin = ({ themeMode }) => {
     <Dashboard themeMode={themeMode}>
       <Row gutter={[16, 24]}>
         <Col span={6}>
-          {/*
           <Button onClick={() => handleButton('accumulateStatus')}>누적</Button>
           <Button onClick={() => handleButton('allStatus')}>전체</Button>
-          */}
+
           <Button onClick={() => handleButton('weekStatus')}>일주일</Button>
           <Button onClick={() => handleButton('monthlyStatus')}>한달</Button>
           {
