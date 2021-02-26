@@ -1,0 +1,93 @@
+version: '3'
+services:
+  proxy:
+    restart: unless-stopped
+    image: staticfloat/nginx-certbot
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    environment:
+      CERTBOT_EMAIL: westkite1201@gmail.com
+      # variable names are space-separated
+      ENVSUBST_VARS: FQDN
+      FQDN: www.hangang.site
+    volumes:
+      - ./conf.d:/etc/nginx/user.conf.d:ro
+      - letsencrypt:/etc/letsencrypt
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./front
+    volumes:
+      - ./front/:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_NODE_ENV=production
+      - NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=<INSERT_YOUR_KEY>
+      - NEXT_PUBLIC_GA_APP_ID=<INSERT_YOUR_KEY>
+    ports:
+      - '3000:3000'
+    networks:
+      - backend
+
+  server:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./back
+    volumes:
+      - ./back/:/app
+      - /app/node_modules
+    environment:
+      - NODE_PATH=src
+      - PORT=3031
+      - DB_HOST=mongo
+      - DB=test
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NODE_ENV=development
+      - SEOUL_OPENAPI_URL='http://openapi.seoul.go.kr:8088'
+      - API_KEY=<INSERT_YOUR_KEY>
+      - MONGODB_URI=<INSERT_YOUR_KEY>
+      - KAKAO_NATIVE_APP_KEY=<INSERT_YOUR_KEY>
+      - KAKAO_REST_API_KEY=<INSERT_YOUR_KEY>
+      - KAKAO_JAVASCRIPT_KEY=<INSERT_YOUR_KEY>
+      - KAKAO_ADMIN_KEY=<INSERT_YOUR_KEY>
+      - JWT_SECRET=<INSERT_YOUR_KEY>
+      - DATA_GO_API_KEY=<INSERT_YOUR_KEY>
+    networks:
+      - backend
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - '3031:3031'
+  redis:
+    container_name: redis
+    image: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - backend
+    volumes:
+      - data:/data/redis
+    ports:
+      - '6379:6379'
+    restart: always
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
+  letsencrypt:

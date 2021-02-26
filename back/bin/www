@@ -22,37 +22,38 @@ process.env.NODE_ENV =
 let option;
 let server;
 let port;
-if (process.env.NODE_ENV === 'production') {
-  console.log('is prodiction');
-  port = normalizePort(process.env.PORT || '3031');
-  option = {
-    ca: fs.readFileSync('/etc/letsencrypt/live/www.hangang.site/fullchain.pem'),
-    key: fs
-      .readFileSync(
-        path.resolve(
-          process.cwd(),
-          '/etc/letsencrypt/live/www.hangang.site/privkey.pem'
-        ),
-        'utf8'
-      )
-      .toString(),
-    cert: fs
-      .readFileSync(
-        path.resolve(
-          process.cwd(),
-          '/etc/letsencrypt/live/www.hangang.site/cert.pem'
-        ),
-        'utf8'
-      )
-      .toString()
-  };
-  server = https.createServer(option, app);
-} else {
-  console.log('is Development');
-  port = normalizePort(process.env.PORT || '3031');
-  server = http.createServer(app);
-}
-
+// if (process.env.NODE_ENV === 'production') {
+//   console.log('is prodiction');
+//   port = normalizePort(process.env.PORT || '3031');
+//   option = {
+//     ca: fs.readFileSync('/etc/letsencrypt/live/www.hangang.site/fullchain.pem'),
+//     key: fs
+//       .readFileSync(
+//         path.resolve(
+//           process.cwd(),
+//           '/etc/letsencrypt/live/www.hangang.site/privkey.pem',
+//         ),
+//         'utf8',
+//       )
+//       .toString(),
+//     cert: fs
+//       .readFileSync(
+//         path.resolve(
+//           process.cwd(),
+//           '/etc/letsencrypt/live/www.hangang.site/cert.pem',
+//         ),
+//         'utf8',
+//       )
+//       .toString(),
+//   };
+//   server = https.createServer(option, app);
+// } else {
+//   console.log('is Development');
+//   port = normalizePort(process.env.PORT || '3031');
+//   server = http.createServer(app);
+// }
+port = normalizePort(process.env.PORT || '3031');
+server = http.createServer(app);
 app.set('port', port);
 
 /**

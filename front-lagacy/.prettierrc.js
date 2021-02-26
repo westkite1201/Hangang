@@ -9,5 +9,5 @@ module.exports = {
   orderedImports: true,
   bracketSpacing: true,
   jsxBracketSameLine: false,
-  arrowParens: 'avoid'
+  arrowParens: 'avoid',
 };
