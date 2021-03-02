@@ -16,11 +16,11 @@ services:
       - letsencrypt:/etc/letsencrypt
   client:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./front
     volumes:
-      - ./front/:/app
-      - /app/node_modules
+      - ./front/:/opt/app
+      - /opt/app/node_modules
     environment:
       - NEXT_PUBLIC_NODE_ENV=production
       - NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=<INSERT_YOUR_KEY>
@@ -32,11 +32,11 @@ services:
 
   server:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./back
     volumes:
-      - ./back/:/app
-      - /app/node_modules
+      - ./back/:/opt/app
+      - /opt/app/node_modules
     environment:
       - NODE_PATH=src
       - PORT=3031
@@ -58,26 +58,13 @@ services:
       - backend
     depends_on:
       - mongo
-      - redis
     ports:
       - '3031:3031'
-  redis:
-    container_name: redis
-    image: redis
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-    networks:
-      - backend
-    volumes:
-      - data:/data/redis
-    ports:
-      - '6379:6379'
-    restart: always
   mongo:
     container_name: mongo
     image: mongo
     volumes:
-      - data:/data/db
+      - data:/var/lib/mongodb
     ports:
       - '27017:27017'
     networks:
