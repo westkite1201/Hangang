@@ -15,4 +15,4 @@ RUN yarn run build
 
 
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "serve" ]
