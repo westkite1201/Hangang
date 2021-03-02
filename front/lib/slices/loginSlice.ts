@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { RootState } from '../../store';
-import { getLoginData, getTestData, getSnsLoginData } from '../api/login';
+import { getLoginData, getSnsLoginData } from '../api/login';
 import { ISnsUserData } from '../../interfaces';
 
 const hydrate = createAction<RootState>(HYDRATE);

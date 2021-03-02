@@ -9,8 +9,6 @@ import {
 
 import LoginButtonContainer from '../components/SnsLogin/ButtonContainer';
 import { RootState } from '../store';
-import { IUserData } from '../interfaces';
-import { getTestDataThunk } from '../lib/slices/loginSlice';
 
 import { useDispatch, useSelector } from 'react-redux';
 

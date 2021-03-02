@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-
 function useCount({ icon, color, title, value }) {
   const [unit, setUnit] = useState(0);
   const [count, setCount] = useState(0);
@@ -18,7 +17,7 @@ function useCount({ icon, color, title, value }) {
       setUnit(number);
     }
   }
-  
+
   useEffect(() => {
     unitCount(1);
   }, []);
@@ -38,7 +37,7 @@ function useCount({ icon, color, title, value }) {
     }
   }, [unit]);
 
-  return ()
+  return unitCount;
 }
 
-export default NumberCard;
+export default useCount;
