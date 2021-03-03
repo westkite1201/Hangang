@@ -7,12 +7,12 @@ WORKDIR /opt/app
 COPY package.json /opt/app
 
 
-RUN yarn install
+RUN npm install
 
 COPY . /opt/app
 
-RUN yarn run build
+RUN npm run build
 
 
 
-CMD [ "yarn", "serve" ]
+CMD [ "npm", "run", "serve" ]

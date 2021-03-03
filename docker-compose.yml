@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   proxy:
     restart: unless-stopped
@@ -14,10 +14,10 @@ services:
     volumes:
       - ./conf.d:/etc/nginx/user.conf.d:ro
       - letsencrypt:/etc/letsencrypt
-  client:
+  front:
     build:
-      dockerfile: Dockerfile
       context: ./front
+      dockerfile: Dockerfile
     volumes:
       - ./front/:/opt/app
       - /opt/app/node_modules
@@ -29,23 +29,29 @@ services:
       - '3000:3000'
     networks:
       - backend
-
-  server:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    volumes: # container -> local로 mount할 수 있습니다.
+      - /usr/local/var/mongodb:/data/db # container 내부에서의 경로
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+  back:
     build:
-      dockerfile: Dockerfile
       context: ./back
+      dockerfile: Dockerfile
     volumes:
       - ./back/:/opt/app
       - /opt/app/node_modules
     environment:
       - NODE_PATH=src
       - PORT=3031
-      - DB_HOST=mongo
-      - DB=test
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - NODE_ENV=development
-      - SEOUL_OPENAPI_URL='http://openapi.seoul.go.kr:8088'
+      - NODE_ENV=production
+      - SEOUL_OPENAPI_URL=http://openapi.seoul.go.kr:8088
       - API_KEY=<INSERT_YOUR_KEY>
       - MONGODB_URI=<INSERT_YOUR_KEY>
       - KAKAO_NATIVE_APP_KEY=<INSERT_YOUR_KEY>
@@ -60,16 +66,6 @@ services:
       - mongo
     ports:
       - '3031:3031'
-  mongo:
-    container_name: mongo
-    image: mongo
-    volumes:
-      - data:/var/lib/mongodb
-    ports:
-      - '27017:27017'
-    networks:
-      - backend
-
 networks:
   backend:
     driver: bridge
